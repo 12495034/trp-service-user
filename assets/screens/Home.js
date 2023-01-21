@@ -30,7 +30,7 @@ const HomeStyles = StyleSheet.create({
     },
     title: {
         // flex: 0.3,
-        color: 'black',
+        color: '#e7665e',
         fontWeight: '800',
         fontSize: 19,
         fontWeight: '400',

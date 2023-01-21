@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { View, StyleSheet, Pressable, Alert, Button } from 'react-native'
 import CalledIcon from '../Icons/CalledIcon'
 import CheckInIcon from '../Icons/CheckInIcon'
+import TestCompleteIcon from '../Icons/TestCompleteIcon'
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../Navigation/AuthProvider';
 import { Modal, Text, Provider, Portal } from 'react-native-paper';
@@ -55,10 +56,12 @@ export default function AppointmentCard(props) {
                     <Text>{props.date}</Text>
                     <Text >{props.time}</Text>
                     <Text>Slot: {props.slot}</Text>
+                    <Text>{props.status}</Text>
                 </View>
                 <View style={styles.col3} onTouchStart={userCheckIn}>
                     <CheckInIcon checkedIn={props.checkedIn} />
                     <CalledIcon checkedIn={props.checkedIn} called={props.called} />
+                    <TestCompleteIcon checkedIn={props.checkedIn} complete={props.wasSeen}/>
                 </View>
             </View>
         </Pressable>
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius: 5,
-        marginBottom:5,
+        marginBottom: 5,
     },
     col1: {
         flexDirection: 'column',

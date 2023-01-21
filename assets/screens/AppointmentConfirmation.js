@@ -34,7 +34,8 @@ export default function AppointmentConfirmation({ route, navigation }) {
                 checkedIn: false,
                 wasSeen: false,
                 slot: selectedSlot,
-                time: selectedTime
+                time: selectedTime,
+                status: "Active"
             })
             .then(() => {
                 console.log('Appointment added to clinic!');
@@ -51,7 +52,8 @@ export default function AppointmentConfirmation({ route, navigation }) {
                 center: center,
                 slot: selectedSlot,
                 time: selectedTime,
-                date: date
+                date: date,
+                status: "Active"
             })
             .then(() => {
                 console.log('Appointment added to user appointment history!');

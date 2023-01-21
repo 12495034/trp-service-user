@@ -59,7 +59,7 @@ export default function Appointments() {
         data={appointments}
         keyExtractor={(Item, index) => index.toString()}
         renderItem={({ item }) => (
-            <AppointmentCard clinicId={item.id} tester={item.calledBy} location={item.location} center={item.center} date={item.date} time={item.time} slot={item.slot} checkedIn={item.checkedIn} called={item.called} wasSeen={item.wasSeen} cancel={cancelAppointment} addSlot={addSlotToMap} />
+            <AppointmentCard clinicId={item.id} tester={item.calledBy} location={item.location} center={item.center} date={item.date} time={item.time} slot={item.slot} checkedIn={item.checkedIn} called={item.called} wasSeen={item.wasSeen} cancel={cancelAppointment} addSlot={addSlotToMap} status={item.status}/>
         )}
     />
 

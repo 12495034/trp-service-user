@@ -1,22 +1,22 @@
 import { validatePathConfig } from '@react-navigation/native';
 import React, { useState, useContext } from 'react'
-import { View, Text, Image, StyleSheet, Pressable, TextInput, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native'
-
+import { View, Text, Image, StyleSheet, Pressable, TextInput } from 'react-native'
 import { AuthContext } from '../Navigation/AuthProvider';
-import CustomButton from '../components/CustomButton'
-
-
+import PressableButton from '../components/PressableButton';
 
 export default function Login({ navigation }) {
 
     const { login } = useContext(AuthContext);
-
     const [data, setData] = useState({
         userName: '',
         password: '',
         isValidUser: false,
         isValidPassword: false,
     })
+
+    function navigateTo(screen) {
+        navigation.navigate(screen)
+    }
 
     function emailChange(val) {
         if (val.length != 0) {
@@ -58,6 +58,7 @@ export default function Login({ navigation }) {
                 <Text style={LoginStyles.appTitle}>Rapid HIV & Syphillus Testing</Text>
             </View>
             <View style={LoginStyles.inputOptions}>
+                <Text style={LoginStyles.Message}></Text>
                 <TextInput
                     style={LoginStyles.input}
                     onChangeText={(val) => emailChange(val)}
@@ -69,52 +70,12 @@ export default function Login({ navigation }) {
                     placeholder='Enter Password'
                     secureTextEntry={true}
                 />
-                <Pressable
-                    style={({ pressed }) => [
-                        { backgroundColor: pressed ? '#dddddd' : '#79e75e' },
-                        LoginStyles.button
-                    ]}
-                    onPress={() => { loginHandle(data.userName, data.password) }}
-                >
-                    <Text style={LoginStyles.text}>
-                        Login
-                    </Text>
-                </Pressable>
+                <PressableButton title='Login' width='90%' pressed='#dddddd' unpressed='#79e75e' handlePress={() => { loginHandle(data.userName, data.password) }} />
                 <View style={LoginStyles.options}>
-                    <Pressable
-                        style={({ pressed }) => [
-                            { backgroundColor: pressed ? '#dddddd' : '#ffb269', padding: 10, borderRadius: 5 },
-                        ]}
-                        onPress={() => { navigation.navigate("Signup") }}
-                    >
-                        <Text style={LoginStyles.text}>
-                            Need an account?
-                        </Text>
-                    </Pressable>
-                    <Pressable
-                        style={({ pressed }) => [
-                            { backgroundColor: pressed ? '#dddddd' : '#ff714b', padding: 10, borderRadius: 5 },
-                        ]}
-                        onPress={() => { navigation.navigate("Reset") }}
-                    >
-                        <Text style={LoginStyles.text}>
-                            Forgotten Password?
-                        </Text>
-                    </Pressable>
+                    <PressableButton title='Create Account' width='49%' pressed='#dddddd' unpressed='#FFC1BE' handlePress={() => navigateTo("Signup")} />
+                    <PressableButton title='Reset Password' width='49%' pressed='#dddddd' unpressed='#ffb269' handlePress={() => navigateTo("Reset")} />
                 </View>
-
-                {/* <View style={LoginStyles.testDetails}>
-                    <Text>
-                        Email: {data.userName}
-                        valid: {data.isValidUser}
-                        Password: {data.password}
-                        valid: {data.isValidPassword}
-                    </Text>
-                </View>  */}
             </View>
-
-            <Text style={LoginStyles.validationMessage}>
-            </Text>
         </View>
     )
 }
@@ -132,12 +93,12 @@ const LoginStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderwidth: 1,
-        borderStyle: 'solid'
+        borderStyle: 'solid',
     },
     logo: {
         flex: 0.5,
         width: '50%',
-        height:10,
+        height: 10,
         resizeMode: 'contain',
         margin: 20,
     },
@@ -154,28 +115,21 @@ const LoginStyles = StyleSheet.create({
     appTitle: {
         margin: 20,
         fontSize: 25,
-        textAlign: 'center'
-    },
-    button: {
-        height: 50,
-        width: '90%',
-        marginTop: 5,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center'
+        textAlign: 'center',
+        color:'#e7665e'
     },
     input: {
         width: '90%',
         borderWidth: 1,
-        textAlign: 'center',
         backgroundColor: '#ffffff',
         marginTop: 2,
         marginBottom: 5,
         borderRadius: 10,
+        paddingLeft:10,
     },
     options: {
         width: '90%',
-        marginTop: 20,
+        marginTop:6,
         flexDirection: 'row',
         justifyContent: 'space-between'
     }

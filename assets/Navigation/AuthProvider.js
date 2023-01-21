@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
-import auth, { sendPasswordResetEmail, sendEmailVerification, updateProfile} from '@react-native-firebase/auth';
-// import firestore from '@react-native-firebase/firestore';
+import auth, { sendPasswordResetEmail, sendEmailVerification, updateProfile } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import { firebaseErrors } from '../errors/firebase/FireaseErrors';
 
 export const AuthContext = createContext();
@@ -14,44 +14,43 @@ export const AuthProvider = ({ children }) => {
                 user,
                 setUser,
                 login: async (email, password) => {
+                    console.log("Running login function")
                     try {
                         await auth().signInWithEmailAndPassword(email, password);
                     } catch (e) {
                         console.log(e);
-                        if (e.code === firebaseErrors.invalidEmail.error) {
-                            alert(firebaseErrors.invalidEmail.message)
-                        }
-                        if (e.code === firebaseErrors.invalidUser.error) {
-                            alert(firebaseErrors.invalidUser.message)
-                        }
+                        // if (e.code === 'auth/user-not-found') {
+                        //     console.log('That email is not recognised');
+                        // }
                     }
                 },
                 register: async (data) => {
                     console.log("calling register function")
+                    console.log(data)
                     try {
                         await auth().createUserWithEmailAndPassword(data.email, data.password)
                             .then(() => {
-
                                 //Once the user creation has happened successfully, we can add the currentUser into firestore
                                 //with the appropriate details.
-                                //   firestore().collection('users').doc(auth().currentUser.uid)
-                                //   .set({
-                                //       fname: '',
-                                //       lname: '',
-                                //       email: email,
-                                //       createdAt: firestore.Timestamp.fromDate(new Date()),
-                                //       userImg: null,
-                                //   })
-                                //   //ensure we catch any errors at this stage to advise us if something does go wrong
-                                //   .catch(error => {
-                                //       console.log('Something went wrong with added user to firestore: ', error);
-                                //   })
-
+                                firestore().collection('Users').doc(auth().currentUser.uid)
+                                    .set({
+                                        ProNouns: data.pronouns,
+                                        FirstName: data.firstName,
+                                        MiddleName: data.middleName,
+                                        LastName: data.lastName,
+                                        PhoneNumber: data.phoneNumber,
+                                        dob: data.dob,
+                                        Role: "Service-User",
+                                        Email: data.email,
+                                        isAgreedTC: data.isAgreedTC,
+                                        status:"Active",
+                                        createdAt: firestore.Timestamp.fromDate(new Date()),
+                                    })
+                                    .then(() => {
+                                        console.log('User added!');
+                                    });
                             })
-                            //we need to catch the whole sign up process if it fails too.
-                            .catch(error => {
-                                console.log('Something went wrong with sign up: ', error);
-                            });
+                            // //we need to catch the whole sign up process if it fails too.
                     } catch (e) {
                         console.log(e);
                     }
@@ -70,7 +69,7 @@ export const AuthProvider = ({ children }) => {
                         await auth().currentUser.updateProfile({
                             displayName: 'Gavin',
                             photoURL: 'https://my-cdn.com/assets/user/123.png',
-                          })
+                        })
                     } catch (e) {
                         console.log(e)
                     }
@@ -80,25 +79,20 @@ export const AuthProvider = ({ children }) => {
                     try {
                         await auth().signOut();
                     } catch (e) {
-                        console.log(e);
+                        return e.code
                     }
                 },
                 reset: async (email) => {
-                    //email is passed into this function from the reset screen via context
                     console.log("Password reset method running")
+                    let message = `Reset email sent to ${email}`
                     try {
                         await auth().sendPasswordResetEmail(email)
-                            .then(() => {
-                                alert("reset email sent to " + email);
-                            })
+                            .then(() => message)
+                        // return `Reset email sent to ${email}`
                     } catch (e) {
+                        return e.code
                         //rather than running alerts on the screen here I can return the error code to display it on page
-                        if (e.code === firebaseErrors.invalidEmail.error) {
-                            alert(firebaseErrors.invalidEmail.message)
-                        }
-                        if (e.code === firebaseErrors.invalidUser.error) {
-                            alert(firebaseErrors.invalidUser.message)
-                        }
+
                     }
                 }
             }}>
