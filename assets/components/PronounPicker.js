@@ -21,5 +21,6 @@ const styles = StyleSheet.create({
     dropdown:{
         width:'100%',
         paddingLeft:10,
+        backgroundColor:''
     }
 })

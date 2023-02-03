@@ -12,22 +12,22 @@ export default function UserCard(props) {
                 <View>
                     <Text variant="bodyMedium">Pronouns:</Text>
                     <Text variant="titleLarge">First Name:</Text>
+                    <Text variant="bodyMedium">Middle Name:</Text>
                     <Text variant="bodyMedium">Last Name:</Text>
                     <Text variant="bodyMedium">Email:</Text>
+                    <Text variant="bodyMedium">Email Verified:</Text>
                     <Text variant="bodyMedium">Phone Number:</Text>
                     <Text variant="bodyMedium">Date of Birth:</Text>
-                    <Text variant="bodyMedium">Role:</Text>
-                    <Text variant="bodyMedium">Account Status:</Text>
                 </View>
                 <View>
                     <Text variant="bodyMedium">{props.proNouns}</Text>
                     <Text variant="titleLarge">{props.firstName}</Text>
+                    <Text variant="bodyMedium">{props.middleName}</Text>
                     <Text variant="bodyMedium">{props.lastName}</Text>
                     <Text variant="bodyMedium">{props.email}</Text>
+                    <Text variant="bodyMedium">{props.emailVerified}</Text>
                     <Text variant="bodyMedium">{props.phoneNumber}</Text>
                     <Text variant="bodyMedium">{props.dob}</Text>
-                    <Text variant="bodyMedium">{props.role}</Text>
-                    <Text variant="bodyMedium">{props.status}</Text>
                 </View>
             </View>
         </View>

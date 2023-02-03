@@ -1,21 +1,104 @@
 import React, { useContext } from 'react'
 import { View, Text, StyleSheet, Button, ScrollView } from 'react-native'
-import Instructions from '../components/Instructions';
+import { List } from 'react-native-paper';
 import { AuthContext } from '../Navigation/AuthProvider';
+import { welcomeMessageHome } from '../images/content/Message';
+import InternetInfo from '../components/InternetInfo';
 
 export default function Home() {
 
     const { user } = useContext(AuthContext);
+    const [expandedBooking, setExpandedBooking] = React.useState(false);
+    const [expandedAtClinic, setExpandedAtClinic] = React.useState(false);
+
+    //state set to close one accordion if another is opened to limit information overload
+    const handlePressBooking = () => {
+        setExpandedBooking(!expandedBooking)
+        setExpandedAtClinic(false)
+    };
+    const handlePressAtClinic = () => {
+        setExpandedAtClinic(!expandedAtClinic)
+        setExpandedBooking(false)
+    };
 
     return (
-            <View style={HomeStyles.body}>
-                <View>
-                    <Text style={HomeStyles.title}>Welcome</Text>
-                    {/* <Text style={HomeStyles.title}>{user.email}</Text> */}
-                    <Text style={HomeStyles.message}>to the rainbow project Rapid HIV & syphillis testing service. Through this app you can book a rapid HIV test at one of our scheduled clinics</Text>
-                    {/* <Text style={HomeStyles.message}>If you are un-familiar with our booking process please review the steps below.</Text> */}
-                </View>
-            </View>
+        <View style={HomeStyles.body}>
+            <ScrollView>
+                <Text style={HomeStyles.title}>Welcome {user.displayName}</Text>
+                <Text style={HomeStyles.message}>{welcomeMessageHome}</Text>
+                <Text style={HomeStyles.message}>If you are unsure about how to book an appointment or what to do when you attend a test center. Please consult the step by step guides below</Text>
+                <List.Accordion
+                    title="How to book an appointment"
+                    expanded={expandedBooking}
+                    onPress={handlePressBooking}>
+                    <List.Item
+                        title="New Booking tab"
+                        descriptionNumberOfLines={3}
+                        description="This will start the booking process"
+                        left={props => <List.Icon {...props} color='green' icon="plus-circle-outline" />}
+                    />
+                    <List.Item
+                        title="A quick question"
+                        descriptionNumberOfLines={3}
+                        description="Answer a quick question so we can determine if a test is suitible for you"
+                        left={props => <List.Icon {...props} color='green' icon="help-circle-outline" />}
+                    />
+                    <List.Item
+                        title="Search for a clinic"
+                        descriptionNumberOfLines={3}
+                        description="Search for a suitible clinic by location, test center and date"
+                        left={props => <List.Icon {...props} color='green' icon="card-search-outline" />}
+                    />
+                    <List.Item
+                        title="Pick a slot and confirm"
+                        descriptionNumberOfLines={3}
+                        description="choose a suitible time slot in a clinic. You will have 60 seconds to confirm the appointment or the slot will be released"
+                        left={props => <List.Icon {...props} color='green' icon="clock-edit-outline" />}
+                    />
+                    <List.Item
+                        title="View appointments"
+                        descriptionNumberOfLines={3}
+                        description="Any confirmed bookings and your booking history can be found on the appointments tab"
+                        left={props => <List.Icon {...props} color='green' icon="format-list-bulleted-square" />}
+                    />
+                </List.Accordion>
+                <List.Accordion
+                    title="What to do at the clinic"
+                    expanded={expandedAtClinic}
+                    onPress={handlePressAtClinic}>
+                    <List.Item
+                        title="View appointments"
+                        descriptionNumberOfLines={3}
+                        description="Access your booked appointments using the appointments tab"
+                        left={props => <List.Icon {...props} color='green' icon="format-list-bulleted-square" />}
+                    />
+                    <List.Item
+                        title="Check in"
+                        descriptionNumberOfLines={3}
+                        description="Press the red user icon to check in for your appointment"
+                        left={props => <List.Icon {...props} color='green' icon="account-check" />}
+                    />
+                    <List.Item
+                        title="Called"
+                        descriptionNumberOfLines={3}
+                        description="When called for your test the bell icon will turn purple and the testers name will be shown"
+                        left={props => <List.Icon {...props} color='purple' icon="bell" />}
+                    />
+                    <List.Item
+                        title="Test complete"
+                        descriptionNumberOfLines={3}
+                        description="When your test is complete the thumb icon will turn green"
+                        left={props => <List.Icon {...props} color='green' icon="thumb-up" />}
+                    />
+                    <List.Item
+                        title="Cancellations"
+                        descriptionNumberOfLines={3}
+                        description="Press and hold the appointment to cancel. Please do so a minimum of 24 hrs in advance"
+                        left={props => <List.Icon {...props} color='red' icon="cancel" />}
+                    />
+                </List.Accordion>
+            </ScrollView>
+        </View>
 
     )
 }
@@ -26,7 +109,7 @@ const HomeStyles = StyleSheet.create({
         backgroundColor: '#ffffff',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        padding: 20,
+        padding: 10,
     },
     title: {
         // flex: 0.3,
@@ -43,12 +126,15 @@ const HomeStyles = StyleSheet.create({
     message: {
         fontSize: 15,
         fontWeight: '400',
-        textAlign: 'left',
+        textAlign: 'justify',
         margin: 10,
     },
     instruction: {
         flex: 1,
         width: '100%'
+    },
+    listItem: {
+        textAlign: 'justify',
     }
 
 })

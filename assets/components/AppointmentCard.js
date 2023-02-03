@@ -11,29 +11,67 @@ export default function AppointmentCard(props) {
 
     const { user } = useContext(AuthContext);
 
+    function handleAlert() {
+        if (props.status == "Active") {
+            Alert.alert(
+                'Cancel Appointment',
+                'Do you wish to cancel this appointment?',
+                [
+                    {
+                        text: 'Yes',
+                        onPress: () => {
+                            props.cancel(props.slot, props.time, props.clinicId)
+                        },
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'No',
+                        onPress: () => console.log("Appointment not cancelled"),
+                        style: 'cancel',
+                    },
+                ],
+                {
+                    cancelable: true,
+                    onDismiss: () => console.log("Alert cancelled by pressing outside box"),
+                },
+            );
+        } else {
+            console.log("Appointment is not active, therefore changes cannot be made")
+        }
+    }
+
     function userCheckIn() {
-        //update status in Users Appointments sub-collection
-        firestore()
-            .collection(`Users/${user.uid}/Appointments`)
-            .doc(`${props.clinicId}`)
-            .update({
-                checkedIn: true,
-            })
-            .then(() => {
-                console.log('User checked in!');
-            });
+        if (props.status == "Active") {
+            //update status in Users Appointments sub-collection
+            firestore()
+                .collection(`Users/${user.uid}/Appointments`)
+                .doc(`${props.clinicId}`)
+                .update({
+                    checkedIn: true,
+                })
+                .then(() => {
+                    console.log('User checked in in clinic sub-collection!');
+                })
+                .catch((e) => {
+                    console.log(e.message)
+                })
 
-        //update status in Users Appointments sub-collection
-        firestore()
-            .collection(`Clinics/${props.clinicId}/Appointments`)
-            .doc(`${user.uid}`)
-            .update({
-                checkedIn: true,
-            })
-            .then(() => {
-                //console.log('User checked in!');
-            });
-
+            //update status in Users Appointments sub-collection
+            firestore()
+                .collection(`Clinics/${props.clinicId}/Appointments`)
+                .doc(`${user.uid}`)
+                .update({
+                    checkedIn: true,
+                })
+                .then(() => {
+                    console.log('User checked in in users sub-collection!');
+                })
+                .catch((e) => {
+                    console.log(e.message)
+                })
+        } else {
+            console.log("Appointment is not active, therefore changes cannot be made")
+        }
     }
 
     return (
@@ -42,8 +80,7 @@ export default function AppointmentCard(props) {
                 { backgroundColor: pressed ? '#F7C3E9' : '#0000', borderRadius: 5 },
             ]}
             onLongPress={() => {
-                props.cancel(props.clinicId)
-                props.addSlot(props.slot, props.time, props.clinicId)
+                handleAlert()
             }}
         >
             <View style={styles.card}>
@@ -61,7 +98,7 @@ export default function AppointmentCard(props) {
                 <View style={styles.col3} onTouchStart={userCheckIn}>
                     <CheckInIcon checkedIn={props.checkedIn} />
                     <CalledIcon checkedIn={props.checkedIn} called={props.called} />
-                    <TestCompleteIcon checkedIn={props.checkedIn} complete={props.wasSeen}/>
+                    <TestCompleteIcon checkedIn={props.checkedIn} complete={props.wasSeen} />
                 </View>
             </View>
         </Pressable>

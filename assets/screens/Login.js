@@ -1,138 +1,165 @@
-import { validatePathConfig } from '@react-navigation/native';
-import React, { useState, useContext } from 'react'
-import { View, Text, Image, StyleSheet, Pressable, TextInput } from 'react-native'
+import React, { useState, useContext, Fragment } from 'react'
+import { View, Text, Image, StyleSheet, ScrollView } from 'react-native'
 import { AuthContext } from '../Navigation/AuthProvider';
-import PressableButton from '../components/PressableButton';
+import { FormBuilder } from 'react-native-paper-form-builder';
+import { Controller, useForm } from 'react-hook-form';
+import { Button, TextInput } from 'react-native-paper';
+import { LogicProps } from 'react-native-paper-form-builder/dist/Types/Types';
 
 export default function Login({ navigation }) {
 
-    const { login } = useContext(AuthContext);
-    const [data, setData] = useState({
-        userName: '',
-        password: '',
-        isValidUser: false,
-        isValidPassword: false,
-    })
+    const { signIn } = useContext(AuthContext);
+
+    const [error, setError] = useState()
+    const { control, setFocus, handleSubmit } = useForm({
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+        mode: 'onChange',
+    });
+
 
     function navigateTo(screen) {
         navigation.navigate(screen)
     }
 
-    function emailChange(val) {
-        if (val.length != 0) {
-            setData({
-                ...data, userName: val, isValidUser: true
-            })
-        } else if (val.length == 0) {
-            setData({ ...data, isValidUser: false })
-        }
-    }
-
-    function passwordChange(val) {
-        if (val.length != 0) {
-            setData({
-                ...data, password: val, isValidPassword: true
-            })
-        } else if (val.length == 0) {
-            setData({ ...data, isValidPassword: false })
-        }
-    }
-
-    function loginHandle(userName, password) {
-        //TODO:need or operator here to include or password length = 0. cant find shortcut key to get the OR
-        if (!userName.length == 0) {
-            login(userName, password)
+    async function loginHandle(userName, password) {
+        setError('')
+        if (userName.length != 0 && password.length != 0) {
+            await signIn(userName, password)
+                .then(() => {
+                    console.log("User sign in successful")
+                })
+                .catch((e) => {
+                    setError(e.message)
+                })
         } else {
-            alert("Please enter a valid email address")
+            setError("Please enter a valid email address and password")
         }
     }
 
     return (
         <View style={LoginStyles.body}>
-            {/* <View style={LoginStyles.logo}>
-                <Image     
+            <ScrollView contentContainerStyle={LoginStyles.scrollViewStyle}>
+                <View style={LoginStyles.logo}>
+                    <Image
+                        style={LoginStyles.tinyLogo}
                         source={require('../images/logo.png')}
                     />
-            </View> */}
-            <View style={LoginStyles.title}>
-                <Text style={LoginStyles.appTitle}>Rapid HIV & Syphillus Testing</Text>
-            </View>
-            <View style={LoginStyles.inputOptions}>
-                <Text style={LoginStyles.Message}></Text>
-                <TextInput
-                    style={LoginStyles.input}
-                    onChangeText={(val) => emailChange(val)}
-                    placeholder='Enter Email Address'
-                />
-                <TextInput
-                    style={LoginStyles.input}
-                    onChangeText={(val) => passwordChange(val)}
-                    placeholder='Enter Password'
-                    secureTextEntry={true}
-                />
-                <PressableButton title='Login' width='90%' pressed='#dddddd' unpressed='#79e75e' handlePress={() => { loginHandle(data.userName, data.password) }} />
-                <View style={LoginStyles.options}>
-                    <PressableButton title='Create Account' width='49%' pressed='#dddddd' unpressed='#FFC1BE' handlePress={() => navigateTo("Signup")} />
-                    <PressableButton title='Reset Password' width='49%' pressed='#dddddd' unpressed='#ffb269' handlePress={() => navigateTo("Reset")} />
+                    <Text style={LoginStyles.headingStyle}>The Rainbow Project Rapid HIV & Syphillis Testing</Text>
                 </View>
-            </View>
+                <Fragment>
+                    <Text style={LoginStyles.error}>{error}</Text>
+                    <FormBuilder
+                        control={control}
+                        setFocus={setFocus}
+                        formConfigArray={[
+                            {
+                                type: 'email',
+                                name: 'email',
+                                textInputProps: {
+                                    label: 'Email',
+                                    mode: 'outlined',
+                                    outlineColor: 'grey',
+                                    activeOutlineColor: '#F98AF9',
+                                    left: <TextInput.Icon name={'email'} />
+                                },
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'Email is required',
+                                    },
+                                },
+
+                            },
+                            {
+                                type: 'password',
+                                name: 'password',
+                                textInputProps: {
+                                    label: 'Password',
+                                    mode: 'outlined',
+                                    secureTextEntry:true,
+                                    outlineColor: 'grey',
+                                    activeOutlineColor: '#F98AF9',
+                                    left: <TextInput.Icon name={'lock'} 
+                                    />
+                                },
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'Password is required',
+                                    },
+                                },
+                            },
+                        ]}
+                    />
+                    <Button
+                        style={{ width: '100%' }}
+                        labelStyle={{ fontSize: 15 }}
+                        color='lightgreen'
+                        mode={'contained'}
+                        onPress={handleSubmit((data) => {
+                            loginHandle(data.email, data.password)
+                        })}>
+                        Login
+                    </Button>
+                    <View style={LoginStyles.options}>
+                        <Button
+                            style={{ width: '49%' }}
+                            labelStyle={{ fontSize: 12 }}
+                            color='pink'
+                            mode={'contained'}
+                            onPress={() => navigateTo("Signup")}>
+                            New Account
+                        </Button>
+                        <Button
+                            style={{ width: '50%' }}
+                            labelStyle={{ fontSize: 12 }}
+                            color='orange'
+                            mode={'contained'}
+                            onPress={() => navigateTo("Reset")}>
+                            Reset Password
+                        </Button>
+                    </View>
+                </Fragment>
+            </ScrollView>
         </View>
-    )
+    );
 }
 
 const LoginStyles = StyleSheet.create({
     body: {
         flex: 1,
-        // borderColor: '#000000',
         backgroundColor: '#ffffff',
-        // borderWidth: 2,
-        alignItems: 'center'
-    },
-    title: {
-        flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
-        borderwidth: 1,
-        borderStyle: 'solid',
     },
     logo: {
-        flex: 0.5,
-        width: '50%',
-        height: 10,
-        resizeMode: 'contain',
-        margin: 20,
-    },
-    inputOptions: {
-        backgroundColor: '#ffffff',
         width: '100%',
-        flex: 1,
-        flexDirection: 'column',
-        // borderColor: '#000000',
-        // borderWidth: 5,
         alignItems: 'center',
-        justifyContent: 'center',
     },
-    appTitle: {
-        margin: 20,
-        fontSize: 25,
-        textAlign: 'center',
-        color:'#e7665e'
-    },
-    input: {
-        width: '90%',
-        borderWidth: 1,
-        backgroundColor: '#ffffff',
-        marginTop: 2,
-        marginBottom: 5,
-        borderRadius: 10,
-        paddingLeft:10,
+    error: {
+        color: 'red',
+        textAlign:'justify'
     },
     options: {
-        width: '90%',
-        marginTop:6,
+        width: '100%',
+        marginTop: 6,
         flexDirection: 'row',
         justifyContent: 'space-between'
-    }
-
+    },
+    scrollViewStyle: {
+        padding:20,
+    },
+    headingStyle: {
+        fontSize: 20,
+        textAlign: 'center',
+        marginTop: 20,
+        marginBottom: 20,
+    },
+    tinyLogo: {
+        width: 150,
+        height: 150,
+    },
 
 })

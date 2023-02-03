@@ -10,10 +10,15 @@ const BookStack = createStackNavigator();
 export default function BookStackScreen() {
   return (
     <BookStack.Navigator>
+      <BookStack.Screen name="Lets get started..." component={QuestionsScreen} />
       <BookStack.Screen name="Search for a Clinic" component={Book} />
-      <BookStack.Screen name="Questions" component={QuestionsScreen} />
       <BookStack.Screen name="Clinic Information" component={ClinicDetailsScreen} />
-      <BookStack.Screen name="Appointment Confirmation" component={AppointmentConfirmation}/>
+      <BookStack.Screen name="Appointment Confirmation" component={AppointmentConfirmation}
+        options={
+          {
+            headerLeft: () => null,
+          }}
+      />
     </BookStack.Navigator>
   );
 }

@@ -1,12 +1,17 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, Pressable, Alert } from 'react-native'
 import { AuthContext } from '../Navigation/AuthProvider';
-import CountDown from 'react-native-countdown-component';
 import { timeLimit } from '../constants/Constants';
 import firestore from '@react-native-firebase/firestore';
 import { StackActions } from '@react-navigation/native';
+import { Button } from 'react-native-paper';
+import { addSlotToMap } from '../FirestoreFunctions/CommonFirestoreFunctions';
+import { handleAlertInformation } from '../commonFunctions/Alerts';
+import { BgTimer } from '../components/BgTimer';
 
 export default function AppointmentConfirmation({ route, navigation }) {
+
+
     const [loading, setLoading] = useState(false)
 
     const { user } = useContext(AuthContext);
@@ -20,6 +25,31 @@ export default function AppointmentConfirmation({ route, navigation }) {
         startTime,
         selectedSlot,
         selectedTime } = route.params;
+
+    function handleAlertDecision() {
+        Alert.alert(
+            'Cancel Request',
+            'Are you sure you wish to cancel this request. You will lose your selected booking slot?',
+            [
+                {
+                    text: 'Yes',
+                    onPress: () => {
+                        cancelBookingRequest()
+                    },
+                    style: 'cancel',
+                },
+                {
+                    text: 'No',
+                    onPress: () => console.log("Appointment not cancelled"),
+                    style: 'cancel',
+                },
+            ],
+            {
+                cancelable: true,
+                onDismiss: () => console.log("Alert cancelled by pressing outside box"),
+            },
+        );
+    }
 
     function createNewAppointment() {
         //this function must add a new appointment to the clinics subcollection and the users subcollection
@@ -57,13 +87,12 @@ export default function AppointmentConfirmation({ route, navigation }) {
             })
             .then(() => {
                 console.log('Appointment added to user appointment history!');
-                Alert.alert("Your booking has been confirmed")
-                StackActions.popToTop();
             });
     }
 
-    function showAppointments(){
-        navigation.navigate("Appointments")
+    function cancelBookingRequest() {
+        addSlotToMap(selectedSlot, selectedTime, clinicId)
+        navigation.dispatch(StackActions.popToTop())
     }
 
     return (
@@ -88,7 +117,6 @@ export default function AppointmentConfirmation({ route, navigation }) {
                                     <Text>Location: </Text>
                                     <Text>Test Center: </Text>
                                     <Text>Date: </Text>
-                                    <Text>Start Time: </Text>
                                     <Text>Appointment Time: </Text>
                                 </View>
                                 <View style={AppointConfirmStyles.col1}>
@@ -96,7 +124,6 @@ export default function AppointmentConfirmation({ route, navigation }) {
                                     <Text>{location}</Text>
                                     <Text>{center}</Text>
                                     <Text>{date}</Text>
-                                    <Text>{startTime}</Text>
                                     <Text>{selectedTime}</Text>
                                 </View>
                             </View>
@@ -105,38 +132,40 @@ export default function AppointmentConfirmation({ route, navigation }) {
                     </SafeAreaView>}
             </View>
             <View style={AppointConfirmStyles.message}>
-                <Text>Please check the details above and confirm your appointment within the time specified. If you do not confirm the appointment your slot will be released for other bookings</Text>
+                <Text style={AppointConfirmStyles.messageText}>Please check the details above and confirm your appointment within the time specified. If you do not confirm the appointment your slot will be released for other bookings</Text>
             </View>
-            <View>
-                {/* Error here when moving back through the stack, caused by CountDown component*/}
-                {/* <CountDown
-                    until={timeLimit}
-                    size={30}
-                    onFinish={() => alert('Your time has lapsed the appointment slot has been made available for other bookings')}
-                    digitStyle={{ backgroundColor: '#FFF' }}
-                    digitTxtStyle={{ color: '#1CC625' }}
-                    timeToShow={['M', 'S']}
-                    timeLabels={{ m: 'MM', s: 'SS' }}
-                /> */}
+            <View style={AppointConfirmStyles.timer}>
+                <BgTimer timeLimit={10} callBack={cancelBookingRequest}/>
             </View>
-            <Pressable
-                style={({ pressed }) => [
-                    { backgroundColor: pressed ? '#dddddd' : '#F9A8E7', borderBottomRightRadius: 10 },
-                    AppointConfirmStyles.button
-                ]}
-                onPress={() => {
-                    createNewAppointment()
-                    //resets the clinic booking process after creating the appointment
-                    navigation.dispatch(StackActions.popToTop())
-                    showAppointments()
-                }}
-            >
-                <Text>
-                    Make Booking
-                </Text>
-            </Pressable>
-
-        </View>
+            <View style={AppointConfirmStyles.options}>
+                <Button
+                    style={{ width: '49%' }}
+                    labelStyle={{ fontSize: 12 }}
+                    color='green'
+                    mode={'contained'}
+                    onPress={() => {
+                        createNewAppointment()
+                        //reset booking stack prior to leaving
+                        navigation.dispatch(StackActions.popToTop())
+                        //show newly created appointment
+                        navigation.navigate("Appointments")
+                        //inform user that appointment has been confirmed and policy with regard to cancellation
+                        handleAlertInformation("Booking successful", "If you no longer require your appointment please cancel at least 24 hrs before the clinic")
+                    }}>
+                    Submit Request
+                </Button>
+                <Button
+                    style={{ width: '49%' }}
+                    labelStyle={{ fontSize: 12 }}
+                    color='red'
+                    mode={'contained'}
+                    onPress={() => {
+                        handleAlertDecision()
+                    }}>
+                    Cancel request
+                </Button>
+            </View>
+        </View >
     )
 }
 
@@ -148,7 +177,6 @@ const AppointConfirmStyles = StyleSheet.create({
         padding: 10,
     },
     clinicInformation: {
-        flex: 1,
         width: '90%',
         margin: 15,
     },
@@ -175,9 +203,21 @@ const AppointConfirmStyles = StyleSheet.create({
         color: 'red',
     },
     message: {
-        flex: 1,
         width: '90%',
+        justifyContent: 'center',
+    },
+    messageText: {
+        textAlign: 'justify'
+    },
+    timer: {
+        flex: 1,
         justifyContent: 'center'
-    }
+    },
+    options: {
+        width: '100%',
+        marginTop: 6,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
 });
 

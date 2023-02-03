@@ -8,94 +8,67 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
 
+    async function signIn(email, password) {
+        console.log("signIn function running")
+        return auth().signInWithEmailAndPassword(email, password)
+    }
+
+    async function createUser(data) {
+        console.log("creating a new user with input details")
+        await auth().createUserWithEmailAndPassword(data.email, data.password)
+            .then(() => {
+                console.log("Adding firestore instance of user details")
+                firestore().collection('Users').doc(auth().currentUser.uid)
+                    .set({
+                        ProNouns: data.pronouns,
+                        FirstName: data.firstname,
+                        MiddleName: data.middlename,
+                        LastName: data.lastname,
+                        PhoneNumber: data.phonenumber,
+                        dob: data.dob,
+                        Role: data.role,
+                        Email: data.email,
+                        isAgreedTC: data.isAgreedTC,
+                        status: data.status,
+                        createdAt: firestore.Timestamp.fromDate(new Date()),
+                    })
+            })
+            .then(async () => {
+                console.log("Updating user auth profile with display name")
+                await auth().currentUser.updateProfile({
+                    displayName: 'Gavin',
+                })
+            })
+            .then(async () => {
+                //verification email sent following account signup, this will be available in the metadata
+                console.log("Sending verification email to users account")
+                verificationEmail()
+            })
+            .catch((e) => {
+                return Promise.reject(e)
+            })
+    }
+    async function verificationEmail(){
+        return auth().currentUser.sendEmailVerification();
+    }
+
+    async function logOut() {
+        console.log("logout function running")
+        return auth().signOut();
+    }
+
+    async function deleteUserAuth(){
+        console.log("logout function running")
+        return auth().currentUser.delete();
+    }
+
+    function reset(email) {
+        console.log("Password reset method running")
+        return auth().sendPasswordResetEmail(email)
+    }
+
     return (
-        <AuthContext.Provider
-            value={{
-                user,
-                setUser,
-                login: async (email, password) => {
-                    console.log("Running login function")
-                    try {
-                        await auth().signInWithEmailAndPassword(email, password);
-                    } catch (e) {
-                        console.log(e);
-                        // if (e.code === 'auth/user-not-found') {
-                        //     console.log('That email is not recognised');
-                        // }
-                    }
-                },
-                register: async (data) => {
-                    console.log("calling register function")
-                    console.log(data)
-                    try {
-                        await auth().createUserWithEmailAndPassword(data.email, data.password)
-                            .then(() => {
-                                //Once the user creation has happened successfully, we can add the currentUser into firestore
-                                //with the appropriate details.
-                                firestore().collection('Users').doc(auth().currentUser.uid)
-                                    .set({
-                                        ProNouns: data.pronouns,
-                                        FirstName: data.firstName,
-                                        MiddleName: data.middleName,
-                                        LastName: data.lastName,
-                                        PhoneNumber: data.phoneNumber,
-                                        dob: data.dob,
-                                        Role: "Service-User",
-                                        Email: data.email,
-                                        isAgreedTC: data.isAgreedTC,
-                                        status:"Active",
-                                        createdAt: firestore.Timestamp.fromDate(new Date()),
-                                    })
-                                    .then(() => {
-                                        console.log('User added!');
-                                    });
-                            })
-                            // //we need to catch the whole sign up process if it fails too.
-                    } catch (e) {
-                        console.log(e);
-                    }
-
-                    //verification email sent following account signup, this will be available in the metadata
-                    //could use the metadata to ensure the email address is verified before an appointment can be booked
-                    try {
-                        await auth().currentUser.sendEmailVerification();
-                        alert("Please check your email and click on the link to verify your account")
-                    } catch (e) {
-                        console.log(e)
-                    }
-
-                    try {
-                        //TODO: debug issue with updating profile information, https://stackoverflow.com/questions/53238244/how-to-update-profile-displayname-firebase-in-react-native
-                        await auth().currentUser.updateProfile({
-                            displayName: 'Gavin',
-                            photoURL: 'https://my-cdn.com/assets/user/123.png',
-                        })
-                    } catch (e) {
-                        console.log(e)
-                    }
-
-                },
-                logout: async () => {
-                    try {
-                        await auth().signOut();
-                    } catch (e) {
-                        return e.code
-                    }
-                },
-                reset: async (email) => {
-                    console.log("Password reset method running")
-                    let message = `Reset email sent to ${email}`
-                    try {
-                        await auth().sendPasswordResetEmail(email)
-                            .then(() => message)
-                        // return `Reset email sent to ${email}`
-                    } catch (e) {
-                        return e.code
-                        //rather than running alerts on the screen here I can return the error code to display it on page
-
-                    }
-                }
-            }}>
+        <AuthContext.Provider value={{ user, setUser, signIn, createUser, logOut, reset, deleteUserAuth, verificationEmail }}>
             {children}
         </AuthContext.Provider>
     );

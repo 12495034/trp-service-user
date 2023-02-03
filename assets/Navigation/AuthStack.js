@@ -58,7 +58,6 @@ const AuthStack = () => {
       <Stack.Screen
         name="Reset"
         component={ResetPassword}
-        // options={{header: () => null}}
       />
     </Stack.Navigator>
   );

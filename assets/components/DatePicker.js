@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from "react";
-import { View, Text, StyleSheet, TextInput, Button, Pressable } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet} from "react-native";
+import { Text } from "react-native-paper";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function DatePicker(props) {
@@ -27,7 +28,7 @@ export default function DatePicker(props) {
     return (
         <View>
             <View style={styles.dropdown}>
-                <Text style={styles.text} onPress={() => showMode('date')}>{props.text ? props.text : "Choose a Date (optional)"}</Text>
+                <Text style={styles.text} onPress={() => showMode('date')}>{props.text ? props.text : "Choose a Date"}</Text>
             </View>
             {show && <DateTimePicker
                 testId='dateTimePicker'
@@ -42,22 +43,14 @@ export default function DatePicker(props) {
 }
 
 const styles = StyleSheet.create({
-    button: {
-        height: 50,
-        width: '100%',
-        marginTop: 5,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
     dropdown: {
         justifyContent: 'center',
         paddingHorizontal: 17,
         paddingVertical: 10,
         borderWidth: 0.5,
-        borderColor: 'black'
+        borderColor: 'black',
     },
     text: {
-        color: 'grey',
+        color: 'black',
     }
 })

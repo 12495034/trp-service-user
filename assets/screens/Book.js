@@ -20,20 +20,17 @@ export default function Book({ navigation }) {
     const [clinicList, setClinicList] = useState([])
     const [searchMessage, setSearchMessage] = useState("")
 
-    console.log("chosenLocation:", chosenLocation)
-    // console.log(chosenCenter)
-    // console.log(text)
-    console.log(loading)
-
     useEffect(() => {
         fetchClinicLocationData()
+        fetchCenterData()
     }, [chosenLocation])
 
     //function to get a list of locations 
     function fetchClinicLocationData() {
         firestore()
             .collection('Location')
-            .onSnapshot(querySnapshot => {
+            .get()
+            .then(querySnapshot => {
                 let clinicLocations = []
                 querySnapshot.forEach((doc) => {
                     const location = { location: doc.id }
@@ -41,14 +38,11 @@ export default function Book({ navigation }) {
                 })
                 setLocationData(clinicLocations)
             });
-        fetchCenterData()
     }
 
-    //re-write this function is react native firebase syntax
     //function get list of centers for the selected city location
     function fetchCenterData() {
         setChosenCenter("")
-        //setText("")
         firestore().collection('Location')
             .doc(`${chosenLocation}`)
             .get()
@@ -61,8 +55,7 @@ export default function Book({ navigation }) {
                     });
                     setCenterData(centerArray)
                 } else {
-                    // doc.data() will be undefined in this case
-                    //console.log("No such document!");
+                    console.log("No such document!");
                 }
             })
     }

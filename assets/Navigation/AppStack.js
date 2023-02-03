@@ -10,20 +10,13 @@ import Book from '../screens/Book';
 import Home from '../screens/Home';
 import Appointments from '../screens/Appointments';
 import BookStackScreen from './BookStack';
+import ProfileStackScreen from './ProfileStack';
 
 const Tab = createBottomTabNavigator();
 
-const AppStack = () => {
-  const getTabBarVisibility = (route) => {
-    //TODO: need to work out what this code is actually used for, can it be removed
-    const routeName = route.state? route.state.routes[route.state.index].name: '';
-    if (routeName === 'chat') {
-      return false;
-    }
-    return true;
-  };
-  
-
+const AppStack = (props) => {
+  const hide = props.routeName == "Appointment Confirmation"
+  console.log(hide)
   return (
     <Tab.Navigator
       screenOptions={{
@@ -34,6 +27,7 @@ const AppStack = () => {
           height: 60,
           paddingTop: 0,
           paddingBottom: 5,
+          display: hide? 'none':'flex'
         }
       }}>
       <Tab.Screen
@@ -41,7 +35,6 @@ const AppStack = () => {
         component={Home}
         options={({ route }) => ({
           tabBarLabel: 'Home',
-          // tabBarVisible: route.state && route.state.index === 0,
           tabBarIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
               name={focused ? "home" : "home-outline"}
@@ -55,11 +48,6 @@ const AppStack = () => {
         name="New Booking"
         component={BookStackScreen}
         options={({ route }) => ({
-          tabBarVisible: getTabBarVisibility(route),
-          // Or Hide tabbar when push!
-          // https://github.com/react-navigation/react-navigation/issues/7677
-          // tabBarVisible: route.state && route.state.index === 0,
-          // tabBarLabel: 'Home',
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? "add-circle" : "add-circle-outline"}
@@ -74,7 +62,6 @@ const AppStack = () => {
         component={Appointments}
         options={({ route }) => ({
           tabBarLabel: 'Appointments',
-          // tabBarVisible: route.state && route.state.index === 0,
           tabBarIcon: ({ focused, color, size }) => (
             <MaterialCommunityIcons
               name={focused ? "calendar-account" : "calendar-blank"}
@@ -86,16 +73,15 @@ const AppStack = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={Profile}
-        options={{
-          // tabBarLabel: 'Home',
+        component={ProfileStackScreen}
+        options={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons name={focused ? "person" : "person-outline"} color={color} size={size} />
           ),
-        }}
+        })}
       />
 
-    </Tab.Navigator>
+    </Tab.Navigator >
   );
 };
 

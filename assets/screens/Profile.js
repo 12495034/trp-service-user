@@ -1,33 +1,80 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Button, Pressable } from 'react-native'
+import { View, Text, StyleSheet, Pressable, Alert } from 'react-native'
+import { Button } from 'react-native-paper';
 import { AuthContext } from '../Navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import UserCard from '../components/UserCard';
+import { deleteUserSubcollection, deleteUserDocument } from '../FirestoreFunctions/CommonFirestoreFunctions';
 
-export default function Profile(props) {
+export default function Profile({ navigation }) {
 
-    const { logout, user } = useContext(AuthContext);
+    const { logOut, user, deleteUserAuth } = useContext(AuthContext);
     const [userDetails, setUserDetails] = useState({});
 
-    console.log(userDetails)
-
     useEffect(() => {
-        fetchUserData()
-    }, [user])
-
-    function fetchUserData() {
-        firestore().collection('Users')
+        const subscriber = firestore()
+            .collection('Users')
             .doc(`${user.uid}`)
-            .get()
-            .then(documentSnapshot => {
+            .onSnapshot(documentSnapshot => {
                 if (documentSnapshot.exists) {
                     setUserDetails(documentSnapshot.data())
                 } else {
                     console.log("No such document!");
                 }
+            });
+        // Stop listening for updates when no longer required
+        return () => subscriber();
+    }, [])
+
+    function navigateTo(screen) {
+        navigation.navigate(screen)
+    }
+
+    async function handleDeleteUser() {
+        console.log("Running handleDeleteUser function")
+        //delete firestore subcollections and user documents
+        //firestore security rules allow only users with an id matching the document to perform CRUD operations
+        //delete user authorisation
+        await deleteUserSubcollection(user.uid)
+        await deleteUserDocument(user.uid)
+        await deleteUserAuth()
+        console.log("All user delete operations complete")
+    }
+
+    async function handleLogOut() {
+        await logOut()
+            .then(() => {
+                console.log("Log out successful")
+            })
+            .catch((e) => {
+                //catch errors here
             })
     }
 
+    function handleAlert() {
+        Alert.alert(
+            'Delete Account',
+            'You will lose access the app and all stored information will be deleted. This operation cannot be un-done. Do you wish to continue ?',
+            [
+                {
+                    text: 'Yes',
+                    onPress: () => {
+                        handleDeleteUser()
+                    },
+                    style: 'cancel',
+                },
+                {
+                    text: 'No',
+                    onPress: () => console.log("User account not deleted"),
+                    style: 'cancel',
+                },
+            ],
+            {
+                cancelable: true,
+                onDismiss: () => console.log("Alert cancelled by pressing outside box"),
+            },
+        );
+    }
 
     return (
         <View style={ProfileStyles.body}>
@@ -36,13 +83,13 @@ export default function Profile(props) {
                 <UserCard
                     proNouns={userDetails.ProNouns}
                     firstName={userDetails.FirstName}
+                    middleName={userDetails.MiddleName}
                     lastName={userDetails.LastName}
                     dob={userDetails.dob}
                     email={userDetails.Email}
+                    emailVerified={user.emailVerified ? "Yes" : "No"}
                     phoneNumber={userDetails.PhoneNumber}
                     isAgreedTC={userDetails.isAgreedTC}
-                    role={userDetails.Role}
-                    status={userDetails.status}
                 />
                 :
                 <View>
@@ -51,39 +98,32 @@ export default function Profile(props) {
                     </Text>
                 </View>
             }
-            <Pressable
-                style={({ pressed }) => [
-                    { backgroundColor: pressed ? '#dddddd' : '#ffb269'},
-                    ProfileStyles.button
-                ]}
-                onPress={() => console.log("Editing user details...")}
-            >
-                <Text>
-                    Edit Details
-                </Text>
-            </Pressable>
-            <Pressable
-                style={({ pressed }) => [
-                    { backgroundColor: pressed ? '#dddddd' : '#F37973'},
-                    ProfileStyles.button
-                ]}
-                onPress={() => console.log("Deleting user account....")}
-            >
-                <Text>
+            <Button
+                style={{ width: '100%' }}
+                labelStyle={{ fontSize: 12 }}
+                color='green'
+                mode={'contained'}
+                onPress={handleLogOut}>
+                Sign Out
+            </Button>
+            <View style={ProfileStyles.options}>
+                <Button
+                    style={{ width: '49%' }}
+                    labelStyle={{ fontSize: 12 }}
+                    color='orange'
+                    mode={'contained'}
+                    onPress={() => navigateTo("Edit User Details")}>
+                    Edit details
+                </Button>
+                <Button
+                    style={{ width: '49%', marginTop: 0 }}
+                    labelStyle={{ fontSize: 12 }}
+                    color='red'
+                    mode={'contained'}
+                    onPress={handleAlert}>
                     Delete Account
-                </Text>
-            </Pressable>
-            <Pressable
-                style={({ pressed }) => [
-                    { backgroundColor: pressed ? '#dddddd' : '#79e75e'},
-                    ProfileStyles.button
-                ]}
-                onPress={() => logout()}
-            >
-                <Text>
-                    Sign Out
-                </Text>
-            </Pressable>
+                </Button>
+            </View>
 
         </View>
     )
@@ -99,11 +139,17 @@ const ProfileStyles = StyleSheet.create({
         padding: 20,
     },
     button: {
-        marginTop:1,
+        marginTop: 1,
         width: '100%',
         padding: 10,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius:5,
+        borderRadius: 5,
+    },
+    options: {
+        width: '100%',
+        marginTop: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
 })

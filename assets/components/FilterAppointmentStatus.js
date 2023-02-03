@@ -5,13 +5,13 @@ import { Picker } from '@react-native-picker/picker'
 import ModalSelector from 'react-native-modal-selector'
 import { Modal } from 'react-native-paper'
 
-export default function Filter(props) {
+export default function FilterAppointmentStatus(props) {
 
     const data = [
         //this data should be compiled from the firestore database
-        { key: 1, label: "Show All" },
-        { key: 2, label: "Active" },
-        { key: 3, label: "Complete" },
+        { key: 1, label: "Active" },
+        { key: 2, label: "Attended" },
+        { key: 3, label: "Un-Attended" },
         { key: 4, label: "Clinic Cancelled" },
     ]
     return (
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: 'purple',
         borderRadius: 8,
-        width:'90%',
+        width:'100%',
         marginBottom:10,
     }
 })
