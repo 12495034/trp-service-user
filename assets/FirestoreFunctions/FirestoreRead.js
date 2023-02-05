@@ -8,6 +8,7 @@ export function fetchCollectionDocuments(collection) {
 
 //fetch all documents in a collection based on , returns a promise
 export function fetchFilteredCollection(collection,searchField,operator,searchValue) {
+    console.log(collection)
     return firestore().collection(`${collection}`).where(`${searchField}`, `${operator}`, searchValue).get()
 }
       

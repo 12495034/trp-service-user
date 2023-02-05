@@ -25,7 +25,10 @@ export default function AppointmentConfirmation({ route, navigation }) {
         center,
         startTime,
         selectedSlot,
-        selectedTime } = route.params;
+        selectedTime, 
+        clinicAddress,
+        clinicPostcode,
+    } = route.params;
 
     useEffect(() => {
         const backAction = () => {
@@ -112,21 +115,24 @@ export default function AppointmentConfirmation({ route, navigation }) {
                         <View style={AppointConfirmStyles.main}>
                             <View style={AppointConfirmStyles.content}>
                                 <View style={AppointConfirmStyles.col1}>
-                                    <Text>Status: </Text>
-                                    <Text>Location: </Text>
                                     <Text>Test Center: </Text>
+                                    <Text>Address: </Text>
+                                    <Text>Location: </Text>
+                                    <Text>Postcode: </Text>
                                     <Text>Date: </Text>
                                     <Text>Appointment Time: </Text>
+                                    <Text>Slot Number: </Text>
                                 </View>
                                 <View style={AppointConfirmStyles.col1}>
-                                    <Text>{status}</Text>
-                                    <Text>{location}</Text>
                                     <Text>{center}</Text>
+                                    <Text>{clinicAddress}</Text>
+                                    <Text>{location}</Text>
+                                    <Text>{clinicPostcode}</Text>
                                     <Text>{date}</Text>
                                     <Text>{selectedTime}</Text>
+                                    <Text>{selectedSlot}</Text>
                                 </View>
                             </View>
-
                         </View>
                     </SafeAreaView>}
             </View>
@@ -135,7 +141,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
             </View>
             <View style={AppointConfirmStyles.timer}>
                 {/* //count down timer component can be commented in or out to turn this functionality on and off */}
-                {/* <BgTimer timeLimit={timeLimit} callBack={cancelBookingRequest}/> */}
+                <BgTimer timeLimit={timeLimit} callBack={cancelBookingRequest}/>
             </View>
             <View style={AppointConfirmStyles.options}>
                 <Button

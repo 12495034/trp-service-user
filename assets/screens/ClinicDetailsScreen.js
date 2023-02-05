@@ -6,7 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 
 import { AuthContext } from '../Navigation/AuthProvider';
 import { removeSlotFromMap } from '../FirestoreFunctions/FirestoreDelete';
-import { fetchCollectionDocuments } from '../FirestoreFunctions/FirestoreRead';
+import { fetchCollectionDocuments, fetchDocumentData, fetchFilteredCollection } from '../FirestoreFunctions/FirestoreRead';
 
 import AvailableSlotCard from '../components/AvailableSlotCard';
 
@@ -16,6 +16,8 @@ export default function ClinicDetailsScreen({ route, navigation }) {
     const { clinicId } = route.params;
 
     const [clinicInfo, setClinicInfo] = useState({})
+    const [clinicAddress, setClinicAddress] = useState("")
+    const [clinicPostcode, setClinicPostcode] = useState("")
     const [loading, setLoading] = useState(false)
     const [slots, setSlots] = useState({})
     const [selectedSlot, setSelectedSlot] = useState(undefined)
@@ -27,23 +29,33 @@ export default function ClinicDetailsScreen({ route, navigation }) {
     //important here to get real time updates as people will be booking slots. Therefore up to date available slots
     //is essential
     useEffect(() => {
-        const subscriber = firestore()
-            .collection('Clinics')
-            .doc(clinicId)
-            .onSnapshot(documentSnapshot => {
+        fetchClinicInfo()
+    }, [])
+
+    useEffect(() => {
+        checkForDuplicate()
+    }, [])
+
+    function fetchClinicInfo() {
+        fetchDocumentData("Clinics", clinicId)
+            .then(documentSnapshot => {
                 setClinicInfo(documentSnapshot.data())
                 setSlots(documentSnapshot.data().slots)
                 if (!Object.hasOwnProperty(selectedSlot)) {
                     setSelectedSlot(undefined)
                     setSelectedTime(undefined)
                 }
-            });
-        return () => subscriber();
-    }, [])
+                fetchFilteredCollection(`Location/${documentSnapshot.data().location}/Centers`, "name", "==", documentSnapshot.data().center)
+                    .then(querySnapshot => {
+                        console.log(querySnapshot.size)
+                        querySnapshot.forEach(documentSnapshot => {
+                            setClinicAddress(`${documentSnapshot.data().line1}`)
+                            setClinicPostcode(`${documentSnapshot.data().postcode}`)
+                        });
+                    });
+            })
 
-    useEffect(() => {
-        checkForDuplicate()
-    }, [])
+    }
 
     async function handleVerification(email) {
         console.log("Running email verification function")
@@ -70,6 +82,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
             });
     }
 
+
     function formatSlotsList() {
         //need to clear selected slot on every render so that its not possible to select a slot that has been booked
         const appointmentList = [];
@@ -88,6 +101,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
         }
     }
 
+    //parameters passed to appointment confirmation screen 
     function confirmAppointment() {
         if (selectedSlot) {
             navigation.navigate('Appointment Confirmation', {
@@ -99,7 +113,9 @@ export default function ClinicDetailsScreen({ route, navigation }) {
                 center: clinicInfo.center,
                 startTime: clinicInfo.startTime,
                 selectedSlot: selectedSlot,
-                selectedTime: selectedTime
+                selectedTime: selectedTime,
+                clinicAddress: clinicAddress,
+                clinicPostcode: clinicPostcode
             })
         } else {
             setError("You must select an appointment slot!")
@@ -134,14 +150,17 @@ export default function ClinicDetailsScreen({ route, navigation }) {
                         <SafeAreaView>
                             <View style={ClinicDetailStyles.content}>
                                 <View style={ClinicDetailStyles.col1}>
-                                    {/* <Text>Status: </Text> */}
-                                    <Text>Location: </Text>
                                     <Text>Test Center: </Text>
+                                    <Text>Address: </Text>
+                                    <Text>Location: </Text>
+                                    <Text>Postcode: </Text>
                                     <Text>Date: </Text>
                                 </View>
                                 <View style={ClinicDetailStyles.col2}>
-                                    <Text>{clinicInfo.location}</Text>
                                     <Text>{clinicInfo.center}</Text>
+                                    <Text>{clinicAddress}</Text>
+                                    <Text>{clinicInfo.location}</Text>
+                                    <Text>{clinicPostcode}</Text>
                                     <Text>{clinicInfo.date}</Text>
                                 </View>
                             </View>

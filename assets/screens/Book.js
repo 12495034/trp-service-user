@@ -14,7 +14,7 @@ export default function Book({ navigation }) {
     const [locationData, setLocationData] = useState([])
     const [centerData, setCenterData] = useState([])
     const [chosenLocation, setChosenLocation] = useState(undefined)
-    const [chosenCenter, setChosenCenter] = useState("")
+    const [chosenCenter, setChosenCenter] = useState(undefined)
     const [text, setText] = useState("")
     const [loading, setLoading] = useState(undefined)
     const [clinicList, setClinicList] = useState([])
@@ -26,6 +26,7 @@ export default function Book({ navigation }) {
         fetchCenterData()
     }, [chosenLocation])
 
+    console.log(clinicList)
 
     //populate city location options in dropdown
     function fetchClinicLocationData() {
@@ -45,26 +46,29 @@ export default function Book({ navigation }) {
 
     //populate centers list based on chosen location
     function fetchCenterData() {
-        fetchCollectionDocuments(`Location/${chosenLocation}/Centers`)
-            .then(querySnapshot => {
-                var clinicCenters = []
-                querySnapshot.forEach((doc) => {
-                    const center = {
-                        id: doc.id,
-                        name: doc.data().name
-                    }
-                    clinicCenters.push(center)
+        if (chosenLocation) {
+            fetchCollectionDocuments(`Location/${chosenLocation}/Centers`)
+                .then(querySnapshot => {
+                    var clinicCenters = []
+                    querySnapshot.forEach((doc) => {
+                        const center = {
+                            id: doc.id,
+                            name: doc.data().name
+                        }
+                        clinicCenters.push(center)
+                    })
+                    setCenterData(clinicCenters)
                 })
-                setCenterData(clinicCenters)
-            })
-            .catch((e) => {
-                console.log("promise rejection", e.message)
-            })
+                .catch((e) => {
+                    console.log("promise rejection", e.message)
+                })
+        }
     }
 
     //performs a query on the firestore database clinics collection
     //logic used to determine the appropriate search syntax
     function onSearch() {
+        console.log("Chosen location", chosenLocation)
         if (chosenLocation) {
             var filters = ""
             if (chosenCenter === "" && text != "") {
@@ -106,7 +110,6 @@ export default function Book({ navigation }) {
                     console.log(e.message)
                 })
             setLoading(false)
-            console.log(clinicList)
             setSearchMessage("")
         } else {
             setSearchMessage(<Text>Location must be selected as a minimum</Text>)
