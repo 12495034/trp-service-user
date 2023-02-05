@@ -4,7 +4,8 @@ import { Button } from 'react-native-paper';
 import { AuthContext } from '../Navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import UserCard from '../components/UserCard';
-import { deleteUserSubcollection, deleteUserDocument } from '../FirestoreFunctions/CommonFirestoreFunctions';
+import { deleteUserSubcollection, deleteUserDocument } from '../FirestoreFunctions/FirestoreDelete';
+
 
 export default function Profile({ navigation }) {
 

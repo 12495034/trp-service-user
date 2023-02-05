@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { StyleSheet, View, Pressable } from 'react-native'
 import { Text } from 'react-native-paper'
 
+//creates a pressable component for each bookable slot that can be selected by the user
 export default function AvailableSlotCard(props) {
     return (
         <Pressable
@@ -10,7 +11,6 @@ export default function AvailableSlotCard(props) {
                 appointmentCardStyles.button
             ]}
             onPress={() => {
-                //console.log(props.clinicId, props.slotId)
                 props.setSelectedSlot(props.slotId)
                 props.setSelectedTime(props.time)
             }}

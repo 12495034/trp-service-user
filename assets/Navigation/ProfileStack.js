@@ -9,11 +9,18 @@ import EditDetails from '../screens/EditDetails';
 
 const ProfileStack = createStackNavigator();
 
+//Profile stack when viewing information and editing profile details
 export default function ProfileStackScreen() {
   return (
     <ProfileStack.Navigator>
-      <ProfileStack.Screen name="User Details" component={Profile} />
-      <ProfileStack.Screen name="Edit User Details" component={EditDetails} />
+      <ProfileStack.Screen
+        name="User Details"
+        component={Profile}
+      />
+      <ProfileStack.Screen
+        name="Edit User Details"
+        component={EditDetails}
+      />
     </ProfileStack.Navigator>
   );
 }

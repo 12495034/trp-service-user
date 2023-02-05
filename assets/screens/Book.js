@@ -1,68 +1,69 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Pressable, ScrollView, SafeAreaView, FlatList } from 'react-native'
-import { Text } from 'react-native-paper'
+import { View, StyleSheet, Pressable, SafeAreaView, FlatList } from 'react-native'
+import { Text, Button } from 'react-native-paper'
 import CenterPicker from '../components/CenterPicker';
 import ClinicCard from '../components/ClinicCard';
 import DatePicker from '../components/DatePicker';
 import LocationPicker from '../components/LocationPicker';
 import * as Progress from 'react-native-progress';
 import firestore from '@react-native-firebase/firestore';
-
+import { fetchCollectionDocuments, fetchDocumentData } from '../FirestoreFunctions/FirestoreRead';
 
 export default function Book({ navigation }) {
 
     const [locationData, setLocationData] = useState([])
     const [centerData, setCenterData] = useState([])
-    const [chosenLocation, setChosenLocation] = useState("")
+    const [chosenLocation, setChosenLocation] = useState(undefined)
     const [chosenCenter, setChosenCenter] = useState("")
     const [text, setText] = useState("")
     const [loading, setLoading] = useState(undefined)
     const [clinicList, setClinicList] = useState([])
     const [searchMessage, setSearchMessage] = useState("")
 
+    //clinic location Data and center data fetched by use effect following page render
     useEffect(() => {
         fetchClinicLocationData()
         fetchCenterData()
     }, [chosenLocation])
 
-    //function to get a list of locations 
+
+    //populate city location options in dropdown
     function fetchClinicLocationData() {
-        firestore()
-            .collection('Location')
-            .get()
+        fetchCollectionDocuments("Location")
             .then(querySnapshot => {
-                let clinicLocations = []
+                var clinicLocations = []
                 querySnapshot.forEach((doc) => {
                     const location = { location: doc.id }
                     clinicLocations.push(location)
                 })
                 setLocationData(clinicLocations)
-            });
-    }
-
-    //function get list of centers for the selected city location
-    function fetchCenterData() {
-        setChosenCenter("")
-        firestore().collection('Location')
-            .doc(`${chosenLocation}`)
-            .get()
-            .then(documentSnapshot => {
-                if (documentSnapshot.exists) {
-                    var centerArray = []
-                    Object.keys(documentSnapshot.data()).forEach(function (key, index) {
-                        const centerList = { center: key }
-                        centerArray.push(centerList)
-                    });
-                    setCenterData(centerArray)
-                } else {
-                    console.log("No such document!");
-                }
+            })
+            .catch((e) => {
+                console.log("promise rejection", e.message)
             })
     }
 
-    //search is triggered specifically data is not loaded. Therefore this does not need to wrapped inside a useEffect hook
-    //as a snapshot listener is not used then the data does not update in real time
-    //TODO: try writing a cloud function that changes the 
+    //populate centers list based on chosen location
+    function fetchCenterData() {
+        fetchCollectionDocuments(`Location/${chosenLocation}/Centers`)
+            .then(querySnapshot => {
+                var clinicCenters = []
+                querySnapshot.forEach((doc) => {
+                    const center = {
+                        id: doc.id,
+                        name: doc.data().name
+                    }
+                    clinicCenters.push(center)
+                })
+                setCenterData(clinicCenters)
+            })
+            .catch((e) => {
+                console.log("promise rejection", e.message)
+            })
+    }
+
+    //performs a query on the firestore database clinics collection
+    //logic used to determine the appropriate search syntax
     function onSearch() {
         if (chosenLocation) {
             var filters = ""
@@ -86,13 +87,11 @@ export default function Book({ navigation }) {
 
             const clinicListArray = []
             setLoading(true)
-            //logic above determines the appropriate search syntax
             filters
                 .get()
                 .then(querySnapshot => {
-                    //console.log('Number of clinics: ', querySnapshot.size);
                     querySnapshot.forEach(documentSnapshot => {
-                        //console.log('clinic ID: ', documentSnapshot.id, documentSnapshot.data());
+                        //TODO:refactor this code when the firestore database structure is ammended
                         const combined = {}
                         const data = documentSnapshot.data()
                         const id = {
@@ -102,21 +101,26 @@ export default function Book({ navigation }) {
                         clinicListArray.push(combined)
                     });
                     setClinicList(clinicListArray)
-                });
+                })
+                .catch((e) => {
+                    console.log(e.message)
+                })
             setLoading(false)
+            console.log(clinicList)
             setSearchMessage("")
         } else {
             setSearchMessage(<Text>Location must be selected as a minimum</Text>)
         }
     }
 
+    //navigates to clinic detail screen, passing the choosen clinics id as a parameter
     function showClinicDetails(id) {
-        setClinicList({})
         navigation.navigate('Clinic Information', {
             clinicId: id,
         })
     }
 
+    //resets all state related to search fields
     function clearSearchFields() {
         setChosenLocation("")
         setChosenCenter("")
@@ -135,40 +139,32 @@ export default function Book({ navigation }) {
             )}
         />
 
-
-
     return (
         <View style={BookStyles.body}>
             <View style={BookStyles.inputOptions}>
                 <View style={BookStyles.fields}>
                     <LocationPicker locationData={locationData} chosenLocation={chosenLocation} setChosenLocation={setChosenLocation} />
-                    <CenterPicker centerData={centerData} chosenCenter={chosenCenter} setChosenCenter={setChosenCenter} />
+                    <CenterPicker chosenLocation={chosenLocation} centerData={centerData} chosenCenter={chosenCenter} setChosenCenter={setChosenCenter} />
                     <DatePicker text={text} setText={setText} />
-                </View>
-                <View style={BookStyles.searchButtons}>
-                    <Pressable
-                        style={({ pressed }) => [
-                            { backgroundColor: pressed ? '#dddddd' : '#FFB9B9', borderBottomLeftRadius: 10 },
-                            BookStyles.button
-                        ]}
-                        delayLongPress={5000}
-                        onPress={() => onSearch()}
-                    >
-                        <Text>
+
+                    <View style={BookStyles.searchButtons}>
+                        <Button
+                            style={{ width: '50%', borderBottomLeftRadius: 10, borderBottomRightRadius: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
+                            labelStyle={{ fontSize: 12 }}
+                            color='#FFB9B9'
+                            mode={'contained'}
+                            onPress={() => onSearch()}>
                             Search
-                        </Text>
-                    </Pressable>
-                    <Pressable
-                        style={({ pressed }) => [
-                            { backgroundColor: pressed ? '#dddddd' : '#F9A8E7', borderBottomRightRadius: 10 },
-                            BookStyles.button
-                        ]}
-                        onPress={() => clearSearchFields()}
-                    >
-                        <Text>
+                        </Button>
+                        <Button
+                            style={{ width: '50%', borderBottomLeftRadius: 0, borderBottomRightRadius: 10, borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
+                            labelStyle={{ fontSize: 12 }}
+                            color='#F9A8E7'
+                            mode={'contained'}
+                            onPress={() => clearSearchFields()}>
                             Reset
-                        </Text>
-                    </Pressable>
+                        </Button>
+                    </View>
                 </View>
             </View>
             <View style={BookStyles.results}>
@@ -203,7 +199,6 @@ const BookStyles = StyleSheet.create({
     },
     fields: {
         width: '90%',
-
     },
     inputOptions: {
         backgroundColor: '#ffffff',
@@ -219,6 +214,7 @@ const BookStyles = StyleSheet.create({
     },
     searchButtons: {
         flexDirection: 'row',
+        marginBottom: 10,
     },
     results: {
         flex: 1,

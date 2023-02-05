@@ -1,9 +1,10 @@
 import React, { useContext } from 'react'
-import { View, Text, StyleSheet, Button, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { List } from 'react-native-paper';
 import { AuthContext } from '../Navigation/AuthProvider';
-import { welcomeMessageHome } from '../images/content/Message';
-import InternetInfo from '../components/InternetInfo';
+
+import { welcomeMessageHome1, welcomeMessageHome2 } from '../content/Message';
+
 
 export default function Home() {
 
@@ -25,8 +26,8 @@ export default function Home() {
         <View style={HomeStyles.body}>
             <ScrollView>
                 <Text style={HomeStyles.title}>Welcome {user.displayName}</Text>
-                <Text style={HomeStyles.message}>{welcomeMessageHome}</Text>
-                <Text style={HomeStyles.message}>If you are unsure about how to book an appointment or what to do when you attend a test center. Please consult the step by step guides below</Text>
+                <Text style={HomeStyles.message}>{welcomeMessageHome1}</Text>
+                <Text style={HomeStyles.message}>{welcomeMessageHome2}</Text>
                 <List.Accordion
                     title="How to book an appointment"
                     expanded={expandedBooking}

@@ -1,11 +1,12 @@
 import React, { useContext } from 'react'
-import { View, StyleSheet, Pressable, Alert, Button } from 'react-native'
+import { View, StyleSheet, Pressable, Alert } from 'react-native'
 import CalledIcon from '../Icons/CalledIcon'
 import CheckInIcon from '../Icons/CheckInIcon'
 import TestCompleteIcon from '../Icons/TestCompleteIcon'
+
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../Navigation/AuthProvider';
-import { Modal, Text, Provider, Portal } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 
 export default function AppointmentCard(props) {
 

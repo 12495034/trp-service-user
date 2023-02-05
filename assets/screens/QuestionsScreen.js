@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { Text, RadioButton, Button } from 'react-native-paper'
-import firestore from '@react-native-firebase/firestore';
 import FilterQuestionRadio from '../components/FilterQuestionRadio';
-import { filterQuestionMessage1, filterQuestionMessage2, filterQuestionMessage3 } from '../images/content/Message';
-import { SafeAreaView } from 'react-native';
-import { ScrollView } from 'react-native';
+import { Message1Question, Message2Question, Message3Question } from '../content/Message';
+import { fetchFilteredCollection } from '../FirestoreFunctions/FirestoreRead';
 
-export default function QuestionsScreen({ route, navigation }) {
+export default function QuestionsScreen({ navigation }) {
 
   const [advice, setAdvice] = useState([])
   const [radioValue, setRadioValue] = useState(undefined);
@@ -26,10 +24,7 @@ export default function QuestionsScreen({ route, navigation }) {
   }, [radioValue])
 
   function fetchQuestionData() {
-    const subscriber = firestore()
-      .collection('Questions')
-      .where('priority', '==', filterValue)
-      .get()
+    fetchFilteredCollection("Questions", "priority", "==", filterValue)
       .then(querySnapshot => {
         let questionArray = []
         querySnapshot.forEach((doc) => {
@@ -72,23 +67,18 @@ export default function QuestionsScreen({ route, navigation }) {
         </>
       )}
     />
-  // if(user.emailVerified){
-
-  // }
 
   return (
     <View style={QuestionStyles.body}>
       <View style={QuestionStyles.content}>
-        <Text style={QuestionStyles.message}>{filterQuestionMessage1}</Text>
-        <Text style={QuestionStyles.message}>{filterQuestionMessage3}</Text>
+        <Text style={QuestionStyles.message}>{Message1Question}</Text>
+        <Text style={QuestionStyles.message}>{Message3Question}</Text>
         <FilterQuestionRadio radioValue={radioValue} setRadioValue={setRadioValue} />
       </View>
       <View style={QuestionStyles.advice}>
         {radioValue == undefined ? null : adviceMessage}
       </View>
     </View>
-
-
   )
 }
 

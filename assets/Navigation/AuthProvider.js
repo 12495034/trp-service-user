@@ -1,7 +1,6 @@
 import React, { createContext, useState } from 'react';
-import auth, { sendPasswordResetEmail, sendEmailVerification, updateProfile } from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import { firebaseErrors } from '../errors/firebase/FireaseErrors';
 
 export const AuthContext = createContext();
 

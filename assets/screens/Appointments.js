@@ -5,7 +5,7 @@ import AppointmentCard from '../components/AppointmentCard';
 import FilterAppointmentStatus from '../components/FilterAppointmentStatus';
 import { AuthContext } from '../Navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
-import { addSlotToMap } from '../FirestoreFunctions/CommonFirestoreFunctions';
+import { addSlotToMap } from '../FirestoreFunctions/FirestoreUpdate';
 
 
 export default function Appointments() {

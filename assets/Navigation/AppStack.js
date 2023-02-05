@@ -1,29 +1,31 @@
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Profile from '../screens/Profile';
-import Book from '../screens/Book';
+
 import Home from '../screens/Home';
 import Appointments from '../screens/Appointments';
 import BookStackScreen from './BookStack';
 import ProfileStackScreen from './ProfileStack';
+import { useNetInfo } from '@react-native-community/netinfo'
 
 const Tab = createBottomTabNavigator();
 
 const AppStack = (props) => {
+
+  //use of netinfo hook to retrieve device connectivity information
+  const netInfo = useNetInfo()
+
+  //hide bottom tab navigator if the following stack screen is visible
   const hide = props.routeName == "Appointment Confirmation"
-  console.log(hide)
+  
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarActiveTintColor: '#FC81E1',
-        headerStyle: { backgroundColor: '#B9E6FF' },
+        headerStyle: { backgroundColor: netInfo.isInternetReachable? '#B9E6FF':'#F3F15C' },
         tabBarStyle: {
-          backgroundColor: '#B9E6FF',
+          backgroundColor: netInfo.isInternetReachable? '#B9E6FF':'#F3F15C',
           height: 60,
           paddingTop: 0,
           paddingBottom: 5,
@@ -80,7 +82,6 @@ const AppStack = (props) => {
           ),
         })}
       />
-
     </Tab.Navigator >
   );
 };

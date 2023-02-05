@@ -1,0 +1,26 @@
+//Firestore update functions
+import firestore from '@react-native-firebase/firestore';
+
+export function addSlotToMap(slot, time, clinicId) {
+    firestore().collection('Clinics').doc(`${clinicId}`).update({
+        [`slots.${slot}`]: time,
+    }
+    );
+    console.log("Slot Field added")
+}
+
+export function updateDocument(collection, doc, data) {
+    console.log("Running update function", collection, doc, data)
+    return firestore()
+        .collection(`Users`)
+        .doc(`${doc}`)
+        .update({
+            ProNouns: data.ProNouns,
+            FirstName: data.FirstName,
+            MiddleName: data.MiddleName,
+            LastName: data.LastName,
+            dob: data.dob,
+            PhoneNumber: data.PhoneNumber,
+            Email: data.Email
+        })
+}

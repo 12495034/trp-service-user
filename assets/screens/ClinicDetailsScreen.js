@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { View, StyleSheet, SafeAreaView, FlatList, Pressable } from 'react-native'
+import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 import * as Progress from 'react-native-progress';
 import firestore from '@react-native-firebase/firestore';
-import AvailableSlotCard from '../components/AvailableSlotCard';
+
 import { AuthContext } from '../Navigation/AuthProvider';
-import { removeSlotFromMap } from '../FirestoreFunctions/CommonFirestoreFunctions';
+import { removeSlotFromMap } from '../FirestoreFunctions/FirestoreDelete';
+import { fetchCollectionDocuments } from '../FirestoreFunctions/FirestoreRead';
+
+import AvailableSlotCard from '../components/AvailableSlotCard';
 
 export default function ClinicDetailsScreen({ route, navigation }) {
 
@@ -35,7 +38,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
                     setSelectedTime(undefined)
                 }
             });
-            return ()=> subscriber();
+        return () => subscriber();
     }, [])
 
     useEffect(() => {
@@ -54,10 +57,10 @@ export default function ClinicDetailsScreen({ route, navigation }) {
             })
     }
 
+    //checks the selected clinic for a duplicate instance of the users id
+    //user is only allowed 1 appointment per clinic at any time
     function checkForDuplicate() {
-        firestore()
-            .collection(`Clinics/${clinicId}/Appointments`)
-            .get()
+        fetchCollectionDocuments(`Clinics/${clinicId}/Appointments`)
             .then(querySnapshot => {
                 querySnapshot.forEach(documentSnapshot => {
                     if (documentSnapshot.id === user.uid) {
@@ -99,7 +102,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
                 selectedTime: selectedTime
             })
         } else {
-            setError("You must selected an appointment slot!")
+            setError("You must select an appointment slot!")
         }
 
     }

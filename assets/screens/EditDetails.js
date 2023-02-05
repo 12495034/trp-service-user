@@ -5,7 +5,7 @@ import { Button, TextInput } from 'react-native-paper';
 import { Text, View, StyleSheet, ScrollView } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { Picker } from '@react-native-picker/picker'
-import { updateDocument } from '../FirestoreFunctions/CommonFirestoreFunctions';
+import { updateDocument } from '../FirestoreFunctions/FirestoreUpdate';
 
 export default function EditDetails({ navigation }) {
     const { user } = useContext(AuthContext);

@@ -1,16 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { View, Text, StyleSheet, SafeAreaView, Pressable, Alert } from 'react-native'
+import { View, Text, StyleSheet, SafeAreaView, BackHandler, Alert } from 'react-native'
 import { AuthContext } from '../Navigation/AuthProvider';
 import { timeLimit } from '../constants/Constants';
 import firestore from '@react-native-firebase/firestore';
 import { StackActions } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
-import { addSlotToMap } from '../FirestoreFunctions/CommonFirestoreFunctions';
+import { addSlotToMap } from '../FirestoreFunctions/FirestoreUpdate';
 import { handleAlertInformation } from '../commonFunctions/Alerts';
 import { BgTimer } from '../components/BgTimer';
+import { BookingCancelAlertBody, BookingCancelAlertTitle, BookingSuccessfulAlertBody, BookingSuccessfulAlertTitle } from '../content/Message';
+import { handleAlertDecision } from '../commonFunctions/Alerts';
 
 export default function AppointmentConfirmation({ route, navigation }) {
-
 
     const [loading, setLoading] = useState(false)
 
@@ -26,30 +27,26 @@ export default function AppointmentConfirmation({ route, navigation }) {
         selectedSlot,
         selectedTime } = route.params;
 
-    function handleAlertDecision() {
-        Alert.alert(
-            'Cancel Request',
-            'Are you sure you wish to cancel this request. You will lose your selected booking slot?',
-            [
+    useEffect(() => {
+        const backAction = () => {
+            Alert.alert('Hold on!', 'Are you sure you want to go back? You will lose all your booking information', [
                 {
-                    text: 'Yes',
-                    onPress: () => {
-                        cancelBookingRequest()
-                    },
+                    text: 'Cancel',
+                    onPress: () => null,
                     style: 'cancel',
                 },
-                {
-                    text: 'No',
-                    onPress: () => console.log("Appointment not cancelled"),
-                    style: 'cancel',
-                },
-            ],
-            {
-                cancelable: true,
-                onDismiss: () => console.log("Alert cancelled by pressing outside box"),
-            },
+                { text: 'YES', onPress: () => cancelBookingRequest() },
+            ]);
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction,
         );
-    }
+
+        return () => backHandler.remove();
+    }, []);
 
     function createNewAppointment() {
         //this function must add a new appointment to the clinics subcollection and the users subcollection
@@ -91,8 +88,10 @@ export default function AppointmentConfirmation({ route, navigation }) {
     }
 
     function cancelBookingRequest() {
+        console.log("Cancelling booking request")
         addSlotToMap(selectedSlot, selectedTime, clinicId)
         navigation.dispatch(StackActions.popToTop())
+        console.log("Request cancelled")
     }
 
     return (
@@ -135,7 +134,8 @@ export default function AppointmentConfirmation({ route, navigation }) {
                 <Text style={AppointConfirmStyles.messageText}>Please check the details above and confirm your appointment within the time specified. If you do not confirm the appointment your slot will be released for other bookings</Text>
             </View>
             <View style={AppointConfirmStyles.timer}>
-                <BgTimer timeLimit={10} callBack={cancelBookingRequest}/>
+                {/* //count down timer component can be commented in or out to turn this functionality on and off */}
+                {/* <BgTimer timeLimit={timeLimit} callBack={cancelBookingRequest}/> */}
             </View>
             <View style={AppointConfirmStyles.options}>
                 <Button
@@ -150,7 +150,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
                         //show newly created appointment
                         navigation.navigate("Appointments")
                         //inform user that appointment has been confirmed and policy with regard to cancellation
-                        handleAlertInformation("Booking successful", "If you no longer require your appointment please cancel at least 24 hrs before the clinic")
+                        handleAlertInformation(BookingSuccessfulAlertTitle, BookingSuccessfulAlertBody)
                     }}>
                     Submit Request
                 </Button>
@@ -160,7 +160,12 @@ export default function AppointmentConfirmation({ route, navigation }) {
                     color='red'
                     mode={'contained'}
                     onPress={() => {
-                        handleAlertDecision()
+                        handleAlertDecision(
+                            BookingCancelAlertTitle,
+                            BookingCancelAlertBody,
+                            cancelBookingRequest,
+                            null
+                        )
                     }}>
                     Cancel request
                 </Button>
