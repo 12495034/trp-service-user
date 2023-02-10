@@ -1,5 +1,4 @@
 import React from 'react'
-import { useState } from 'react'
 import { StyleSheet } from 'react-native'
 import { Picker } from '@react-native-picker/picker'
 

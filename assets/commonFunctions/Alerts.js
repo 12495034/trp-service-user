@@ -4,20 +4,21 @@ export function handleAlertInformation(title, message) {
     Alert.alert(title, message)
 }
 
-export function handleAlertDecision(title,body,callbackAccept, callbackReject) {
+export function handleAlertDecision(title, body, acceptText, rejectText, callbackAccept, callbackReject) {
     Alert.alert(
         title,
         body,
         [
             {
-                text: 'Yes',
-                onPress: callbackAccept,
+                text: acceptText,
+                onPress: () => callbackAccept(),
                 style: 'accept',
             },
             {
-                text: 'No',
-                onPress: callbackReject,
+                text: rejectText,
+                onPress: () => callbackReject(),
                 style: 'cancel',
             },
         ]);
+    return true
 }

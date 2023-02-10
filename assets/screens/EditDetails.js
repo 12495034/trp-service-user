@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { AuthContext } from '../Navigation/AuthProvider';
-import firestore from '@react-native-firebase/firestore';
+import { AuthContext } from '../context/AuthProvider';
 import { Button, TextInput } from 'react-native-paper';
 import { Text, View, StyleSheet, ScrollView } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { Picker } from '@react-native-picker/picker'
 import { updateDocument } from '../FirestoreFunctions/FirestoreUpdate';
+import { fetchDocumentData } from '../FirestoreFunctions/FirestoreRead';
 
 export default function EditDetails({ navigation }) {
     const { user } = useContext(AuthContext);
@@ -14,6 +14,8 @@ export default function EditDetails({ navigation }) {
     const { control, handleSubmit, reset, formState: { errors } } = useForm({
         userDetails
     });
+
+    //const { docData, isDocLoading, docError } = useDoc('Users', user.uid)
 
     useEffect(() => {
         fetchUserData()
@@ -28,9 +30,7 @@ export default function EditDetails({ navigation }) {
     }
 
     function fetchUserData() {
-        firestore().collection('Users')
-            .doc(`${user.uid}`)
-            .get()
+        fetchDocumentData('Users', `${user.uid}`)
             .then(documentSnapshot => {
                 if (documentSnapshot.exists) {
                     setUserDetails({

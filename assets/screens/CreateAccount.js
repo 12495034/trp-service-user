@@ -1,10 +1,9 @@
 import React, { useState, useContext, Fragment } from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { TextInput, Checkbox, Button, List } from 'react-native-paper';
-import { AuthContext } from '../Navigation/AuthProvider';
-import DatePicker from '../components/DatePicker';
+import { AuthContext } from '../context/AuthProvider';
+import DatePicker from '../CustomHooks/DatePicker';
 import { useController, useForm } from 'react-hook-form';
-import { LogicProps } from './dist/Types/Types';
 import { FormBuilder } from 'react-native-paper-form-builder';
 
 export default function CreateAccount() {
@@ -28,14 +27,13 @@ export default function CreateAccount() {
     });
 
     function handleCreateUser(data) {
-        console.log("Creating user")
-        //console.log(data)
         if (data.isAgreedTC == "checked") {
             createUser(data)
                 .then((e) => {
                     console.log("User Created")
                 })
                 .catch((e) => {
+                    console.log(e.message)
                     setError(e.message)
                 })
         } else {

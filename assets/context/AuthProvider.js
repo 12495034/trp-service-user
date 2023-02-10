@@ -25,10 +25,8 @@ export const AuthProvider = ({ children }) => {
                         LastName: data.lastname,
                         PhoneNumber: data.phonenumber,
                         dob: data.dob,
-                        Role: data.role,
                         Email: data.email,
                         isAgreedTC: data.isAgreedTC,
-                        status: data.status,
                         createdAt: firestore.Timestamp.fromDate(new Date()),
                     })
             })
@@ -47,6 +45,7 @@ export const AuthProvider = ({ children }) => {
                 return Promise.reject(e)
             })
     }
+
     async function verificationEmail(){
         return auth().currentUser.sendEmailVerification();
     }

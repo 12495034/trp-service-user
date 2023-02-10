@@ -18,7 +18,7 @@ export default function DatePicker(props) {
         //Modify format to make it consistent
         let tempDate = new Date(currentDate);
         let fDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
-        props.setText(fDate)
+        props.setChosenDate(fDate)
     }
 
     function showMode(currentMode) {
@@ -28,7 +28,7 @@ export default function DatePicker(props) {
     return (
         <View>
             <View style={styles.dropdown}>
-                <Text style={styles.text} onPress={() => showMode('date')}>{props.text ? props.text : "Choose a Date"}</Text>
+                <Text style={styles.text} onPress={() => showMode('date')}>{props.chosenDate ? props.chosenDate : "Choose a Date"}</Text>
             </View>
             {show && <DateTimePicker
                 testId='dateTimePicker'

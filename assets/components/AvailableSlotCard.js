@@ -32,9 +32,8 @@ const appointmentCardStyles = StyleSheet.create({
     card: {
         flexDirection:'row',
         borderColor: 'black',
-        borderWidth: 1,
+        borderWidth: 0.5,
         justifyContent: 'space-evenly',
-        borderRadius: 5,
         padding: 10,
     },
     text: {

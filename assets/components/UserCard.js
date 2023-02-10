@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Image } from 'react-native';
-import { Avatar, Button, Card, Text, Divider } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 
 export default function UserCard(props) {
     return (
@@ -25,7 +25,7 @@ export default function UserCard(props) {
                     <Text variant="bodyMedium">{props.middleName}</Text>
                     <Text variant="bodyMedium">{props.lastName}</Text>
                     <Text variant="bodyMedium">{props.email}</Text>
-                    <Text variant="bodyMedium">{props.emailVerified}</Text>
+                    <Text variant="bodyMedium">{props.emailVerified?"Yes":"No"}</Text>
                     <Text variant="bodyMedium">{props.phoneNumber}</Text>
                     <Text variant="bodyMedium">{props.dob}</Text>
                 </View>

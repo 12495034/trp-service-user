@@ -5,7 +5,7 @@ import CheckInIcon from '../Icons/CheckInIcon'
 import TestCompleteIcon from '../Icons/TestCompleteIcon'
 
 import firestore from '@react-native-firebase/firestore';
-import { AuthContext } from '../Navigation/AuthProvider';
+import { AuthContext } from '../context/AuthProvider';
 import { Text } from 'react-native-paper';
 
 export default function AppointmentCard(props) {

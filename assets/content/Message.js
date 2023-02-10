@@ -12,3 +12,8 @@ export const BookingSuccessfulAlertBody = "If you no longer require your appoint
 
 export const BookingCancelAlertTitle = "Cancel Request"
 export const BookingCancelAlertBody = "Are you sure you wish to cancel this request. You will lose your selected booking slot?"
+
+export const ClinicDetailEmailUnverified1 = "Appointments can only be booked if you have verified your email address, please check your inbox. If you cannot locate an email from us asking you to confirm your email address you can re-send a new email below"
+export const ClinicDetailEmailUnverified2 = "Once you have verified your email you must logout and log back into the app for changes to take affect"
+
+export const appointmentConfirmation1 = "Please check the details above and confirm your appointment within the time specified. If you do not confirm the appointment your slot will be released for other bookings"

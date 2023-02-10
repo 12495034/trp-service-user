@@ -1,38 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState} from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
-import { Text, RadioButton, Button } from 'react-native-paper'
+import { Text, Button } from 'react-native-paper'
 import FilterQuestionRadio from '../components/FilterQuestionRadio';
-import { Message1Question, Message2Question, Message3Question } from '../content/Message';
-import { fetchFilteredCollection } from '../FirestoreFunctions/FirestoreRead';
+import { Message1Question, Message3Question } from '../content/Message';
+import useFilteredCollection from '../CustomHooks/useFilteredCollection';
+import { ProgressCircle } from '../components/ProgressCircle';
+
 
 export default function QuestionsScreen({ navigation }) {
 
-  const [advice, setAdvice] = useState([])
   const [radioValue, setRadioValue] = useState(undefined);
-
-  var filterValue;
-  if (radioValue == undefined) {
-    filterValue = 0
-  } else {
-    filterValue = radioValue
-  }
-
-  console.log(advice)
-
-  useEffect(() => {
-    fetchQuestionData()
-  }, [radioValue])
-
-  function fetchQuestionData() {
-    fetchFilteredCollection("Questions", "priority", "==", filterValue)
-      .then(querySnapshot => {
-        let questionArray = []
-        querySnapshot.forEach((doc) => {
-          questionArray.push(doc.data())
-        })
-        setAdvice(questionArray)
-      });
-  }
+  const { filteredCollectionData, isFilteredCollectionLoading, filteredCollectionError } = useFilteredCollection('Questions', 'priority', '==', radioValue)
 
   function navigateTo(screen) {
     navigation.navigate(screen)
@@ -43,28 +21,21 @@ export default function QuestionsScreen({ navigation }) {
   //-----------------------------------------------------------------------------------
   const adviceMessage =
     <FlatList
-      data={advice}
+      data={filteredCollectionData}
       keyExtractor={(Item, index) => index.toString()}
       renderItem={({ item }) => (
-        <>
+        <View style={QuestionStyles.advice}>
           <Text style={QuestionStyles.adviceMessage}>{item.onAgree}</Text>
-          {item.test ? <Button
+          <Button
+            disabled={item.test ? false : true}
             style={{ width: '100%' }}
             labelStyle={{ fontSize: 12 }}
             color='#FFC1BE'
             mode={'contained'}
             onPress={() => navigateTo("Search for a Clinic")}>
             Search for a clinic
-          </Button> : <Button
-            disabled={true}
-            style={{ width: '100%' }}
-            labelStyle={{ fontSize: 12 }}
-            color='#FFC1BE'
-            mode={'contained'}
-            onPress={() => navigateTo("Search for a Clinic")}>
-            Search for a clinic
-          </Button>}
-        </>
+          </Button>
+        </View>
       )}
     />
 
@@ -75,8 +46,8 @@ export default function QuestionsScreen({ navigation }) {
         <Text style={QuestionStyles.message}>{Message3Question}</Text>
         <FilterQuestionRadio radioValue={radioValue} setRadioValue={setRadioValue} />
       </View>
-      <View style={QuestionStyles.advice}>
-        {radioValue == undefined ? null : adviceMessage}
+      <View>
+        {isFilteredCollectionLoading ? <View style={QuestionStyles.advice}><ProgressCircle /></View> : adviceMessage}
       </View>
     </View>
   )
@@ -87,31 +58,34 @@ const QuestionStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffffff',
   },
+  content: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
   message: {
     fontSize: 15,
     fontWeight: '400',
     textAlign: 'justify',
     paddingTop: 5,
     marginBottom: 10,
-
   },
   advice: {
-    paddingLeft: 15,
-    paddingRight: 15,
-    paddingBottom: 15,
+    padding: 15,
+    justifyContent: 'center',
+    alignItems:'center',
   },
   adviceMessage: {
-    justifyContent: 'flex-start',
+    width:'100%',
     color: 'darkblue',
     textAlign: 'justify',
     fontSize: 15,
-    paddingBottom: 5,
-
+    paddingBottom: 20,
   },
-  content: {
-    flex: 1,
-    paddingLeft: 15,
-    paddingRight: 15,
+  progress: {
+    flex: 0.75,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   }
 
 })

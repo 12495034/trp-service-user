@@ -1,40 +1,41 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, BackHandler, Alert } from 'react-native'
-import { AuthContext } from '../Navigation/AuthProvider';
+import { AuthContext } from '../context/AuthProvider';
 import { timeLimit } from '../constants/Constants';
-import firestore from '@react-native-firebase/firestore';
 import { StackActions } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
 import { addSlotToMap } from '../FirestoreFunctions/FirestoreUpdate';
 import { handleAlertInformation } from '../commonFunctions/Alerts';
-import { BgTimer } from '../components/BgTimer';
-import { BookingCancelAlertBody, BookingCancelAlertTitle, BookingSuccessfulAlertBody, BookingSuccessfulAlertTitle } from '../content/Message';
+import { BgTimer } from '../CustomHooks/BgTimer';
+import { appointmentConfirmation1, BookingCancelAlertBody, BookingCancelAlertTitle, BookingSuccessfulAlertBody, BookingSuccessfulAlertTitle } from '../content/Message';
 import { handleAlertDecision } from '../commonFunctions/Alerts';
+import { createDocument } from '../FirestoreFunctions/FirestoreCreate';
+import { clinicAppointmentData, userAppointmentData } from '../constants/Constants';
 
 export default function AppointmentConfirmation({ route, navigation }) {
 
-    const [loading, setLoading] = useState(false)
-
     const { user } = useContext(AuthContext);
+    //data passed to from clinic details screen
     const {
         clinicId,
-        status,
-        capacity,
         date,
         location,
         center,
-        startTime,
         selectedSlot,
-        selectedTime, 
+        selectedTime,
         clinicAddress,
         clinicPostcode,
     } = route.params;
 
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
+
     useEffect(() => {
+        //handling the user pressing the hardware back button and that they will lose saved data if they proceed
         const backAction = () => {
-            Alert.alert('Hold on!', 'Are you sure you want to go back? You will lose all your booking information', [
+            Alert.alert("Cancel Booking process", "Hold on!, Are you sure you want leave the booking process? You will lose all your booking information", [
                 {
-                    text: 'Cancel',
+                    text: 'No',
                     onPress: () => null,
                     style: 'cancel',
                 },
@@ -42,59 +43,41 @@ export default function AppointmentConfirmation({ route, navigation }) {
             ]);
             return true;
         };
-
         const backHandler = BackHandler.addEventListener(
             'hardwareBackPress',
             backAction,
         );
-
         return () => backHandler.remove();
     }, []);
 
+
     function createNewAppointment() {
-        //this function must add a new appointment to the clinics subcollection and the users subcollection
-        //the function must also remove the booked slot from the clinic slots map
-        //add record to clinic appointments
-        firestore()
-            .collection(`Clinics/${clinicId}/Appointments`)
-            .doc(`${user.uid}`)
-            .set({
-                called: false,
-                calledBy: "",
-                checkedIn: false,
-                wasSeen: false,
-                slot: selectedSlot,
-                time: selectedTime,
-                status: "Active"
-            })
+        //create new document in Clinic appointments subcollection
+        createDocument(`Clinics/${clinicId}/Appointments`, `${user.uid}`, clinicAppointmentData(selectedSlot, selectedTime))
             .then(() => {
                 console.log('Appointment added to clinic!');
-            });
-        firestore()
-            .collection(`Users/${user.uid}/Appointments`)
-            .doc(`${clinicId}`)
-            .set({
-                called: false,
-                calledBy: "",
-                checkedIn: false,
-                wasSeen: false,
-                location: location,
-                center: center,
-                slot: selectedSlot,
-                time: selectedTime,
-                date: date,
-                status: "Active"
+                //create new document in Users appointments subcollection
+                createDocument(`Users/${user.uid}/Appointments`, `${clinicId}`, userAppointmentData(selectedSlot, selectedTime, location, center, date))
+                    .then(() => {
+                        console.log('Appointment added to user appointment history!');
+                        //pop to top of stack
+                        navigation.dispatch(StackActions.popToTop())
+                        //show newly created appointment on the appointments tab
+                        navigation.navigate("Appointments")
+                        //inform user that appointment has been confirmed and policy with regard to cancellation
+                        handleAlertInformation(BookingSuccessfulAlertTitle, BookingSuccessfulAlertBody)
+                    })
             })
-            .then(() => {
-                console.log('Appointment added to user appointment history!');
+            .catch((e) => {
+                console.log(e.message)
+                setError(e.message)
             });
     }
 
     function cancelBookingRequest() {
-        console.log("Cancelling booking request")
         addSlotToMap(selectedSlot, selectedTime, clinicId)
         navigation.dispatch(StackActions.popToTop())
-        console.log("Request cancelled")
+        console.log("Booking Request cancelled")
     }
 
     return (
@@ -115,34 +98,35 @@ export default function AppointmentConfirmation({ route, navigation }) {
                         <View style={AppointConfirmStyles.main}>
                             <View style={AppointConfirmStyles.content}>
                                 <View style={AppointConfirmStyles.col1}>
-                                    <Text>Test Center: </Text>
-                                    <Text>Address: </Text>
-                                    <Text>Location: </Text>
-                                    <Text>Postcode: </Text>
-                                    <Text>Date: </Text>
-                                    <Text>Appointment Time: </Text>
-                                    <Text>Slot Number: </Text>
+                                    <Text style={AppointConfirmStyles.text}>Test Center: </Text>
+                                    <Text style={AppointConfirmStyles.text}>Address: </Text>
+                                    <Text style={AppointConfirmStyles.text}>Location: </Text>
+                                    <Text style={AppointConfirmStyles.text}>Postcode: </Text>
+                                    <Text style={AppointConfirmStyles.text}>Date: </Text>
+                                    <Text style={AppointConfirmStyles.text}>Appointment Time: </Text>
+                                    <Text style={AppointConfirmStyles.text}>Slot Number: </Text>
                                 </View>
                                 <View style={AppointConfirmStyles.col1}>
-                                    <Text>{center}</Text>
-                                    <Text>{clinicAddress}</Text>
-                                    <Text>{location}</Text>
-                                    <Text>{clinicPostcode}</Text>
-                                    <Text>{date}</Text>
-                                    <Text>{selectedTime}</Text>
-                                    <Text>{selectedSlot}</Text>
+                                    <Text style={AppointConfirmStyles.text}>{center}</Text>
+                                    <Text style={AppointConfirmStyles.text}>{clinicAddress}</Text>
+                                    <Text style={AppointConfirmStyles.text}>{location}</Text>
+                                    <Text style={AppointConfirmStyles.text}>{clinicPostcode}</Text>
+                                    <Text style={AppointConfirmStyles.text}>{date}</Text>
+                                    <Text style={AppointConfirmStyles.text}>{selectedTime}</Text>
+                                    <Text style={AppointConfirmStyles.text}>{selectedSlot}</Text>
                                 </View>
                             </View>
                         </View>
                     </SafeAreaView>}
             </View>
             <View style={AppointConfirmStyles.message}>
-                <Text style={AppointConfirmStyles.messageText}>Please check the details above and confirm your appointment within the time specified. If you do not confirm the appointment your slot will be released for other bookings</Text>
+                <Text style={AppointConfirmStyles.text}>{appointmentConfirmation1}</Text>
             </View>
             <View style={AppointConfirmStyles.timer}>
                 {/* //count down timer component can be commented in or out to turn this functionality on and off */}
-                <BgTimer timeLimit={timeLimit} callBack={cancelBookingRequest}/>
+                {/* <BgTimer timeLimit={timeLimit} callBack={cancelBookingRequest} /> */}
             </View>
+            <Text style={AppointConfirmStyles.error}>{error}</Text>
             <View style={AppointConfirmStyles.options}>
                 <Button
                     style={{ width: '49%' }}
@@ -151,12 +135,6 @@ export default function AppointmentConfirmation({ route, navigation }) {
                     mode={'contained'}
                     onPress={() => {
                         createNewAppointment()
-                        //reset booking stack prior to leaving
-                        navigation.dispatch(StackActions.popToTop())
-                        //show newly created appointment
-                        navigation.navigate("Appointments")
-                        //inform user that appointment has been confirmed and policy with regard to cancellation
-                        handleAlertInformation(BookingSuccessfulAlertTitle, BookingSuccessfulAlertBody)
                     }}>
                     Submit Request
                 </Button>
@@ -166,11 +144,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
                     color='red'
                     mode={'contained'}
                     onPress={() => {
-                        handleAlertDecision(
-                            BookingCancelAlertTitle,
-                            BookingCancelAlertBody,
-                            cancelBookingRequest,
-                            null
+                        handleAlertDecision(BookingCancelAlertTitle, BookingCancelAlertBody, "Yes", "No", cancelBookingRequest, null
                         )
                     }}>
                     Cancel request
@@ -188,8 +162,14 @@ const AppointConfirmStyles = StyleSheet.create({
         padding: 10,
     },
     clinicInformation: {
-        width: '90%',
+        width: '100%',
         margin: 15,
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: 'black',
+        borderRadius: 5,
+        padding: 5,
+        backgroundColor: 'white'
     },
     content: {
         flexDirection: 'row',
@@ -212,13 +192,15 @@ const AppointConfirmStyles = StyleSheet.create({
     },
     error: {
         color: 'red',
+        textAlign: 'justify'
     },
     message: {
-        width: '90%',
+        width: '100%',
         justifyContent: 'center',
     },
-    messageText: {
-        textAlign: 'justify'
+    text: {
+        textAlign: 'justify',
+        color: 'black'
     },
     timer: {
         flex: 1,

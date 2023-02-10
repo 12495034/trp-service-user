@@ -1,9 +1,6 @@
 import React from 'react'
-import { useState } from 'react'
 import { StyleSheet, View, TextInput } from 'react-native'
-import { Picker } from '@react-native-picker/picker'
 import ModalSelector from 'react-native-modal-selector'
-import { Modal } from 'react-native-paper'
 
 export default function FilterAppointmentStatus(props) {
 

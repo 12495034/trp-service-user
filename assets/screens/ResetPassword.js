@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import { AuthContext } from '../Navigation/AuthProvider';
+import { AuthContext } from '../context/AuthProvider';
 import { Button } from 'react-native-paper';
 import { FormBuilder } from 'react-native-paper-form-builder';
 import { useForm } from 'react-hook-form';

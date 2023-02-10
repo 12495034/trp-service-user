@@ -1,16 +1,15 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { List } from 'react-native-paper';
-import { AuthContext } from '../Navigation/AuthProvider';
+import { AuthContext } from '../context/AuthProvider';
 
 import { welcomeMessageHome1, welcomeMessageHome2 } from '../content/Message';
-
 
 export default function Home() {
 
     const { user } = useContext(AuthContext);
-    const [expandedBooking, setExpandedBooking] = React.useState(false);
-    const [expandedAtClinic, setExpandedAtClinic] = React.useState(false);
+    const [expandedBooking, setExpandedBooking] = useState(false);
+    const [expandedAtClinic, setExpandedAtClinic] = useState(false);
 
     //state set to close one accordion if another is opened to limit information overload
     const handlePressBooking = () => {

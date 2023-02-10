@@ -1,45 +1,22 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { View, Text, StyleSheet, Pressable, Alert } from 'react-native'
 import { Button } from 'react-native-paper';
-import { AuthContext } from '../Navigation/AuthProvider';
-import firestore from '@react-native-firebase/firestore';
+import { AuthContext } from '../context/AuthProvider';
 import UserCard from '../components/UserCard';
 import { deleteUserSubcollection, deleteUserDocument } from '../FirestoreFunctions/FirestoreDelete';
-
+import useDocOnSnapshot from '../CustomHooks/useDocOnSnapshot';
+import { ProgressCircle } from '../components/ProgressCircle';
 
 export default function Profile({ navigation }) {
 
+    const [deleteAuthError, setDeleteAuthError] = useState('')
+    const [deleteUserCollectionError, setDeleteUserCollectionError] = useState('')
+    const [deleteUserDocError, setDeleteUserDocError] = useState('')
     const { logOut, user, deleteUserAuth } = useContext(AuthContext);
-    const [userDetails, setUserDetails] = useState({});
-
-    useEffect(() => {
-        const subscriber = firestore()
-            .collection('Users')
-            .doc(`${user.uid}`)
-            .onSnapshot(documentSnapshot => {
-                if (documentSnapshot.exists) {
-                    setUserDetails(documentSnapshot.data())
-                } else {
-                    console.log("No such document!");
-                }
-            });
-        // Stop listening for updates when no longer required
-        return () => subscriber();
-    }, [])
+    const { docData, isDocLoading, docError } = useDocOnSnapshot('Users', user.uid)
 
     function navigateTo(screen) {
         navigation.navigate(screen)
-    }
-
-    async function handleDeleteUser() {
-        console.log("Running handleDeleteUser function")
-        //delete firestore subcollections and user documents
-        //firestore security rules allow only users with an id matching the document to perform CRUD operations
-        //delete user authorisation
-        await deleteUserSubcollection(user.uid)
-        await deleteUserDocument(user.uid)
-        await deleteUserAuth()
-        console.log("All user delete operations complete")
     }
 
     async function handleLogOut() {
@@ -52,6 +29,37 @@ export default function Profile({ navigation }) {
             })
     }
 
+    async function handleDeleteUser(userId) {
+        //delete firestore subcollections and user documents
+        //firestore security rules allow only users with an id matching the document to perform CRUD operations
+        //delete user authorisation
+        await deleteUserSubcollection(userId)
+            .then((querySnapshot) => {
+                Promise.all(querySnapshot.docs.map((d) => d.ref.delete()));
+                console.log("All appointments deleted")
+            })
+            .catch((e) => {
+                console.log(e.message)
+                setDeleteUserCollectionError(e.message)
+            })
+        await deleteUserDocument("User", userId)
+            .then(() => {
+                console.log("User document deleted")
+            })
+            .catch((e) => {
+                console.log(e.message)
+                setDeleteUserDocError(e.message)
+            })
+        await deleteUserAuth()
+            .then(() => {
+                console.log("All user delete operations complete")
+            })
+            .catch((e) => {
+                console.log(e.message)
+                setDeleteAuthError(e.message)
+            })
+    }
+
     function handleAlert() {
         Alert.alert(
             'Delete Account',
@@ -60,7 +68,7 @@ export default function Profile({ navigation }) {
                 {
                     text: 'Yes',
                     onPress: () => {
-                        handleDeleteUser()
+                        handleDeleteUser(user.uid)
                     },
                     style: 'cancel',
                 },
@@ -79,53 +87,53 @@ export default function Profile({ navigation }) {
 
     return (
         <View style={ProfileStyles.body}>
-            {/* Issue here that the user information does not seem be immediately available on login */}
-            {user ?
-                <UserCard
-                    proNouns={userDetails.ProNouns}
-                    firstName={userDetails.FirstName}
-                    middleName={userDetails.MiddleName}
-                    lastName={userDetails.LastName}
-                    dob={userDetails.dob}
-                    email={userDetails.Email}
-                    emailVerified={user.emailVerified ? "Yes" : "No"}
-                    phoneNumber={userDetails.PhoneNumber}
-                    isAgreedTC={userDetails.isAgreedTC}
-                />
-                :
+            {isDocLoading ?
                 <View>
-                    <Text>
-                        User data not available at this time
-                    </Text>
+                    <ProgressCircle />
                 </View>
-            }
-            <Button
-                style={{ width: '100%' }}
-                labelStyle={{ fontSize: 12 }}
-                color='green'
-                mode={'contained'}
-                onPress={handleLogOut}>
-                Sign Out
-            </Button>
-            <View style={ProfileStyles.options}>
-                <Button
-                    style={{ width: '49%' }}
-                    labelStyle={{ fontSize: 12 }}
-                    color='orange'
-                    mode={'contained'}
-                    onPress={() => navigateTo("Edit User Details")}>
-                    Edit details
-                </Button>
-                <Button
-                    style={{ width: '49%', marginTop: 0 }}
-                    labelStyle={{ fontSize: 12 }}
-                    color='red'
-                    mode={'contained'}
-                    onPress={handleAlert}>
-                    Delete Account
-                </Button>
-            </View>
-
+                :
+                <>
+                    {deleteAuthError ? <Text>{deleteAuthError}</Text> : null}
+                    {deleteUserCollectionError ? <Text>{deleteUserCollectionError}</Text> : null}
+                    {deleteUserDocError ? <Text>{deleteUserDocError}</Text> : null}
+                    <UserCard
+                        proNouns={docData.ProNouns}
+                        firstName={docData.FirstName}
+                        middleName={docData.MiddleName}
+                        lastName={docData.LastName}
+                        dob={docData.dob}
+                        email={docData.Email}
+                        emailVerified={user.emailVerified}
+                        phoneNumber={docData.PhoneNumber}
+                        isAgreedTC={docData.isAgreedTC}
+                    />
+                    <Button
+                        style={{ width: '100%' }}
+                        labelStyle={{ fontSize: 12 }}
+                        color='green'
+                        mode={'contained'}
+                        onPress={handleLogOut}>
+                        Sign Out
+                    </Button>
+                    <View style={ProfileStyles.options}>
+                        <Button
+                            style={{ width: '49%' }}
+                            labelStyle={{ fontSize: 12 }}
+                            color='orange'
+                            mode={'contained'}
+                            onPress={() => navigateTo("Edit User Details")}>
+                            Edit details
+                        </Button>
+                        <Button
+                            style={{ width: '49%', marginTop: 0 }}
+                            labelStyle={{ fontSize: 12 }}
+                            color='red'
+                            mode={'contained'}
+                            onPress={handleAlert}>
+                            Delete Account
+                        </Button>
+                    </View>
+                </>}
         </View>
     )
 }
@@ -137,6 +145,7 @@ const ProfileStyles = StyleSheet.create({
         backgroundColor: '#ffffff',
         // borderWidth: 2,
         alignItems: 'center',
+        justifyContent: 'center',
         padding: 20,
     },
     button: {
