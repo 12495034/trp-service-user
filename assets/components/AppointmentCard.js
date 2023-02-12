@@ -3,77 +3,13 @@ import { View, StyleSheet, Pressable, Alert } from 'react-native'
 import CalledIcon from '../Icons/CalledIcon'
 import CheckInIcon from '../Icons/CheckInIcon'
 import TestCompleteIcon from '../Icons/TestCompleteIcon'
-
-import firestore from '@react-native-firebase/firestore';
-import { AuthContext } from '../context/AuthProvider';
+import { AlertCancel } from '../commonFunctions/AlertCancel'
 import { Text } from 'react-native-paper';
+import canCancel from '../logicFunctions.js/canCancel'
+import { handleAlertInformation } from '../commonFunctions/Alerts'
 
 export default function AppointmentCard(props) {
-
-    const { user } = useContext(AuthContext);
-
-    function handleAlert() {
-        if (props.status == "Active") {
-            Alert.alert(
-                'Cancel Appointment',
-                'Do you wish to cancel this appointment?',
-                [
-                    {
-                        text: 'Yes',
-                        onPress: () => {
-                            props.cancel(props.slot, props.time, props.clinicId)
-                        },
-                        style: 'cancel',
-                    },
-                    {
-                        text: 'No',
-                        onPress: () => console.log("Appointment not cancelled"),
-                        style: 'cancel',
-                    },
-                ],
-                {
-                    cancelable: true,
-                    onDismiss: () => console.log("Alert cancelled by pressing outside box"),
-                },
-            );
-        } else {
-            console.log("Appointment is not active, therefore changes cannot be made")
-        }
-    }
-
-    function userCheckIn() {
-        if (props.status == "Active") {
-            //update status in Users Appointments sub-collection
-            firestore()
-                .collection(`Users/${user.uid}/Appointments`)
-                .doc(`${props.clinicId}`)
-                .update({
-                    checkedIn: true,
-                })
-                .then(() => {
-                    console.log('User checked in in clinic sub-collection!');
-                })
-                .catch((e) => {
-                    console.log(e.message)
-                })
-
-            //update status in Users Appointments sub-collection
-            firestore()
-                .collection(`Clinics/${props.clinicId}/Appointments`)
-                .doc(`${user.uid}`)
-                .update({
-                    checkedIn: true,
-                })
-                .then(() => {
-                    console.log('User checked in in users sub-collection!');
-                })
-                .catch((e) => {
-                    console.log(e.message)
-                })
-        } else {
-            console.log("Appointment is not active, therefore changes cannot be made")
-        }
-    }
+    var isCancellable = canCancel(new Date(), new Date(`${props.date}T${props.time}:00Z`))
 
     return (
         <Pressable
@@ -81,7 +17,18 @@ export default function AppointmentCard(props) {
                 { backgroundColor: pressed ? '#F7C3E9' : '#0000', borderRadius: 5 },
             ]}
             onLongPress={() => {
-                handleAlert()
+                if (isCancellable) {
+                    AlertCancel(
+                        props.status,
+                        props.checkedIn,
+                        "Cancel Appointment",
+                        "Do you wish to cancel this appointment?",
+                        "Yes", "No",
+                        () => props.cancel(props.slot, props.time, props.clinicId))
+                } else {
+                    handleAlertInformation("Cancel Appointment", "You are unable to cancel this appointment as it is less than 24 hrs until you are due to attend. If you are not able to make the appointment please inform the rainbow project on 02890 319030 or you will be marked as un-attended")
+                }
+
             }}
         >
             <View style={styles.card}>
@@ -96,7 +43,7 @@ export default function AppointmentCard(props) {
                     <Text>Slot: {props.slot}</Text>
                     <Text>{props.status}</Text>
                 </View>
-                <View style={styles.col3} onTouchStart={userCheckIn}>
+                <View style={styles.col3} onTouchStart={props.userCheckIn}>
                     <CheckInIcon checkedIn={props.checkedIn} />
                     <CalledIcon checkedIn={props.checkedIn} called={props.called} />
                     <TestCompleteIcon checkedIn={props.checkedIn} complete={props.wasSeen} />
@@ -117,7 +64,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius: 5,
-        marginBottom: 5,
+        
     },
     col1: {
         flexDirection: 'column',

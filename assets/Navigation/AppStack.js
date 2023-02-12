@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -8,6 +8,7 @@ import Appointments from '../screens/Appointments';
 import BookStackScreen from './BookStack';
 import ProfileStackScreen from './ProfileStack';
 import { useNetInfo } from '@react-native-community/netinfo'
+import { AuthContext } from '../context/AuthProvider';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,21 +16,24 @@ const AppStack = (props) => {
 
   //use of netinfo hook to retrieve device connectivity information
   const netInfo = useNetInfo()
-
+  //set firestore to disable offline persistence
+  const { offlineMode } = useContext(AuthContext)
+  offlineMode(false)
   //hide bottom tab navigator if the following stack screen is visible
   const hide = props.routeName == "Appointment Confirmation"
-  
+
   return (
     <Tab.Navigator
+      initialRouteName='Home'
       screenOptions={{
         tabBarActiveTintColor: '#FC81E1',
-        headerStyle: { backgroundColor: netInfo.isInternetReachable? '#B9E6FF':'#F3F15C' },
+        headerStyle: { backgroundColor: netInfo.isInternetReachable ? '#B9E6FF' : '#F3F15C' },
         tabBarStyle: {
-          backgroundColor: netInfo.isInternetReachable? '#B9E6FF':'#F3F15C',
+          backgroundColor: netInfo.isInternetReachable ? '#B9E6FF' : '#F3F15C',
           height: 60,
           paddingTop: 0,
           paddingBottom: 5,
-          display: hide? 'none':'flex'
+          display: hide ? 'none' : 'flex'
         }
       }}>
       <Tab.Screen

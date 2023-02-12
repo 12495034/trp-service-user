@@ -7,7 +7,7 @@ import { welcomeMessageHome1, welcomeMessageHome2 } from '../content/Message';
 
 export default function Home() {
 
-    const { user } = useContext(AuthContext);
+    const { user} = useContext(AuthContext);
     const [expandedBooking, setExpandedBooking] = useState(false);
     const [expandedAtClinic, setExpandedAtClinic] = useState(false);
 
@@ -70,12 +70,12 @@ export default function Home() {
                         title="View appointments"
                         descriptionNumberOfLines={3}
                         description="Access your booked appointments using the appointments tab"
-                        left={props => <List.Icon {...props} color='green' icon="format-list-bulleted-square" />}
+                        left={props => <List.Icon {...props} color='green' icon="calendar" />}
                     />
                     <List.Item
                         title="Check in"
                         descriptionNumberOfLines={3}
-                        description="Press the red user icon to check in for your appointment"
+                        description="Press the red user icon to let the clinic know you have arrived"
                         left={props => <List.Icon {...props} color='green' icon="account-check" />}
                     />
                     <List.Item
@@ -93,7 +93,7 @@ export default function Home() {
                     <List.Item
                         title="Cancellations"
                         descriptionNumberOfLines={3}
-                        description="Press and hold the appointment to cancel. Please do so a minimum of 24 hrs in advance"
+                        description="You can cancel an appointment with a minimum of24hrs. Press and hold the appointment to cancel."
                         left={props => <List.Icon {...props} color='red' icon="cancel" />}
                     />
                 </List.Accordion>

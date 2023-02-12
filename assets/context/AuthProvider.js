@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
             })
     }
 
-    async function verificationEmail(){
+    async function verificationEmail() {
         return auth().currentUser.sendEmailVerification();
     }
 
@@ -55,9 +55,14 @@ export const AuthProvider = ({ children }) => {
         return auth().signOut();
     }
 
-    async function deleteUserAuth(){
+    async function deleteUserAuth() {
         console.log("logout function running")
         return auth().currentUser.delete();
+    }
+
+    async function offlineMode(state) {
+        await firestore().settings({ persistence: state })
+        console.log("offline persistence:", state)
     }
 
     function reset(email) {
@@ -66,7 +71,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, setUser, signIn, createUser, logOut, reset, deleteUserAuth, verificationEmail }}>
+        <AuthContext.Provider value={{ user, setUser, signIn, createUser, logOut, reset, deleteUserAuth, verificationEmail, offlineMode }}>
             {children}
         </AuthContext.Provider>
     );

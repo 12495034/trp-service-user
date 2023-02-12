@@ -12,7 +12,6 @@ export default function useCollectionOnSnapshot(collection, filter) {
             .onSnapshot(querySnapshot => {
                 let appointmentListArray = []
                 querySnapshot.forEach((doc) => {
-                    console.log(doc.id)
                     const data = doc.data()
                     const id = {
                         id: doc.id

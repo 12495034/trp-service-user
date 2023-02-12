@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 import CenterPicker from '../components/CenterPicker';
@@ -56,7 +56,6 @@ export default function Book({ navigation }) {
                     clinicsFound = querySnapshot.size
                     if (clinicsFound > 0) {
                         querySnapshot.forEach(docSnapshot => {
-                            console.log(docSnapshot.id)
                             const data = Object.assign(docSnapshot.data(), { id: docSnapshot.id })
                             clinicListArray.push(data)
                         });

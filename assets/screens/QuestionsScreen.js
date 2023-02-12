@@ -1,10 +1,11 @@
-import React, { useState} from 'react'
+import React, { useState, useContext} from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 import FilterQuestionRadio from '../components/FilterQuestionRadio';
 import { Message1Question, Message3Question } from '../content/Message';
 import useFilteredCollection from '../CustomHooks/useFilteredCollection';
 import { ProgressCircle } from '../components/ProgressCircle';
+import { AuthContext } from '../context/AuthProvider';
 
 
 export default function QuestionsScreen({ navigation }) {

@@ -11,10 +11,13 @@ import { appointmentConfirmation1, BookingCancelAlertBody, BookingCancelAlertTit
 import { handleAlertDecision } from '../commonFunctions/Alerts';
 import { createDocument } from '../FirestoreFunctions/FirestoreCreate';
 import { clinicAppointmentData, userAppointmentData } from '../constants/Constants';
+import { useNetInfo } from '@react-native-community/netinfo'
 
 export default function AppointmentConfirmation({ route, navigation }) {
 
     const { user } = useContext(AuthContext);
+    const netInfo = useNetInfo()
+
     //data passed to from clinic details screen
     const {
         clinicId,
@@ -67,6 +70,10 @@ export default function AppointmentConfirmation({ route, navigation }) {
                         //inform user that appointment has been confirmed and policy with regard to cancellation
                         handleAlertInformation(BookingSuccessfulAlertTitle, BookingSuccessfulAlertBody)
                     })
+                    .catch((e) => {
+                        console.log(e.message)
+                        setError(e.message)
+                    });
             })
             .catch((e) => {
                 console.log(e.message)
@@ -124,7 +131,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
             </View>
             <View style={AppointConfirmStyles.timer}>
                 {/* //count down timer component can be commented in or out to turn this functionality on and off */}
-                {/* <BgTimer timeLimit={timeLimit} callBack={cancelBookingRequest} /> */}
+                <BgTimer timeLimit={timeLimit} callBack={cancelBookingRequest} />
             </View>
             <Text style={AppointConfirmStyles.error}>{error}</Text>
             <View style={AppointConfirmStyles.options}>
@@ -133,6 +140,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
                     labelStyle={{ fontSize: 12 }}
                     color='green'
                     mode={'contained'}
+                    disabled={netInfo.isInternetReachable ? false : true}
                     onPress={() => {
                         createNewAppointment()
                     }}>
@@ -168,7 +176,7 @@ const AppointConfirmStyles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'black',
         borderRadius: 5,
-        padding: 5,
+        padding: 10,
         backgroundColor: 'white'
     },
     content: {

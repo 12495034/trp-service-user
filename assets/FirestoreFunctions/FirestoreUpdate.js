@@ -23,3 +23,11 @@ export function updateDocument(collection, doc, data) {
             Email: data.Email
         })
 }
+
+export function updateDocumentGeneral(collection, doc, data) {
+    console.log("Running update function general", collection, doc, data)
+    return firestore()
+        .collection(collection)
+        .doc(doc)
+        .update(data)
+}

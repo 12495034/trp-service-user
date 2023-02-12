@@ -2,14 +2,14 @@ import React, { useState, useContext, Fragment } from 'react'
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native'
 import { AuthContext } from '../context/AuthProvider';
 import { FormBuilder } from 'react-native-paper-form-builder';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Button, TextInput } from 'react-native-paper';
-import { LogicProps } from 'react-native-paper-form-builder/dist/Types/Types';
+import { ProgressCircle } from '../components/ProgressCircle';
 
 export default function Login({ navigation }) {
 
     const { signIn } = useContext(AuthContext);
-
+    const [loginProcessing, setLoginProcessing] = useState(undefined)
     const [error, setError] = useState()
     const { control, setFocus, handleSubmit } = useForm({
         defaultValues: {
@@ -19,20 +19,22 @@ export default function Login({ navigation }) {
         mode: 'onChange',
     });
 
-
     function navigateTo(screen) {
         navigation.navigate(screen)
     }
 
     async function loginHandle(userName, password) {
         setError('')
+        setLoginProcessing(true)
         if (userName.length != 0 && password.length != 0) {
             await signIn(userName, password)
                 .then(() => {
                     console.log("User sign in successful")
+                    setLoginProcessing(false)
                 })
                 .catch((e) => {
                     setError(e.message)
+                    setLoginProcessing(false)
                 })
         } else {
             setError("Please enter a valid email address and password")
@@ -79,10 +81,10 @@ export default function Login({ navigation }) {
                                 textInputProps: {
                                     label: 'Password',
                                     mode: 'outlined',
-                                    secureTextEntry:true,
+                                    secureTextEntry: true,
                                     outlineColor: 'grey',
                                     activeOutlineColor: '#F98AF9',
-                                    left: <TextInput.Icon name={'lock'} 
+                                    left: <TextInput.Icon name={'lock'}
                                     />
                                 },
                                 rules: {
@@ -94,35 +96,40 @@ export default function Login({ navigation }) {
                             },
                         ]}
                     />
-                    <Button
-                        style={{ width: '100%' }}
-                        labelStyle={{ fontSize: 15 }}
-                        color='lightgreen'
-                        mode={'contained'}
-                        onPress={handleSubmit((data) => {
-                            loginHandle(data.email, data.password)
-                        })}>
-                        Login
-                    </Button>
-                    <View style={LoginStyles.options}>
-                        <Button
-                            style={{ width: '49%' }}
-                            labelStyle={{ fontSize: 12 }}
-                            color='pink'
-                            mode={'contained'}
-                            onPress={() => navigateTo("Signup")}>
-                            New Account
-                        </Button>
-                        <Button
-                            style={{ width: '50%' }}
-                            labelStyle={{ fontSize: 12 }}
-                            color='orange'
-                            mode={'contained'}
-                            onPress={() => navigateTo("Reset")}>
-                            Reset Password
-                        </Button>
-                    </View>
+                    {loginProcessing ? <View style={{alignItems:'center'}}><ProgressCircle /></View>
+                        :
+                        <View>
+                            <Button
+                                style={{ width: '100%' }}
+                                labelStyle={{ fontSize: 15 }}
+                                color='lightgreen'
+                                mode={'contained'}
+                                onPress={handleSubmit((data) => {
+                                    loginHandle(data.email, data.password)
+                                })}>
+                                Login
+                            </Button>
+                            <View style={LoginStyles.options}>
+                                <Button
+                                    style={{ width: '49%' }}
+                                    labelStyle={{ fontSize: 12 }}
+                                    color='pink'
+                                    mode={'contained'}
+                                    onPress={() => navigateTo("Signup")}>
+                                    New Account
+                                </Button>
+                                <Button
+                                    style={{ width: '50%' }}
+                                    labelStyle={{ fontSize: 12 }}
+                                    color='orange'
+                                    mode={'contained'}
+                                    onPress={() => navigateTo("Reset")}>
+                                    Reset Password
+                                </Button>
+                            </View>
+                        </View>}
                 </Fragment>
+
             </ScrollView>
         </View>
     );
@@ -140,7 +147,7 @@ const LoginStyles = StyleSheet.create({
     },
     error: {
         color: 'red',
-        textAlign:'justify'
+        textAlign: 'justify'
     },
     options: {
         width: '100%',
@@ -149,7 +156,7 @@ const LoginStyles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     scrollViewStyle: {
-        padding:20,
+        padding: 20,
     },
     headingStyle: {
         fontSize: 20,

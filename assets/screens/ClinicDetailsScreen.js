@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { View, StyleSheet, SafeAreaView, FlatList } from 'react-native'
+import React, {useState, useContext } from 'react'
+import { View, StyleSheet, FlatList } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 import * as Progress from 'react-native-progress';
 
 import { AuthContext } from '../context/AuthProvider';
 import { removeSlotFromMap } from '../FirestoreFunctions/FirestoreDelete';
+import { useNetInfo } from '@react-native-community/netinfo'
 
 import AvailableSlotCard from '../components/AvailableSlotCard';
 import UnverifiedEmail from '../components/UnverifiedEmail';
@@ -16,10 +17,10 @@ import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
 
 
 export default function ClinicDetailsScreen({ route, navigation }) {
-
     const { user, verificationEmail } = useContext(AuthContext);
-    const { clinicId } = route.params;
+    const netInfo = useNetInfo()
 
+    const { clinicId } = route.params;
     const [selectedSlot, setSelectedSlot] = useState(undefined)
     const [selectedTime, setSelectedTime] = useState(undefined)
     const [error, setError] = useState("")
@@ -64,7 +65,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
 
     //data rendering
     //format data taken from firestore into an array so that it can be rendered using a flatlist
-    const appointmentSlots = formatSlotsData(docData.slots)
+    const appointmentSlots = formatSlotsData(docData.slots,docData.date)
 
     var timeSlots = <FlatList
         data={appointmentSlots}
@@ -125,11 +126,12 @@ export default function ClinicDetailsScreen({ route, navigation }) {
                                 labelStyle={{ fontSize: 12 }}
                                 color='pink'
                                 mode={'contained'}
+                                disabled={netInfo.isInternetReachable ? false : true}
                                 onPress={() => {
                                     removeSlotFromMap(selectedSlot, clinicId);
                                     confirmAppointment();
                                 }}>
-                                Confirm Slot
+                                {netInfo.isInternetReachable? "Confirm Slot":"You are currently offline"}
                             </Button>
                         </View>
 
@@ -162,7 +164,7 @@ const ClinicDetailStyles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'black',
         borderRadius: 5,
-        padding: 5,
+        padding: 10,
         backgroundColor: 'white'
     },
     col1: {
@@ -177,7 +179,7 @@ const ClinicDetailStyles = StyleSheet.create({
     },
     appointmentSlots: {
         flex: 1,
-        marginBottom:2
+        marginBottom: 2
     },
     error: {
         color: 'red',

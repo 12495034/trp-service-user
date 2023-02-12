@@ -4,13 +4,12 @@ import { Text } from 'react-native-paper';
 import AppointmentCard from '../components/AppointmentCard';
 import FilterAppointmentStatus from '../components/FilterAppointmentStatus';
 import { AuthContext } from '../context/AuthProvider';
-import { addSlotToMap } from '../FirestoreFunctions/FirestoreUpdate';
+import { addSlotToMap, updateDocumentGeneral } from '../FirestoreFunctions/FirestoreUpdate';
 import { deleteUserDocument } from '../FirestoreFunctions/FirestoreDelete';
 import useCollectionOnSnapshot from '../CustomHooks/useCollectionOnSnapshot';
 import { ProgressCircle } from '../components/ProgressCircle';
 
 export default function Appointments() {
-
     const { user } = useContext(AuthContext);
     const [filter, setFilter] = useState("Active");
     const [userError, setUserError] = useState('')
@@ -18,6 +17,33 @@ export default function Appointments() {
 
     //custom hook to setup a listener on the users appointments collection
     const { appointmentsData, isCollectionLoading, collectionError } = useCollectionOnSnapshot(`Users/${user.uid}/Appointments`, filter)
+
+    //checks in user in users and clinics appointments sub-collection
+    function handleUserCheckIn(status, userId, clinicId) {
+        //data to update checkin status with
+        var data = {
+            checkedIn: true,
+        }
+
+        if (status == "Active") {
+            updateDocumentGeneral(`Users/${userId}/Appointments`, `${clinicId}`, data)
+                .then(() => {
+                    console.log('User checked in in clinic sub-collection!');
+                })
+                .catch((e) => {
+                    console.log(e.message)
+                })
+            updateDocumentGeneral(`Clinics/${clinicId}/Appointments`, `${userId}`, data)
+                .then(() => {
+                    console.log('User checked in in users sub-collection!');
+                })
+                .catch((e) => {
+                    console.log(e.message)
+                })
+        } else {
+            console.log("Appointment is not active, therefore changes cannot be made")
+        }
+    }
 
     //deletes appointment from Users and Clinics Appointments subcollection
     //risk using the current approach that it will be deleted from one location and not the other
@@ -48,7 +74,9 @@ export default function Appointments() {
         data={appointmentsData}
         keyExtractor={(Item, index) => index.toString()}
         renderItem={({ item }) => (
-            <AppointmentCard clinicId={item.id} tester={item.calledBy} location={item.location} center={item.center} date={item.date} time={item.time} slot={item.slot} checkedIn={item.checkedIn} called={item.called} wasSeen={item.wasSeen} cancel={item.status == 'Active' ? cancelAppointment : () => console.log("no function passed")} status={item.status} />
+            <View style={AppointmentStyles.card}>
+                <AppointmentCard clinicId={item.id} tester={item.calledBy} location={item.location} center={item.center} date={item.date} time={item.time} slot={item.slot} checkedIn={item.checkedIn} called={item.called} wasSeen={item.wasSeen} cancel={item.status == 'Active' ? cancelAppointment : () => console.log("no function passed")} userCheckIn={() => handleUserCheckIn(item.status, user.uid, item.id)} status={item.status} />
+            </View>
         )}
     />
 
@@ -80,7 +108,10 @@ const AppointmentStyles = StyleSheet.create({
     },
     appointments: {
         width: '100%',
-        textAlign: 'justify'
+        textAlign: 'justify',
+    },
+    card: {
+        marginBottom: 5,
     },
     progress: {
         flex: 1,
