@@ -27,9 +27,11 @@ const AppStack = (props) => {
       initialRouteName='Home'
       screenOptions={{
         tabBarActiveTintColor: '#FC81E1',
-        headerStyle: { backgroundColor: netInfo.isInternetReachable ? '#B9E6FF' : '#F3F15C' },
+        // headerStyle: { backgroundColor: netInfo.isInternetReachable ? '#B9E6FF' : '#F3F15C' },
+        headerStyle: { backgroundColor: '#B9E6FF' },
         tabBarStyle: {
-          backgroundColor: netInfo.isInternetReachable ? '#B9E6FF' : '#F3F15C',
+          // backgroundColor: netInfo.isInternetReachable ? '#B9E6FF' : '#F3F15C',
+          backgroundColor: '#B9E6FF',
           height: 60,
           paddingTop: 0,
           paddingBottom: 5,

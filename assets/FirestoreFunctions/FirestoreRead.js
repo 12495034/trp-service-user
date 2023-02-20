@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import firestore from '@react-native-firebase/firestore';
 
 //fetch all documents in a collection, returns a promise

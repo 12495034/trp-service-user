@@ -1,0 +1,687 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders userCard component correctly with false values 1`] = `
+<View
+  style={
+    {
+      "borderRadius": 10,
+      "borderStyle": "solid",
+      "borderWidth": 1,
+      "flex": 1,
+      "marginBottom": 5,
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "padding": 10,
+      }
+    }
+  >
+    <Image
+      source={
+        {
+          "testUri": "../../../assets/images/userProfileDefault.jpeg",
+        }
+      }
+      style={
+        {
+          "height": 150,
+          "width": 150,
+        }
+      }
+    />
+  </View>
+  <View
+    style={
+      {
+        "flex": 1,
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "padding": 20,
+      }
+    }
+  >
+    <View>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Pronouns:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="titleLarge"
+      >
+        First Name:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Middle Name:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Last Name:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Email:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Email Verified:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Phone Number:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Date of Birth:
+      </Text>
+    </View>
+    <View>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        He/Him
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="titleLarge"
+      >
+        Gavin
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        James
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Davis
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        testEmail@Email.com
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        No
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        123456
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        1983-01-01
+      </Text>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`renders userCard component correctly wuth true values 1`] = `
+<View
+  style={
+    {
+      "borderRadius": 10,
+      "borderStyle": "solid",
+      "borderWidth": 1,
+      "flex": 1,
+      "marginBottom": 5,
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "padding": 10,
+      }
+    }
+  >
+    <Image
+      source={
+        {
+          "testUri": "../../../assets/images/userProfileDefault.jpeg",
+        }
+      }
+      style={
+        {
+          "height": 150,
+          "width": 150,
+        }
+      }
+    />
+  </View>
+  <View
+    style={
+      {
+        "flex": 1,
+        "flexDirection": "row",
+        "justifyContent": "space-between",
+        "padding": 20,
+      }
+    }
+  >
+    <View>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Pronouns:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="titleLarge"
+      >
+        First Name:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Middle Name:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Last Name:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Email:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Email Verified:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Phone Number:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Date of Birth:
+      </Text>
+    </View>
+    <View>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        He/Him
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="titleLarge"
+      >
+        Gavin
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        James
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Davis
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        testEmail@Email.com
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        Yes
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        123456
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+        variant="bodyMedium"
+      >
+        1983-01-01
+      </Text>
+    </View>
+  </View>
+</View>
+`;

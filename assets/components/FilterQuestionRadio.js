@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, StyleSheet, Text } from 'react-native';
+import React from 'react'
+import { View, StyleSheet } from 'react-native';
 import { RadioButton } from 'react-native-paper'
 
 export default function FilterQuestionRadio(props) {

@@ -2,12 +2,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
 import { AuthContext } from '../context/AuthProvider';
-
 import AuthStack from './AuthStack';
 import AppStack from './AppStack';
-
 import { View } from 'react-native';
 import { ProgressCircle } from '../components/ProgressCircle';
+
 
 const Routes = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -29,7 +28,7 @@ const Routes = () => {
 
   //Screen rendering 
   if (initializing) return <View style={{ flex:1, justifyContent: 'center', alignItems: 'center' }}><ProgressCircle /></View>;
-  
+
   return (
     //navigation container uses createnavigationcontainer ref to be able to 
     //retrieve route of stack navigator nested within tab navigator. This is to enable changes to be made to tab navigator

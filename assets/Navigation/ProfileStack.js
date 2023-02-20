@@ -1,9 +1,5 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
-import Book from '../screens/Book';
-import QuestionsScreen from '../screens/QuestionsScreen';
-import ClinicDetailsScreen from '../screens/ClinicDetailsScreen';
-import AppointmentConfirmation from '../screens/AppointmentConfirmation';
 import Profile from '../screens/Profile';
 import EditDetails from '../screens/EditDetails';
 

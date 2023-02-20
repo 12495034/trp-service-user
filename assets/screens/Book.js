@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 import CenterPicker from '../components/CenterPicker';
@@ -8,6 +8,8 @@ import LocationPicker from '../components/LocationPicker';
 import useCollection from '../CustomHooks/useCollection';
 import searchLogic from '../logicFunctions.js/searchLogic';
 import { ProgressCircle } from '../components/ProgressCircle';
+import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
+
 
 export default function Book({ navigation }) {
 
@@ -23,6 +25,8 @@ export default function Book({ navigation }) {
     const { collectionData: locationData, isCollectionLoading: isLocationLoaded, collectionError: locationError } = useCollection(`Location`)
     //retrieve centers collection data
     const { collectionData: centerData, isCollectionLoading: isCenterLoaded, collectionError: centerError } = useCollection(`Location/${chosenLocation}/Centers`, chosenLocation)
+
+    console.log(locationData)
 
     //resets all state related to search fields
     function clearSearchFields() {
@@ -77,26 +81,32 @@ export default function Book({ navigation }) {
         }
     }
 
-
-
     //Data Rendering
     const searchResults =
         <FlatList
             data={clinicList}
             keyExtractor={(Item, index) => index.toString()}
             renderItem={({ item }) => (
-                <ClinicCard id={item.id} status={item.clinicStatus} location={item.location} center={item.center} capacity={item.capacity} date={item.date} time={item.startTime} details={showClinicDetails} slots={item.slots} />
+                <ClinicCard 
+                id={item.id} 
+                status={item.clinicStatus} 
+                location={item.location} 
+                center={item.center} 
+                capacity={item.capacity} 
+                date={item.date} 
+                time={item.startTime} 
+                details={showClinicDetails} 
+                slots={formatSlotsData(item.slots,item.date).length} 
+                />
             )}
         />
 
     return (
         <View style={BookStyles.body}>
             <View style={BookStyles.inputOptions}>
-
                 <LocationPicker locationData={locationData} chosenLocation={chosenLocation} setChosenLocation={setChosenLocation} />
                 <CenterPicker chosenLocation={chosenLocation} centerData={centerData} chosenCenter={chosenCenter} setChosenCenter={setChosenCenter} />
                 <DatePicker chosenDate={chosenDate} setChosenDate={setChosenDate} />
-
                 <View style={BookStyles.searchButtons}>
                     <Button
                         style={{ width: '50%', borderBottomLeftRadius: 10, borderBottomRightRadius: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0 }}

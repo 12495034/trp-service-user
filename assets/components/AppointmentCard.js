@@ -1,23 +1,20 @@
-import React, { useContext } from 'react'
-import { View, StyleSheet, Pressable, Alert } from 'react-native'
+import React from 'react'
+import { View, StyleSheet, Pressable } from 'react-native'
 import CalledIcon from '../Icons/CalledIcon'
 import CheckInIcon from '../Icons/CheckInIcon'
 import TestCompleteIcon from '../Icons/TestCompleteIcon'
 import { AlertCancel } from '../commonFunctions/AlertCancel'
 import { Text } from 'react-native-paper';
-import canCancel from '../logicFunctions.js/canCancel'
 import { handleAlertInformation } from '../commonFunctions/Alerts'
 
 export default function AppointmentCard(props) {
-    var isCancellable = canCancel(new Date(), new Date(`${props.date}T${props.time}:00Z`))
-
-    return (
+       return (
         <Pressable
             style={({ pressed }) => [
                 { backgroundColor: pressed ? '#F7C3E9' : '#0000', borderRadius: 5 },
             ]}
             onLongPress={() => {
-                if (isCancellable) {
+                if (props.isCancellable) {
                     AlertCancel(
                         props.status,
                         props.checkedIn,

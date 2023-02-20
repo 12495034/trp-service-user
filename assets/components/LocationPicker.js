@@ -6,6 +6,7 @@ export default function LocationPicker(props) {
     return (
         <View style={styles.dropdown}>
             <ModalSelector
+                testID='modalSelector'
                 data={props.locationData}
                 keyExtractor={item => item.id}
                 labelExtractor={item => item.id}
@@ -13,6 +14,7 @@ export default function LocationPicker(props) {
                 accessible={true}
             >
                 <TextInput
+                    testID='selectedLocation'
                     style={{ backgroundColor: '#0000', color: 'black', height: 35 }}
                     editable={false}
                     placeholder="Choose a Location"

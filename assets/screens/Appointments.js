@@ -8,6 +8,7 @@ import { addSlotToMap, updateDocumentGeneral } from '../FirestoreFunctions/Fires
 import { deleteUserDocument } from '../FirestoreFunctions/FirestoreDelete';
 import useCollectionOnSnapshot from '../CustomHooks/useCollectionOnSnapshot';
 import { ProgressCircle } from '../components/ProgressCircle';
+import canCancel from '../logicFunctions.js/canCancel'
 
 export default function Appointments() {
     const { user } = useContext(AuthContext);
@@ -75,7 +76,20 @@ export default function Appointments() {
         keyExtractor={(Item, index) => index.toString()}
         renderItem={({ item }) => (
             <View style={AppointmentStyles.card}>
-                <AppointmentCard clinicId={item.id} tester={item.calledBy} location={item.location} center={item.center} date={item.date} time={item.time} slot={item.slot} checkedIn={item.checkedIn} called={item.called} wasSeen={item.wasSeen} cancel={item.status == 'Active' ? cancelAppointment : () => console.log("no function passed")} userCheckIn={() => handleUserCheckIn(item.status, user.uid, item.id)} status={item.status} />
+                <AppointmentCard 
+                clinicId={item.id} 
+                tester={item.calledBy} 
+                location={item.location} 
+                center={item.center} date={item.date} 
+                time={item.time} 
+                slot={item.slot} 
+                checkedIn={item.checkedIn} 
+                called={item.called} 
+                wasSeen={item.wasSeen} 
+                cancel={item.status == 'Active' ? cancelAppointment : () => console.log("no function passed")} 
+                userCheckIn={() => handleUserCheckIn(item.status, user.uid, item.id)} status={item.status} 
+                isCancellable={canCancel(new Date(), new Date(`${item.date}T${item.time}:00Z`))}
+                />
             </View>
         )}
     />

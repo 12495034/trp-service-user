@@ -19,10 +19,6 @@ export default function Login({ navigation }) {
         mode: 'onChange',
     });
 
-    function navigateTo(screen) {
-        navigation.navigate(screen)
-    }
-
     async function loginHandle(userName, password) {
         setError('')
         setLoginProcessing(true)
@@ -96,10 +92,11 @@ export default function Login({ navigation }) {
                             },
                         ]}
                     />
-                    {loginProcessing ? <View style={{alignItems:'center'}}><ProgressCircle /></View>
+                    {loginProcessing ? <View style={{ alignItems: 'center' }}><ProgressCircle /></View>
                         :
                         <View>
                             <Button
+                                testID='loginButton'
                                 style={{ width: '100%' }}
                                 labelStyle={{ fontSize: 15 }}
                                 color='lightgreen'
@@ -111,19 +108,21 @@ export default function Login({ navigation }) {
                             </Button>
                             <View style={LoginStyles.options}>
                                 <Button
+                                    testID='newAccountButton'
                                     style={{ width: '49%' }}
                                     labelStyle={{ fontSize: 12 }}
                                     color='pink'
                                     mode={'contained'}
-                                    onPress={() => navigateTo("Signup")}>
+                                    onPress={() => navigation.push('Signup')}>
                                     New Account
                                 </Button>
                                 <Button
+                                    testID='resetButton'
                                     style={{ width: '50%' }}
                                     labelStyle={{ fontSize: 12 }}
                                     color='orange'
                                     mode={'contained'}
-                                    onPress={() => navigateTo("Reset")}>
+                                    onPress={() => navigation.push('Reset')}>
                                     Reset Password
                                 </Button>
                             </View>

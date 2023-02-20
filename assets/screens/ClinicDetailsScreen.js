@@ -1,4 +1,4 @@
-import React, {useState, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 import * as Progress from 'react-native-progress';
@@ -65,13 +65,19 @@ export default function ClinicDetailsScreen({ route, navigation }) {
 
     //data rendering
     //format data taken from firestore into an array so that it can be rendered using a flatlist
-    const appointmentSlots = formatSlotsData(docData.slots,docData.date)
-
     var timeSlots = <FlatList
-        data={appointmentSlots}
+        data={formatSlotsData(docData.slots, docData.date)}
         keyExtractor={(Item, index) => index.toString()}
         renderItem={({ item }) => (
-            <AvailableSlotCard active={selectedSlot === item.slotid ? true : false} clinicId={clinicId} slotId={item.slotid} time={item.time} selectedTime={selectedTime} setSelectedTime={setSelectedTime} selectedSlot={selectedSlot} setSelectedSlot={setSelectedSlot} />
+            <AvailableSlotCard
+                active={selectedSlot === item.slotid ? true : false}
+                clinicId={clinicId}
+                slotId={item.slotid}
+                time={item.time}
+                selectedTime={selectedTime}
+                setSelectedTime={setSelectedTime}
+                selectedSlot={selectedSlot}
+                setSelectedSlot={setSelectedSlot} />
         )}
     />
 
@@ -131,7 +137,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
                                     removeSlotFromMap(selectedSlot, clinicId);
                                     confirmAppointment();
                                 }}>
-                                {netInfo.isInternetReachable? "Confirm Slot":"You are currently offline"}
+                                {netInfo.isInternetReachable ? "Confirm Slot" : "You are currently offline"}
                             </Button>
                         </View>
 

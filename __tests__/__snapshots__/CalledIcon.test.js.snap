@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`check render of called Icon for checked in and called 1`] = `
+<Text
+  allowFontScaling={false}
+  selectable={false}
+  style={
+    [
+      {
+        "color": "purple",
+        "fontSize": 25,
+      },
+      undefined,
+      {
+        "fontFamily": "Material Design Icons",
+        "fontStyle": "normal",
+        "fontWeight": "normal",
+      },
+      {},
+    ]
+  }
+>
+  󰂚
+</Text>
+`;
+
+exports[`check render of called Icon for checked in and not called 1`] = `
+<Text
+  allowFontScaling={false}
+  selectable={false}
+  style={
+    [
+      {
+        "color": "black",
+        "fontSize": 25,
+      },
+      undefined,
+      {
+        "fontFamily": "Material Design Icons",
+        "fontStyle": "normal",
+        "fontWeight": "normal",
+      },
+      {},
+    ]
+  }
+>
+  󰂜
+</Text>
+`;
+
+exports[`check render of called Icon for not checked in and not called 1`] = `null`;

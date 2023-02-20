@@ -1,20 +1,15 @@
 import * as React from 'react';
 import { Card, Text, Badge } from 'react-native-paper';
 import { StyleSheet, View, Pressable } from 'react-native';
-import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
 
 function ClinicCard(props) {
-
-    //count the number of slots available in the slots map
-    const slotsAvailable = formatSlotsData(props.slots, props.date).length
-
     return (
         <Pressable
             style={({ pressed }) => [
                 { backgroundColor: pressed ? '#F7C3E9' : '#0000', borderRadius: 5 },
             ]}
             //only allow clinics to be selected if they have appointment slots available
-            onPress={() => slotsAvailable == 0 ? null : props.details(props.id)}
+            onPress={() => props.slots == 0 ? null : props.details(props.id)}
         >
             <Card mode='outlined' style={styles.card}>
                 <Card.Title title={props.location} subtitle={props.center} />
@@ -26,8 +21,8 @@ function ClinicCard(props) {
                         <Badge
                             size={25}
                             visible={true}
-                            style={slotsAvailable == 0 ? { backgroundColor: 'red', } : { backgroundColor: 'green' }}
-                        >{slotsAvailable == 0 ? "Full" : slotsAvailable}</Badge>
+                            style={props.slots == 0 ? { backgroundColor: 'red', } : { backgroundColor: 'green' }}
+                        >{props.slots == 0 ? "Full" : props.slots}</Badge>
                     </View>
                 </Card.Content>
                 <Card.Actions>
@@ -36,8 +31,6 @@ function ClinicCard(props) {
         </Pressable>
     );
 }
-
-export default ClinicCard;
 
 const styles = StyleSheet.create({
     card: {
@@ -50,3 +43,5 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     }
 })
+
+export default ClinicCard;

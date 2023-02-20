@@ -1,0 +1,308 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders clinicCard component correctly 1`] = `
+<View
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onBlur={[Function]}
+  onClick={[Function]}
+  onFocus={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    [
+      {
+        "backgroundColor": "#0000",
+        "borderRadius": 5,
+      },
+    ]
+  }
+>
+  <View
+    collapsable={false}
+    style={
+      {
+        "backgroundColor": "#ffffff",
+        "borderColor": "rgba(0, 0, 0, 0.12)",
+        "borderRadius": 4,
+        "borderWidth": 1,
+        "elevation": 0,
+        "marginBottom": 2,
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "disabled": true,
+        }
+      }
+      accessible={true}
+      focusable={false}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "flexGrow": 1,
+          "flexShrink": 1,
+        }
+      }
+    >
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "paddingLeft": 16,
+            },
+            {
+              "minHeight": 72,
+            },
+            undefined,
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "flex": 1,
+                "flexDirection": "column",
+                "justifyContent": "center",
+              },
+            ]
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                },
+                {
+                  "textAlign": "left",
+                },
+                [
+                  {
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "rgba(0, 0, 0, 0.87)",
+                    "fontFamily": "System",
+                    "fontWeight": "500",
+                    "writingDirection": "ltr",
+                  },
+                  [
+                    {
+                      "fontSize": 20,
+                      "letterSpacing": 0.15,
+                      "lineHeight": 30,
+                      "marginVertical": 2,
+                    },
+                    [
+                      {
+                        "minHeight": 30,
+                        "paddingRight": 16,
+                      },
+                      {
+                        "marginBottom": 0,
+                      },
+                      undefined,
+                    ],
+                  ],
+                ],
+              ]
+            }
+          >
+            Belfast
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                },
+                {
+                  "textAlign": "left",
+                },
+                [
+                  {
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "rgba(0, 0, 0, 0.54)",
+                    "fontFamily": "System",
+                    "fontWeight": "400",
+                    "writingDirection": "ltr",
+                  },
+                  [
+                    {
+                      "fontSize": 12,
+                      "letterSpacing": 0.4,
+                      "lineHeight": 20,
+                      "marginVertical": 2,
+                    },
+                    [
+                      {
+                        "marginVertical": 0,
+                        "minHeight": 20,
+                        "paddingRight": 16,
+                      },
+                      undefined,
+                    ],
+                  ],
+                ],
+              ]
+            }
+          >
+            LGBT Center
+          </Text>
+        </View>
+        <View />
+      </View>
+      <View
+        style={
+          [
+            {
+              "paddingHorizontal": 16,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontFamily": "System",
+                "fontWeight": "400",
+              },
+              {
+                "textAlign": "left",
+              },
+              undefined,
+            ]
+          }
+          variant="titleMedium"
+        >
+          3000-01-01
+        </Text>
+        <Text
+          style={
+            [
+              {
+                "color": "#000000",
+                "fontFamily": "System",
+                "fontWeight": "400",
+              },
+              {
+                "textAlign": "left",
+              },
+              undefined,
+            ]
+          }
+          variant="titleLarge"
+        >
+          Start Time: 
+          18:00
+        </Text>
+        <View
+          style={
+            {
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+            }
+          }
+        >
+          <Text
+            style={
+              [
+                {
+                  "color": "#000000",
+                  "fontFamily": "System",
+                  "fontWeight": "400",
+                },
+                {
+                  "textAlign": "left",
+                },
+                undefined,
+              ]
+            }
+            variant="titleLarge"
+          >
+            Capacity: 
+            8
+          </Text>
+          <Text
+            collapsable={false}
+            numberOfLines={1}
+            style={
+              {
+                "alignSelf": "flex-end",
+                "backgroundColor": "green",
+                "borderRadius": 12.5,
+                "color": "#ffffff",
+                "fontFamily": "System",
+                "fontSize": 12.5,
+                "fontWeight": "400",
+                "height": 25,
+                "lineHeight": 12.5,
+                "minWidth": 25,
+                "opacity": 1,
+                "overflow": "hidden",
+                "paddingHorizontal": 4,
+                "textAlign": "center",
+                "textAlignVertical": "center",
+              }
+            }
+          >
+            8
+          </Text>
+        </View>
+      </View>
+      <View
+        index={2}
+        siblings={
+          [
+            "withTheme(Card.Title)",
+            "Card.Content",
+            "Card.Actions",
+          ]
+        }
+        style={
+          [
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+              "justifyContent": "flex-start",
+              "padding": 8,
+            },
+            undefined,
+          ]
+        }
+        total={3}
+      />
+    </View>
+  </View>
+</View>
+`;

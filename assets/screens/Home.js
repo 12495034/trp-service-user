@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { List } from 'react-native-paper';
 import { AuthContext } from '../context/AuthProvider';
-
 import { welcomeMessageHome1, welcomeMessageHome2 } from '../content/Message';
 
 export default function Home() {
@@ -24,7 +23,7 @@ export default function Home() {
     return (
         <View style={HomeStyles.body}>
             <ScrollView>
-                <Text style={HomeStyles.title}>Welcome {user.displayName}</Text>
+                <Text testID='WelcomeText' style={HomeStyles.title}>Welcome {user.displayName}</Text>
                 <Text style={HomeStyles.message}>{welcomeMessageHome1}</Text>
                 <Text style={HomeStyles.message}>{welcomeMessageHome2}</Text>
                 <List.Accordion

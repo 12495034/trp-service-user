@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { View, Text, StyleSheet, Pressable, Alert } from 'react-native'
+import React, { useContext, useState } from 'react'
+import { View, Text, StyleSheet, Alert } from 'react-native'
 import { Button } from 'react-native-paper';
 import { AuthContext } from '../context/AuthProvider';
 import UserCard from '../components/UserCard';
@@ -12,12 +12,9 @@ export default function Profile({ navigation }) {
     const [deleteAuthError, setDeleteAuthError] = useState('')
     const [deleteUserCollectionError, setDeleteUserCollectionError] = useState('')
     const [deleteUserDocError, setDeleteUserDocError] = useState('')
+    
     const { logOut, user, deleteUserAuth } = useContext(AuthContext);
     const { docData, isDocLoading, docError } = useDocOnSnapshot('Users', user.uid)
-
-    function navigateTo(screen) {
-        navigation.navigate(screen)
-    }
 
     async function handleLogOut() {
         await logOut()
@@ -108,6 +105,7 @@ export default function Profile({ navigation }) {
                         isAgreedTC={docData.isAgreedTC}
                     />
                     <Button
+                        testID='signOutButton'
                         style={{ width: '100%' }}
                         labelStyle={{ fontSize: 12 }}
                         color='green'
@@ -117,14 +115,16 @@ export default function Profile({ navigation }) {
                     </Button>
                     <View style={ProfileStyles.options}>
                         <Button
+                            testID='editDetailsButton'
                             style={{ width: '49%' }}
                             labelStyle={{ fontSize: 12 }}
                             color='orange'
                             mode={'contained'}
-                            onPress={() => navigateTo("Edit User Details")}>
+                            onPress={() => navigation.navigate("Edit User Details")}>
                             Edit details
                         </Button>
                         <Button
+                            testID='deleteAccountButton'
                             style={{ width: '49%', marginTop: 0 }}
                             labelStyle={{ fontSize: 12 }}
                             color='red'

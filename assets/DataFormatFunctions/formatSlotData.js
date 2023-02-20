@@ -21,7 +21,6 @@ export function formatSlotsData(slotsData, clinicDate) {
            
         }
         return appointmentList
-    } else { 
-
-    }
+    } 
 }
+
