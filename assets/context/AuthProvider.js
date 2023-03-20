@@ -25,15 +25,16 @@ export const AuthProvider = ({ children }) => {
                         LastName: data.lastname,
                         PhoneNumber: data.phonenumber,
                         dob: data.dob,
-                        Email: data.email,
+                        email: data.email,
                         isAgreedTC: data.isAgreedTC,
+                        emailOptIn: data.emailOptIn,
                         createdAt: firestore.Timestamp.fromDate(new Date()),
                     })
             })
             .then(async () => {
                 console.log("Updating user auth profile with display name")
                 await auth().currentUser.updateProfile({
-                    displayName: 'Gavin',
+                    displayName: `${data.firstname} ${data.lastname}`,
                 })
             })
             .then(async () => {

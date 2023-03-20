@@ -92,6 +92,7 @@ export default function Book({ navigation }) {
                 status={item.clinicStatus} 
                 location={item.location} 
                 center={item.center} 
+                addDetails={item.addDetails}
                 capacity={item.capacity} 
                 date={item.date} 
                 time={item.startTime} 

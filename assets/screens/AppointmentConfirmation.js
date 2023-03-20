@@ -24,6 +24,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
         date,
         location,
         center,
+        addDetails,
         selectedSlot,
         selectedTime,
         clinicAddress,
@@ -60,7 +61,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
             .then(() => {
                 console.log('Appointment added to clinic!');
                 //create new document in Users appointments subcollection
-                createDocument(`Users/${user.uid}/Appointments`, `${clinicId}`, userAppointmentData(selectedSlot, selectedTime, location, center, date))
+                createDocument(`Users/${user.uid}/Appointments`, `${clinicId}`, userAppointmentData(selectedSlot, selectedTime, location, center, addDetails, clinicAddress, clinicPostcode, date))
                     .then(() => {
                         console.log('Appointment added to user appointment history!');
                         //pop to top of stack
@@ -106,6 +107,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
                             <View style={AppointConfirmStyles.content}>
                                 <View style={AppointConfirmStyles.col1}>
                                     <Text style={AppointConfirmStyles.text}>Test Center: </Text>
+                                    <Text style={AppointConfirmStyles.text}>Additional Details: </Text>
                                     <Text style={AppointConfirmStyles.text}>Address: </Text>
                                     <Text style={AppointConfirmStyles.text}>Location: </Text>
                                     <Text style={AppointConfirmStyles.text}>Postcode: </Text>
@@ -115,6 +117,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
                                 </View>
                                 <View style={AppointConfirmStyles.col1}>
                                     <Text style={AppointConfirmStyles.text}>{center}</Text>
+                                    <Text style={AppointConfirmStyles.text}>{addDetails}</Text>
                                     <Text style={AppointConfirmStyles.text}>{clinicAddress}</Text>
                                     <Text style={AppointConfirmStyles.text}>{location}</Text>
                                     <Text style={AppointConfirmStyles.text}>{clinicPostcode}</Text>
@@ -131,7 +134,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
             </View>
             <View style={AppointConfirmStyles.timer}>
                 {/* //count down timer component can be commented in or out to turn this functionality on and off */}
-                <BgTimer timeLimit={timeLimit} callBack={cancelBookingRequest} />
+                {/* <BgTimer timeLimit={timeLimit} callBack={cancelBookingRequest} /> */}
             </View>
             <Text style={AppointConfirmStyles.error}>{error}</Text>
             <View style={AppointConfirmStyles.options}>

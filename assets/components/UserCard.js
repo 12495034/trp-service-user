@@ -14,20 +14,24 @@ export default function UserCard(props) {
                     <Text variant="titleLarge">First Name:</Text>
                     <Text variant="bodyMedium">Middle Name:</Text>
                     <Text variant="bodyMedium">Last Name:</Text>
-                    <Text variant="bodyMedium">Email:</Text>
-                    <Text variant="bodyMedium">Email Verified:</Text>
                     <Text variant="bodyMedium">Phone Number:</Text>
                     <Text variant="bodyMedium">Date of Birth:</Text>
+                    <Text variant="bodyMedium">Email:</Text>
+                    <Text variant="bodyMedium">Email Verified:</Text>
+                    <Text variant="bodyMedium">Notifications:</Text>
                 </View>
                 <View>
                     <Text variant="bodyMedium">{props.proNouns}</Text>
                     <Text variant="titleLarge">{props.firstName}</Text>
                     <Text variant="bodyMedium">{props.middleName}</Text>
                     <Text variant="bodyMedium">{props.lastName}</Text>
-                    <Text variant="bodyMedium">{props.email}</Text>
-                    <Text variant="bodyMedium">{props.emailVerified?"Yes":"No"}</Text>
                     <Text variant="bodyMedium">{props.phoneNumber}</Text>
                     <Text variant="bodyMedium">{props.dob}</Text>
+                    <Text variant="bodyMedium">{props.email}</Text>
+                    <Text variant="bodyMedium">{props.emailVerified?"Yes":"No"}</Text>
+                    <Text variant="bodyMedium">{props.emailOptIn=="checked"?"Yes":"No"}</Text>
+                    
+                    
                 </View>
             </View>
         </View>

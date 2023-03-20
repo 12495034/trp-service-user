@@ -5,6 +5,9 @@ import { FormBuilder } from 'react-native-paper-form-builder';
 import { useForm } from 'react-hook-form';
 import { Button, TextInput } from 'react-native-paper';
 import { ProgressCircle } from '../components/ProgressCircle';
+import { version } from 'react';
+
+
 
 export default function Login({ navigation }) {
 
@@ -46,6 +49,9 @@ export default function Login({ navigation }) {
                         source={require('../images/logo.png')}
                     />
                     <Text style={LoginStyles.headingStyle}>The Rainbow Project Rapid HIV & Syphillis Testing</Text>
+                  
+                <Text>Version: 1.0.0</Text>
+           
                 </View>
                 <Fragment>
                     <Text style={LoginStyles.error}>{error}</Text>
@@ -130,6 +136,7 @@ export default function Login({ navigation }) {
                 </Fragment>
 
             </ScrollView>
+            
         </View>
     );
 }

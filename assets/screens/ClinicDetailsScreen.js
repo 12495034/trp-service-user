@@ -14,6 +14,7 @@ import useDocOnSnapshot from '../CustomHooks/useDocOnSnapshot';
 import useFilteredCollection from '../CustomHooks/useFilteredCollection';
 
 import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
+import ClinicInformationCard from '../components/ClinicInformationCard';
 
 
 export default function ClinicDetailsScreen({ route, navigation }) {
@@ -41,6 +42,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
                 date: docData.date,
                 location: docData.location,
                 center: docData.center,
+                addDetails:docData.addDetails,
                 startTime: docData.startTime,
                 selectedSlot: selectedSlot,
                 selectedTime: selectedTime,
@@ -99,27 +101,14 @@ export default function ClinicDetailsScreen({ route, navigation }) {
                         :
                         <View>
                             {listenerError ? <Text style={ClinicDetailStyles.error}>{listenerError}</Text> : null}
-                            <View style={ClinicDetailStyles.content}>
-                                <View style={ClinicDetailStyles.col1}>
-                                    <Text>Test Center: </Text>
-                                    <Text>Address: </Text>
-                                    <Text>City: </Text>
-                                    <Text>Postcode: </Text>
-                                    <Text>Date: </Text>
-                                </View>
-                                <View style={ClinicDetailStyles.col2}>
-                                    <Text>{docData.center}</Text>
-                                    {filteredCollectionData.length == 1 ? <Text>{filteredCollectionData[0].line1}</Text> : null}
-                                    <Text>{docData.location}</Text>
-                                    {filteredCollectionData.length == 1 ? <Text>{filteredCollectionData[0].postcode}</Text> : null}
-                                    <Text>{docData.date}</Text>
-                                </View>
-                            </View>
+                            <ClinicInformationCard
+                                clinicData={docData}
+                                locationData={filteredCollectionData}
+                            />
 
                         </View>
                     }
                 </View>
-
                 {!isDocPresent ?
                     <View style={ClinicDetailStyles.appointmentSelection}>
                         <View style={ClinicDetailStyles.appointmentSlots}>
@@ -163,22 +152,7 @@ const ClinicDetailStyles = StyleSheet.create({
         width: '100%',
         marginBottom: 5,
     },
-    content: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderStyle: 'solid',
-        borderWidth: 1,
-        borderColor: 'black',
-        borderRadius: 5,
-        padding: 10,
-        backgroundColor: 'white'
-    },
-    col1: {
-        flexDirection: 'column'
-    },
-    col2: {
-        flexDirection: 'column'
-    },
+
     appointmentSelection: {
         flex: 1,
         width: '100%',

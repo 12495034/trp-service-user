@@ -32,13 +32,17 @@ export default function AppointmentCard(props) {
                 <View style={styles.col1}>
                     <Text>{props.location}</Text>
                     <Text>{props.center}</Text>
-                    <Text style={styles.hilight}>{props.tester}</Text>
+                    <Text>{props.addDetails}</Text>
+                    <Text>{props.clinicAddress}</Text>
+                    <Text>{props.clinicPostcode}</Text>
                 </View>
                 <View style={styles.col2}>
                     <Text>{props.date}</Text>
-                    <Text >{props.time}</Text>
-                    <Text>Slot: {props.slot}</Text>
+                    <Text >Slot {props.slot} @ {props.time}</Text>
+                    <Text style={styles.hilight}>Tester: {props.tester}</Text>
+                    <Text></Text>
                     <Text>{props.status}</Text>
+                    
                 </View>
                 <View style={styles.col3} onTouchStart={props.userCheckIn}>
                     <CheckInIcon checkedIn={props.checkedIn} />

@@ -80,7 +80,11 @@ export default function Appointments() {
                 clinicId={item.id} 
                 tester={item.calledBy} 
                 location={item.location} 
-                center={item.center} date={item.date} 
+                center={item.center} 
+                date={item.date} 
+                addDetails={item.addDetails}
+                clinicAddress = {item.clinicAddress}
+                clinicPostcode = {item.clinicPostcode}
                 time={item.time} 
                 slot={item.slot} 
                 checkedIn={item.checkedIn} 

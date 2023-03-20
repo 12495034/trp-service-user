@@ -21,10 +21,13 @@ export default function CreateAccount() {
             dob: '',
             phonenumber: '',
             password: '',
-            isAgreedTC: 'unchecked'
+            isAgreedTC: 'unchecked',
+            emailOptIn: 'unchecked'
         },
         mode: 'onChange',
     });
+
+    console.log("dob:",text)
 
     function handleCreateUser(data) {
         if (data.isAgreedTC == "checked") {
@@ -54,6 +57,31 @@ export default function CreateAccount() {
         return (
             <List.Item
                 title={'Agree to terms an conditions'}
+                left={() => (
+                    <Checkbox.Android
+                        status={field.value}
+                        onPress={() => {
+                            field.onChange(field.value === 'checked' ? 'unchecked' : 'checked');
+                        }}
+                    />
+                )}
+            />
+        );
+    }
+
+    function emailOptIn(props) {
+        const { name, rules, shouldUnregister, defaultValue, control } = props;
+        const { field } = useController({
+            name,
+            rules,
+            shouldUnregister,
+            defaultValue,
+            control,
+        });
+
+        return (
+            <List.Item
+                title={'Consent to Email Notifications'}
                 left={() => (
                     <Checkbox.Android
                         status={field.value}
@@ -260,6 +288,14 @@ export default function CreateAccount() {
                                     },
                                 },
                             },
+                            {
+                                name: 'emailOptIn',
+                                type: 'custom',
+                                JSX: emailOptIn,
+                                rules: {
+
+                                },
+                            },
                         ]}
                     />
                     <View>
@@ -297,7 +333,7 @@ const styles = StyleSheet.create({
         color: 'red',
         marginBottom: 10,
     },
-    datePicker:{
-        backgroundColor:'white'
+    datePicker: {
+        backgroundColor: 'white'
     }
 });

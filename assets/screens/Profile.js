@@ -15,6 +15,7 @@ export default function Profile({ navigation }) {
     
     const { logOut, user, deleteUserAuth } = useContext(AuthContext);
     const { docData, isDocLoading, docError } = useDocOnSnapshot('Users', user.uid)
+    console.log(docData)
 
     async function handleLogOut() {
         await logOut()
@@ -84,7 +85,7 @@ export default function Profile({ navigation }) {
 
     return (
         <View style={ProfileStyles.body}>
-            {isDocLoading ?
+            {false ?
                 <View>
                     <ProgressCircle />
                 </View>
@@ -99,10 +100,11 @@ export default function Profile({ navigation }) {
                         middleName={docData.MiddleName}
                         lastName={docData.LastName}
                         dob={docData.dob}
-                        email={docData.Email}
+                        email={docData.email}
                         emailVerified={user.emailVerified}
                         phoneNumber={docData.PhoneNumber}
                         isAgreedTC={docData.isAgreedTC}
+                        emailOptIn={docData.emailOptIn}
                     />
                     <Button
                         testID='signOutButton'

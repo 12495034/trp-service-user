@@ -9,7 +9,7 @@ export const cancelLimit = 24
 
 //default data used when creating a new appointment document in the Clinics Appointments subcollection
 export function clinicAppointmentData(selectedSlot, selectedTime) {
-    return  {
+    return {
         called: false,
         calledBy: "",
         checkedIn: false,
@@ -21,17 +21,20 @@ export function clinicAppointmentData(selectedSlot, selectedTime) {
 }
 
 //default data used when creating a new appointment document in the Users Appointments subcollection
-export function userAppointmentData(selectedSlot, selectedTime, location, center, date){
+export function userAppointmentData(selectedSlot, selectedTime, location, center, addDetails, clinicAddress, clinicPostcode, date) {
     return {
-            called: false,
-            calledBy: "",
-            checkedIn: false,
-            wasSeen: false,
-            location: location,
-            center: center,
-            slot: selectedSlot,
-            time: selectedTime,
-            date: date,
-            status: "Active"
+        called: false,
+        calledBy: "",
+        checkedIn: false,
+        wasSeen: false,
+        location: location,
+        center: center,
+        addDetails: addDetails,
+        clinicAddress: clinicAddress,
+        clinicPostcode: clinicPostcode,
+        slot: selectedSlot,
+        time: selectedTime,
+        date: date,
+        status: "Active"
     }
 }
