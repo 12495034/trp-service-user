@@ -38,3 +38,6 @@ export function userAppointmentData(selectedSlot, selectedTime, location, center
         status: "Active"
     }
 }
+
+export const radioButtonSelectColor = 'lightpink'
+export const progressBarColor = 'green'

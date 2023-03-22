@@ -5,7 +5,7 @@ import AppointmentCard from '../components/AppointmentCard';
 import FilterAppointmentStatus from '../components/FilterAppointmentStatus';
 import { AuthContext } from '../context/AuthProvider';
 import { addSlotToMap, updateDocumentGeneral } from '../FirestoreFunctions/FirestoreUpdate';
-import { deleteUserDocument } from '../FirestoreFunctions/FirestoreDelete';
+import { deleteDocument } from '../FirestoreFunctions/FirestoreDelete';
 import useCollectionOnSnapshot from '../CustomHooks/useCollectionOnSnapshot';
 import { ProgressCircle } from '../components/ProgressCircle';
 import canCancel from '../logicFunctions.js/canCancel'
@@ -50,10 +50,10 @@ export default function Appointments() {
     //risk using the current approach that it will be deleted from one location and not the other
     //improvement here would be to use batch write
     function cancelAppointment(slot, time, clinicId) {
-        deleteUserDocument(`Users/${user.uid}/Appointments`, clinicId)
+        deleteDocument(`Users/${user.uid}/Appointments`, clinicId)
             .then(() => {
                 console.log('Appointment deleted from users collection!');
-                deleteUserDocument(`Clinics/${clinicId}/Appointments`, user.uid)
+                deleteDocument(`Clinics/${clinicId}/Appointments`, user.uid)
                     .then(() => {
                         console.log('Appointment deleted from clinics collection!');
                         //add slot to map making it available to other users

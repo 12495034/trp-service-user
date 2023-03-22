@@ -9,7 +9,8 @@ import useCollection from '../CustomHooks/useCollection';
 import searchLogic from '../logicFunctions.js/searchLogic';
 import { ProgressCircle } from '../components/ProgressCircle';
 import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
-
+import { ProgressBar, MD3Colors } from 'react-native-paper';
+import { progressBarColor } from '../constants/Constants';
 
 export default function Book({ navigation }) {
 
@@ -25,8 +26,6 @@ export default function Book({ navigation }) {
     const { collectionData: locationData, isCollectionLoading: isLocationLoaded, collectionError: locationError } = useCollection(`Location`)
     //retrieve centers collection data
     const { collectionData: centerData, isCollectionLoading: isCenterLoaded, collectionError: centerError } = useCollection(`Location/${chosenLocation}/Centers`, chosenLocation)
-
-    console.log(locationData)
 
     //resets all state related to search fields
     function clearSearchFields() {
@@ -87,65 +86,71 @@ export default function Book({ navigation }) {
             data={clinicList}
             keyExtractor={(Item, index) => index.toString()}
             renderItem={({ item }) => (
-                <ClinicCard 
-                id={item.id} 
-                status={item.clinicStatus} 
-                location={item.location} 
-                center={item.center} 
-                addDetails={item.addDetails}
-                capacity={item.capacity} 
-                date={item.date} 
-                time={item.startTime} 
-                details={showClinicDetails} 
-                slots={formatSlotsData(item.slots,item.date).length} 
+                <ClinicCard
+                    id={item.id}
+                    status={item.clinicStatus}
+                    location={item.location}
+                    center={item.center}
+                    addDetails={item.addDetails}
+                    capacity={item.capacity}
+                    date={item.date}
+                    time={item.startTime}
+                    details={showClinicDetails}
+                    slots={formatSlotsData(item.slots, item.date).length}
                 />
             )}
         />
 
     return (
-        <View style={BookStyles.body}>
-            <View style={BookStyles.inputOptions}>
-                <LocationPicker locationData={locationData} chosenLocation={chosenLocation} setChosenLocation={setChosenLocation} />
-                <CenterPicker chosenLocation={chosenLocation} centerData={centerData} chosenCenter={chosenCenter} setChosenCenter={setChosenCenter} />
-                <DatePicker chosenDate={chosenDate} setChosenDate={setChosenDate} />
-                <View style={BookStyles.searchButtons}>
-                    <Button
-                        style={{ width: '50%', borderBottomLeftRadius: 10, borderBottomRightRadius: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
-                        labelStyle={{ fontSize: 12 }}
-                        color='#FFB9B9'
-                        mode={'contained'}
-                        onPress={() => onSearch('Clinics', chosenLocation, chosenCenter, chosenDate, "clinicStatus", "Active")}>
-                        Search
-                    </Button>
-                    <Button
-                        style={{ width: '50%', borderBottomLeftRadius: 0, borderBottomRightRadius: 10, borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
-                        labelStyle={{ fontSize: 12 }}
-                        color='#F9A8E7'
-                        mode={'contained'}
-                        onPress={() => clearSearchFields()}>
-                        Reset
-                    </Button>
+        <>
+            <View>
+                <ProgressBar progress={0.25} color={progressBarColor} />
+            </View>
+            <View style={BookStyles.body}>
+                <View style={BookStyles.inputOptions}>
+                    <LocationPicker locationData={locationData} chosenLocation={chosenLocation} setChosenLocation={setChosenLocation} />
+                    <CenterPicker chosenLocation={chosenLocation} centerData={centerData} chosenCenter={chosenCenter} setChosenCenter={setChosenCenter} />
+                    <DatePicker chosenDate={chosenDate} setChosenDate={setChosenDate} />
+                    <View style={BookStyles.searchButtons}>
+                        <Button
+                            style={{ width: '50%', borderBottomLeftRadius: 10, borderBottomRightRadius: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
+                            labelStyle={{ fontSize: 12 }}
+                            color='#FFB9B9'
+                            mode={'contained'}
+                            onPress={() => onSearch('Clinics', chosenLocation, chosenCenter, chosenDate, "clinicStatus", "Active")}>
+                            Search
+                        </Button>
+                        <Button
+                            style={{ width: '50%', borderBottomLeftRadius: 0, borderBottomRightRadius: 10, borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
+                            labelStyle={{ fontSize: 12 }}
+                            color='#F9A8E7'
+                            mode={'contained'}
+                            onPress={() => clearSearchFields()}>
+                            Reset
+                        </Button>
 
+                    </View>
+                </View>
+                <View style={BookStyles.mainContent}>
+                    {loading ?
+                        <View style={BookStyles.progress}>
+                            <ProgressCircle />
+                        </View>
+                        :
+                        <View>
+                            <View style={BookStyles.message}>
+                                {searchMessage}
+                                {locationError}
+                                {centerError}
+                            </View>
+                            <View>
+                                {searchResults}
+                            </View>
+                        </View>
+                    }
                 </View>
             </View>
-            <View style={BookStyles.mainContent}>
-                {loading ?
-                    <View style={BookStyles.progress}>
-                        <ProgressCircle />
-                    </View>
-                    :
-                    <View>
-                        <View style={BookStyles.message}>
-                            {searchMessage}
-                            {locationError}
-                            {centerError}
-                        </View>
-                        <View>
-                            {searchResults}
-                        </View>
-                    </View>}
-            </View>
-        </View>
+        </>
     );
 }
 

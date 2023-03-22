@@ -9,25 +9,14 @@ import { ProgressCircle } from '../components/ProgressCircle';
 
 
 const Routes = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { user, status } = useContext(AuthContext);
   const ref = createNavigationContainerRef();
 
-  const [initializing, setInitializing] = useState(true);
+  const [initializing, setInitializing] = useState(false);
   const [routeName, setRouteName] = useState();
 
-  const onAuthStateChanged = (user) => {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  };
-
-  //use effect contains listener to monitor user state changes
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber;
-  }, []);
-
   //Screen rendering 
-  if (initializing) return <View style={{ flex:1, justifyContent: 'center', alignItems: 'center' }}><ProgressCircle /></View>;
+  if (initializing) return <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><ProgressCircle /></View>;
 
   return (
     //navigation container uses createnavigationcontainer ref to be able to 
@@ -44,8 +33,8 @@ const Routes = () => {
         setRouteName(currentRouteName);
       }}>
 
-      {user ? <AppStack routeName={routeName} /> : <AuthStack />}
-
+      {user != null && status != "Suspended" ? <AppStack routeName={routeName} /> : <AuthStack />}
+      
     </NavigationContainer>
   );
 };

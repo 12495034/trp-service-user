@@ -1,11 +1,12 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 import FilterQuestionRadio from '../components/FilterQuestionRadio';
 import { Message1Question, Message3Question } from '../content/Message';
 import useFilteredCollection from '../CustomHooks/useFilteredCollection';
 import { ProgressCircle } from '../components/ProgressCircle';
-
+import { ProgressBar, MD3Colors } from 'react-native-paper';
+import { progressBarColor } from '../constants/Constants';
 
 export default function QuestionsScreen({ navigation }) {
 
@@ -40,16 +41,22 @@ export default function QuestionsScreen({ navigation }) {
     />
 
   return (
-    <View style={QuestionStyles.body}>
-      <View style={QuestionStyles.content}>
-        <Text style={QuestionStyles.message}>{Message1Question}</Text>
-        <Text style={QuestionStyles.message}>{Message3Question}</Text>
-        <FilterQuestionRadio radioValue={radioValue} setRadioValue={setRadioValue} />
-      </View>
+    <>
       <View>
-        {isFilteredCollectionLoading ? <View style={QuestionStyles.advice}><ProgressCircle /></View> : adviceMessage}
+        <ProgressBar progress={0} color={progressBarColor} />
       </View>
-    </View>
+      <View style={QuestionStyles.body}>
+
+        <View style={QuestionStyles.content}>
+          <Text style={QuestionStyles.message}>{Message1Question}</Text>
+          <Text style={QuestionStyles.message}>{Message3Question}</Text>
+          <FilterQuestionRadio radioValue={radioValue} setRadioValue={setRadioValue} />
+        </View>
+        <View>
+          {isFilteredCollectionLoading ? <View style={QuestionStyles.advice}><ProgressCircle /></View> : adviceMessage}
+        </View>
+      </View>
+    </>
   )
 }
 
@@ -73,10 +80,10 @@ const QuestionStyles = StyleSheet.create({
   advice: {
     padding: 15,
     justifyContent: 'center',
-    alignItems:'center',
+    alignItems: 'center',
   },
   adviceMessage: {
-    width:'100%',
+    width: '100%',
     color: 'darkblue',
     textAlign: 'justify',
     fontSize: 15,

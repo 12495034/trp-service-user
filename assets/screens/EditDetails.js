@@ -39,7 +39,7 @@ export default function EditDetails({ navigation }) {
                         MiddleName: documentSnapshot.data().MiddleName,
                         LastName: documentSnapshot.data().LastName,
                         dob: documentSnapshot.data().dob,
-                        Email: documentSnapshot.data().Email,
+                        Email: documentSnapshot.data().email,
                         PhoneNumber: documentSnapshot.data().PhoneNumber,
                     })
                 } else {

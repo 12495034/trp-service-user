@@ -8,17 +8,20 @@ export default function useDuplicateCheck(collection, docId) {
     const [docError, setDocError] = useState('');
 
     useEffect(() => {
+        console.log("hook collection:",collection)
         fetchCollectionDocuments(collection)
             .then(querySnapshot => {
                 querySnapshot.forEach(documentSnapshot => {
-                    console.log(documentSnapshot.id)
+                    console.log("user id in appointment:",documentSnapshot.id)
+                    console.log("user id:", docId)
                     if (documentSnapshot.id === docId) {
                         setIsDocPresent(true)
                     }
                 });
             })
             .catch((e) => {
-                console.log(e.message)
+                console.log("duplicate check custom hook")
+                console.log("error:",e.message)
             })
     }, [docId]);
 

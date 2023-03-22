@@ -15,6 +15,8 @@ import useFilteredCollection from '../CustomHooks/useFilteredCollection';
 
 import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
 import ClinicInformationCard from '../components/ClinicInformationCard';
+import { ProgressBar, MD3Colors } from 'react-native-paper';
+import { progressBarColor } from '../constants/Constants';
 
 
 export default function ClinicDetailsScreen({ route, navigation }) {
@@ -29,7 +31,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
 
     //custom hook to check if the user already has an appointment booked
     const { docData, isDocLoading: snapShotLoading, docError: listenerError } = useDocOnSnapshot(`Clinics`, clinicId)
-    const { isDocPresent, isDocLoading, docError } = useDuplicateCheck(`Clinics/${clinicId}/Appointments`, user.uid)
+    const { isDocPresent, isDocLoading, docError } = useDuplicateCheck(`Users/${user.uid}/Appointments`, clinicId)
     const { filteredCollectionData, isFilteredCollectionLoading, filteredCollectionError } = useFilteredCollection(`Location/${docData.location}/Centers`, 'name', '==', docData.center)
 
     //parameters passed to appointment confirmation screen, passed rather than re-read to minimise number of calls made to database
@@ -42,7 +44,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
                 date: docData.date,
                 location: docData.location,
                 center: docData.center,
-                addDetails:docData.addDetails,
+                addDetails: docData.addDetails,
                 startTime: docData.startTime,
                 selectedSlot: selectedSlot,
                 selectedTime: selectedTime,
@@ -85,55 +87,62 @@ export default function ClinicDetailsScreen({ route, navigation }) {
 
     if (user.emailVerified) {
         return (
-            <View style={ClinicDetailStyles.body}>
-                <View style={ClinicDetailStyles.clinicInformation}>
-                    {isFilteredCollectionLoading ?
-                        <View style={ClinicDetailStyles.progress}>
-                            <Progress.Circle
-                                size={60}
-                                indeterminate={true}
-                                endAngle={0.6}
-                                animated={true}
-                                color={'red'}
-                                borderColor={'red'}
-                                showsText={true} />
+            <>
+                <View>
+                    <ProgressBar progress={0.50} color={progressBarColor} />
+                </View>
+
+                <View style={ClinicDetailStyles.body}>
+
+                    <View style={ClinicDetailStyles.clinicInformation}>
+                        {isFilteredCollectionLoading ?
+                            <View style={ClinicDetailStyles.progress}>
+                                <Progress.Circle
+                                    size={60}
+                                    indeterminate={true}
+                                    endAngle={0.6}
+                                    animated={true}
+                                    color={'red'}
+                                    borderColor={'red'}
+                                    showsText={true} />
+                            </View>
+                            :
+                            <View>
+                                {listenerError ? <Text style={ClinicDetailStyles.error}>{listenerError}</Text> : null}
+                                <ClinicInformationCard
+                                    clinicData={docData}
+                                    locationData={filteredCollectionData}
+                                />
+
+                            </View>
+                        }
+                    </View>
+                    {!isDocPresent ?
+                        <View style={ClinicDetailStyles.appointmentSelection}>
+                            <View style={ClinicDetailStyles.appointmentSlots}>
+                                {timeSlots}
+                            </View>
+                            {error ? <Text style={ClinicDetailStyles.error}>{error}</Text> : null}
+                            <View style={ClinicDetailStyles.Button}>
+                                <Button
+                                    style={{ width: '100%' }}
+                                    labelStyle={{ fontSize: 12 }}
+                                    color='pink'
+                                    mode={'contained'}
+                                    disabled={netInfo.isInternetReachable ? false : true}
+                                    onPress={() => {
+                                        removeSlotFromMap(selectedSlot, clinicId);
+                                        confirmAppointment();
+                                    }}>
+                                    {netInfo.isInternetReachable ? "Confirm Slot" : "You are currently offline"}
+                                </Button>
+                            </View>
+
                         </View>
                         :
-                        <View>
-                            {listenerError ? <Text style={ClinicDetailStyles.error}>{listenerError}</Text> : null}
-                            <ClinicInformationCard
-                                clinicData={docData}
-                                locationData={filteredCollectionData}
-                            />
-
-                        </View>
-                    }
+                        <View><Text style={ClinicDetailStyles.error}>You currently have an appointment booked for this clinic. To change your're appointment time you must first cancel your current appointment</Text></View>}
                 </View>
-                {!isDocPresent ?
-                    <View style={ClinicDetailStyles.appointmentSelection}>
-                        <View style={ClinicDetailStyles.appointmentSlots}>
-                            {timeSlots}
-                        </View>
-                        {error ? <Text style={ClinicDetailStyles.error}>{error}</Text> : null}
-                        <View style={ClinicDetailStyles.Button}>
-                            <Button
-                                style={{ width: '100%' }}
-                                labelStyle={{ fontSize: 12 }}
-                                color='pink'
-                                mode={'contained'}
-                                disabled={netInfo.isInternetReachable ? false : true}
-                                onPress={() => {
-                                    removeSlotFromMap(selectedSlot, clinicId);
-                                    confirmAppointment();
-                                }}>
-                                {netInfo.isInternetReachable ? "Confirm Slot" : "You are currently offline"}
-                            </Button>
-                        </View>
-
-                    </View>
-                    :
-                    <View><Text style={ClinicDetailStyles.error}>You currently have an appointment booked for this clinic. To change your're appointment time you must first cancel your current appointment</Text></View>}
-            </View>
+            </>
         )
     } else {
         return (

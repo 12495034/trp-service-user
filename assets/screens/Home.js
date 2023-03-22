@@ -6,9 +6,12 @@ import { welcomeMessageHome1, welcomeMessageHome2 } from '../content/Message';
 
 export default function Home() {
 
-    const { user} = useContext(AuthContext);
+    const { user, role, status} = useContext(AuthContext);
     const [expandedBooking, setExpandedBooking] = useState(false);
     const [expandedAtClinic, setExpandedAtClinic] = useState(false);
+
+    console.log("role:", role)
+    console.log("status:", status)
 
     //state set to close one accordion if another is opened to limit information overload
     const handlePressBooking = () => {

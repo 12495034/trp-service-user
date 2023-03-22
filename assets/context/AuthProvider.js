@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
@@ -6,6 +6,31 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [role, setRole] = useState(null);
+    const [status, setStatus] = useState(null);
+
+    async function onAuthStateChanged(user) {
+        if (user) {
+            setUser(user)
+            //retrieves the custom claims role and status
+            await auth().currentUser.getIdTokenResult()
+                .then((idTokenResult) => {
+                    setRole(idTokenResult.claims.role)
+                    setStatus(idTokenResult.claims.accountStatus)
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } else {
+            setUser(null)
+        }
+    }
+
+    //use effect contains listener to monitor user state changes
+    useEffect(() => {
+        const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+        return subscriber;
+    }, []);
 
     async function signIn(email, password) {
         console.log("signIn function running")
@@ -72,7 +97,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, setUser, signIn, createUser, logOut, reset, deleteUserAuth, verificationEmail, offlineMode }}>
+        <AuthContext.Provider value={{ user, role, status, signIn, createUser, logOut, reset, deleteUserAuth, verificationEmail, offlineMode }}>
             {children}
         </AuthContext.Provider>
     );

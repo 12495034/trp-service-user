@@ -12,6 +12,8 @@ import { handleAlertDecision } from '../commonFunctions/Alerts';
 import { createDocument } from '../FirestoreFunctions/FirestoreCreate';
 import { clinicAppointmentData, userAppointmentData } from '../constants/Constants';
 import { useNetInfo } from '@react-native-community/netinfo'
+import { ProgressBar, MD3Colors } from 'react-native-paper';
+import { progressBarColor } from '../constants/Constants';
 
 export default function AppointmentConfirmation({ route, navigation }) {
 
@@ -89,79 +91,85 @@ export default function AppointmentConfirmation({ route, navigation }) {
     }
 
     return (
-        <View style={AppointConfirmStyles.body}>
-            <View style={AppointConfirmStyles.clinicInformation}>
-                {loading ?
-                    <View>
-                        <Progress.Circle
-                            size={60}
-                            indeterminate={true}
-                            endAngle={0.6}
-                            animated={true}
-                            color={'red'}
-                            borderColor={'red'}
-                            showsText={true} />
-                    </View> :
-                    <SafeAreaView>
-                        <View style={AppointConfirmStyles.main}>
-                            <View style={AppointConfirmStyles.content}>
-                                <View style={AppointConfirmStyles.col1}>
-                                    <Text style={AppointConfirmStyles.text}>Test Center: </Text>
-                                    <Text style={AppointConfirmStyles.text}>Additional Details: </Text>
-                                    <Text style={AppointConfirmStyles.text}>Address: </Text>
-                                    <Text style={AppointConfirmStyles.text}>Location: </Text>
-                                    <Text style={AppointConfirmStyles.text}>Postcode: </Text>
-                                    <Text style={AppointConfirmStyles.text}>Date: </Text>
-                                    <Text style={AppointConfirmStyles.text}>Appointment Time: </Text>
-                                    <Text style={AppointConfirmStyles.text}>Slot Number: </Text>
-                                </View>
-                                <View style={AppointConfirmStyles.col1}>
-                                    <Text style={AppointConfirmStyles.text}>{center}</Text>
-                                    <Text style={AppointConfirmStyles.text}>{addDetails}</Text>
-                                    <Text style={AppointConfirmStyles.text}>{clinicAddress}</Text>
-                                    <Text style={AppointConfirmStyles.text}>{location}</Text>
-                                    <Text style={AppointConfirmStyles.text}>{clinicPostcode}</Text>
-                                    <Text style={AppointConfirmStyles.text}>{date}</Text>
-                                    <Text style={AppointConfirmStyles.text}>{selectedTime}</Text>
-                                    <Text style={AppointConfirmStyles.text}>{selectedSlot}</Text>
+        <>
+            <View>
+                <ProgressBar progress={0.75} color={progressBarColor} />
+            </View>
+
+            <View style={AppointConfirmStyles.body}>
+                <View style={AppointConfirmStyles.clinicInformation}>
+                    {loading ?
+                        <View>
+                            <Progress.Circle
+                                size={60}
+                                indeterminate={true}
+                                endAngle={0.6}
+                                animated={true}
+                                color={'red'}
+                                borderColor={'red'}
+                                showsText={true} />
+                        </View> :
+                        <SafeAreaView>
+                            <View style={AppointConfirmStyles.main}>
+                                <View style={AppointConfirmStyles.content}>
+                                    <View style={AppointConfirmStyles.col1}>
+                                        <Text style={AppointConfirmStyles.text}>Test Center: </Text>
+                                        <Text style={AppointConfirmStyles.text}>Additional Details: </Text>
+                                        <Text style={AppointConfirmStyles.text}>Address: </Text>
+                                        <Text style={AppointConfirmStyles.text}>Location: </Text>
+                                        <Text style={AppointConfirmStyles.text}>Postcode: </Text>
+                                        <Text style={AppointConfirmStyles.text}>Date: </Text>
+                                        <Text style={AppointConfirmStyles.text}>Appointment Time: </Text>
+                                        <Text style={AppointConfirmStyles.text}>Slot Number: </Text>
+                                    </View>
+                                    <View style={AppointConfirmStyles.col1}>
+                                        <Text style={AppointConfirmStyles.text}>{center}</Text>
+                                        <Text style={AppointConfirmStyles.text}>{addDetails}</Text>
+                                        <Text style={AppointConfirmStyles.text}>{clinicAddress}</Text>
+                                        <Text style={AppointConfirmStyles.text}>{location}</Text>
+                                        <Text style={AppointConfirmStyles.text}>{clinicPostcode}</Text>
+                                        <Text style={AppointConfirmStyles.text}>{date}</Text>
+                                        <Text style={AppointConfirmStyles.text}>{selectedTime}</Text>
+                                        <Text style={AppointConfirmStyles.text}>{selectedSlot}</Text>
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                    </SafeAreaView>}
-            </View>
-            <View style={AppointConfirmStyles.message}>
-                <Text style={AppointConfirmStyles.text}>{appointmentConfirmation1}</Text>
-            </View>
-            <View style={AppointConfirmStyles.timer}>
-                {/* //count down timer component can be commented in or out to turn this functionality on and off */}
-                {/* <BgTimer timeLimit={timeLimit} callBack={cancelBookingRequest} /> */}
-            </View>
-            <Text style={AppointConfirmStyles.error}>{error}</Text>
-            <View style={AppointConfirmStyles.options}>
-                <Button
-                    style={{ width: '49%' }}
-                    labelStyle={{ fontSize: 12 }}
-                    color='green'
-                    mode={'contained'}
-                    disabled={netInfo.isInternetReachable ? false : true}
-                    onPress={() => {
-                        createNewAppointment()
-                    }}>
-                    Submit Request
-                </Button>
-                <Button
-                    style={{ width: '49%' }}
-                    labelStyle={{ fontSize: 12 }}
-                    color='red'
-                    mode={'contained'}
-                    onPress={() => {
-                        handleAlertDecision(BookingCancelAlertTitle, BookingCancelAlertBody, "Yes", "No", cancelBookingRequest, null
-                        )
-                    }}>
-                    Cancel request
-                </Button>
-            </View>
-        </View >
+                        </SafeAreaView>}
+                </View>
+                <View style={AppointConfirmStyles.message}>
+                    <Text style={AppointConfirmStyles.text}>{appointmentConfirmation1}</Text>
+                </View>
+                <View style={AppointConfirmStyles.timer}>
+                    {/* //count down timer component can be commented in or out to turn this functionality on and off */}
+                    {/* <BgTimer timeLimit={timeLimit} callBack={cancelBookingRequest} /> */}
+                </View>
+                <Text style={AppointConfirmStyles.error}>{error}</Text>
+                <View style={AppointConfirmStyles.options}>
+                    <Button
+                        style={{ width: '49%' }}
+                        labelStyle={{ fontSize: 12 }}
+                        color='green'
+                        mode={'contained'}
+                        disabled={netInfo.isInternetReachable ? false : true}
+                        onPress={() => {
+                            createNewAppointment()
+                        }}>
+                        Finish Booking
+                    </Button>
+                    <Button
+                        style={{ width: '49%' }}
+                        labelStyle={{ fontSize: 12 }}
+                        color='red'
+                        mode={'contained'}
+                        onPress={() => {
+                            handleAlertDecision(BookingCancelAlertTitle, BookingCancelAlertBody, "Yes", "No", cancelBookingRequest, null
+                            )
+                        }}>
+                        Cancel Booking
+                    </Button>
+                </View>
+            </View >
+        </>
     )
 }
 

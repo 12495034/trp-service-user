@@ -1,13 +1,13 @@
 //firestore delete functions
 import firestore from '@react-native-firebase/firestore';
 
-export async function deleteUserSubcollection(userid) {
-    console.log("deleting user appointments sub-collection")
-    firestore().collection(`Users/${userid}/Appointments`).get()
+export async function deleteSubcollection(collectionName) {
+    console.log("deleting sub-collection:", collectionName)
+    return firestore().collection(collectionName).get()
 }
 
-export async function deleteUserDocument(collection, docId) {
-    console.log("deleting document")
+export async function deleteDocument(collection, docId) {
+    console.log("deleting document:", docId)
     return firestore().collection(`${collection}`).doc(`${docId}`).delete()
 }
 

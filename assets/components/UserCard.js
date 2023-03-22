@@ -5,33 +5,40 @@ import { Text } from 'react-native-paper';
 export default function UserCard(props) {
     return (
         <View style={UserCardStyles.body}>
-            <View style={UserCardStyles.image}>
-                <Image style={{ height: 150, width: 150 }} source={require('../images/userProfileDefault.jpeg')} />
-            </View>
+            <View style={UserCardStyles.title}>
+                {/* <Image style={{ height: 50, width: 50 }} source={require('../images/userProfileDefault.jpeg')} /> */}
+                <Text style={UserCardStyles.titleText}>{props.email}</Text>
+            </View> 
             <View style={UserCardStyles.userInfo}>
                 <View>
-                    <Text variant="bodyMedium">Pronouns:</Text>
-                    <Text variant="titleLarge">First Name:</Text>
-                    <Text variant="bodyMedium">Middle Name:</Text>
-                    <Text variant="bodyMedium">Last Name:</Text>
-                    <Text variant="bodyMedium">Phone Number:</Text>
-                    <Text variant="bodyMedium">Date of Birth:</Text>
-                    <Text variant="bodyMedium">Email:</Text>
-                    <Text variant="bodyMedium">Email Verified:</Text>
-                    <Text variant="bodyMedium">Notifications:</Text>
+                    <Text style={UserCardStyles.detailText}>Pronouns:</Text>
+                    <Text style={UserCardStyles.detailText}>First Name:</Text>
+                    <Text style={UserCardStyles.detailText}>Middle Name:</Text>
+                    <Text style={UserCardStyles.detailText}>Last Name:</Text>
+                    <Text style={UserCardStyles.detailText}>Phone Number:</Text>
+                    <Text style={UserCardStyles.detailText}>Date of Birth:</Text>
+                    <Text style={UserCardStyles.detailText}>Email Verified:</Text>
+                    <Text style={UserCardStyles.detailText}>Agreed to T&C:</Text>
+                    <Text style={UserCardStyles.detailText}>Created On:</Text>
+                    <Text style={UserCardStyles.detailText}>Notifications:</Text>
+                    <Text style={UserCardStyles.detailText}>Status:</Text>
+                    <Text style={UserCardStyles.detailText}>Role:</Text>
                 </View>
                 <View>
-                    <Text variant="bodyMedium">{props.proNouns}</Text>
-                    <Text variant="titleLarge">{props.firstName}</Text>
-                    <Text variant="bodyMedium">{props.middleName}</Text>
-                    <Text variant="bodyMedium">{props.lastName}</Text>
-                    <Text variant="bodyMedium">{props.phoneNumber}</Text>
-                    <Text variant="bodyMedium">{props.dob}</Text>
-                    <Text variant="bodyMedium">{props.email}</Text>
-                    <Text variant="bodyMedium">{props.emailVerified?"Yes":"No"}</Text>
-                    <Text variant="bodyMedium">{props.emailOptIn=="checked"?"Yes":"No"}</Text>
-                    
-                    
+                    <Text style={UserCardStyles.detailText}>{props.proNouns}</Text>
+                    <Text style={UserCardStyles.detailText}>{props.firstName}</Text>
+                    <Text style={UserCardStyles.detailText}>{props.middleName}</Text>
+                    <Text style={UserCardStyles.detailText}>{props.lastName}</Text>
+                    <Text style={UserCardStyles.detailText}>{props.phoneNumber}</Text>
+                    <Text style={UserCardStyles.detailText}>{props.dob}</Text>
+                    <Text style={UserCardStyles.detailText}>{props.emailVerified ? "Yes" : "No"}</Text>
+                    <Text style={UserCardStyles.detailText}>{props.isAgreedTC}</Text>
+                    <Text style={UserCardStyles.detailText}>{props.creationDate}</Text>
+                    <Text style={UserCardStyles.detailText}>{props.emailOptIn == "checked" ? "Yes" : "No"}</Text>
+                    <Text style={UserCardStyles.detailText}>{props.status}</Text>
+                    <Text style={UserCardStyles.detailText}>{props.role}</Text>
+
+
                 </View>
             </View>
         </View>
@@ -45,7 +52,7 @@ const UserCardStyles = StyleSheet.create({
         borderWidth: 1,
         borderStyle: 'solid',
         borderRadius: 10,
-        marginBottom:5,
+        marginBottom: 5,
     },
     image: {
         flex: 1,
@@ -58,5 +65,21 @@ const UserCardStyles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 20,
+    },
+    title: {
+        padding: 20,
+    },
+    titleText: {
+        textAlign:'center',
+        fontSize:20,
+        color:'black',
+        backgroundColor:'#F2D6F3',
+        padding:10,
+        borderRadius:5,  
+    },
+    detailText: {
+        fontSize:15,
+        paddingBottom:2,
+        color:'black', 
     }
 })
