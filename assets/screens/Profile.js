@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Alert } from 'react-native'
 import { Button } from 'react-native-paper';
 import { AuthContext } from '../context/AuthProvider';
 import UserCard from '../components/UserCard';
-import { deleteSubcollection, deleteDocument } from '../FirestoreFunctions/FirestoreDelete';
 import useDocOnSnapshot from '../CustomHooks/useDocOnSnapshot';
 import { ProgressCircle } from '../components/ProgressCircle';
 import { convertFirestoreTimeStamp } from '../SpecialFunctions/convertFirestoreTimeStamp';
@@ -11,15 +10,9 @@ import { convertFirestoreTimeStamp } from '../SpecialFunctions/convertFirestoreT
 export default function Profile({ navigation }) {
 
     const [deleteAuthError, setDeleteAuthError] = useState('')
-    const [deleteCollectionError, setDeleteCollectionError] = useState('')
-    const [deleteUserDocError, setDeleteUserDocError] = useState('')
 
     const { logOut, user, role, status, deleteUserAuth } = useContext(AuthContext);
-    const { docData, isDocLoading, docError } = useDocOnSnapshot('Users', user.uid)
-    console.log(user)
-    console.log("Role:", role)
-    console.log("Status:", status)
-    //console.log(docData)
+    const { docData, isDocLoading, docError } = useDocOnSnapshot('Users', user.uid, user)
 
     async function handleLogOut() {
         await logOut()
@@ -32,37 +25,10 @@ export default function Profile({ navigation }) {
     }
 
     async function handleDeleteUser(userId) {
-        //delete firestore subcollections and user documents
-        //firestore security rules allow only users with an id matching the document to perform CRUD operations
-        //delete user authorisation
-        await deleteSubcollection(`Users/${userId}/Appointments`)
-            .then((querySnapshot) => {
-                Promise.all(querySnapshot.docs.map((d) => d.ref.delete()));
-                console.log("All appointments deleted")
-            })
-            .catch((e) => {
-                console.log(e.message)
-                setDeleteCollectionError(e.message)
-            })
-        await deleteDocument(`Users/${userId}/Restricted`, 'Details')
-            .then(() => {
-                console.log("Restricted details deleted")
-            })
-            .catch((e) => {
-                console.log(e.message)
-                setDeleteUserDocError(e.message)
-            })
-        await deleteDocument("Users", userId)
-            .then(() => {
-                console.log("User document deleted")
-            })
-            .catch((e) => {
-                console.log(e.message)
-                setDeleteUserDocError(e.message)
-            })
+        //cloud function handles the deletion of user data in firestore when triggered by User deletion
         await deleteUserAuth()
             .then(() => {
-                console.log("All user delete operations complete")
+                console.log("User Authentication deleted at users request")
             })
             .catch((e) => {
                 console.log(e.message)
@@ -104,8 +70,6 @@ export default function Profile({ navigation }) {
                 :
                 <>
                     {deleteAuthError ? <Text>{deleteAuthError}</Text> : null}
-                    {deleteCollectionError ? <Text>{deleteCollectionError}</Text> : null}
-                    {deleteUserDocError ? <Text>{deleteUserDocError}</Text> : null}
                     <UserCard
                         status={status}
                         role={role}
@@ -119,7 +83,7 @@ export default function Profile({ navigation }) {
                         phoneNumber={docData.PhoneNumber}
                         isAgreedTC={docData.isAgreedTC}
                         emailOptIn={docData.emailOptIn}
-                        creationDate = {convertFirestoreTimeStamp(docData.createdAt)}
+                        creationDate={convertFirestoreTimeStamp(docData.createdAt)}
                     />
                     <Button
                         testID='signOutButton'

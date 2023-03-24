@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
         if (user) {
             setUser(user)
             //retrieves the custom claims role and status
-            await auth().currentUser.getIdTokenResult()
+            await auth().currentUser.getIdTokenResult(true)
                 .then((idTokenResult) => {
                     setRole(idTokenResult.claims.role)
                     setStatus(idTokenResult.claims.accountStatus)
@@ -65,10 +65,18 @@ export const AuthProvider = ({ children }) => {
             .then(async () => {
                 //verification email sent following account signup, this will be available in the metadata
                 console.log("Sending verification email to users account")
-                verificationEmail()
+                await verificationEmail()
             })
             .catch((e) => {
                 return Promise.reject(e)
+            })
+            
+        await logOut()
+            .then(() => {
+                console.log("Logging out to refresh custom claims")
+            })
+            .catch((error) => {
+                console.log(error.message)
             })
     }
 

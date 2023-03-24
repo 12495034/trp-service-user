@@ -1,27 +1,23 @@
 import React from 'react'
 import { StyleSheet, View, TextInput } from 'react-native'
 import ModalSelector from 'react-native-modal-selector'
+import useDoc from '../CustomHooks/useDoc'
 
 export default function FilterAppointmentStatus(props) {
 
-    const data = [
-        //this data should be compiled from the firestore database
-        { key: 1, label: "Active" },
-        { key: 2, label: "Attended" },
-        { key: 3, label: "Un-Attended" },
-        { key: 4, label: "Clinic Cancelled" },
-    ]
+    const { docData, isDocLoading, docError } = useDoc('Supporting', 'Data', null)
+    console.log(docData.appointmentStatus)
     return (
         <View style={styles.dropdown}>
             <ModalSelector
-                data={data}
-                initValue="Choose a Location"
+                data={docData.appointmentStatus}
+                labelExtractor={item => item.label}
                 onChange={filter => props.setFilter(filter.label)}
                 accessible={true}
             >
                 <TextInput
                     style={{ backgroundColor: '#0000', color:'black', height: 35 }}
-                    editable={false}
+                    editable={true}
                     value={props.filter} />
             </ModalSelector>
 
@@ -38,6 +34,6 @@ const styles = StyleSheet.create({
         borderColor: 'purple',
         borderRadius: 8,
         width:'100%',
-        marginBottom:10,
+        marginBottom:5,
     }
 })

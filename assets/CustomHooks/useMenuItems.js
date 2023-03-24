@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { fetchDocumentData } from '../FirestoreFunctions/FirestoreRead';
 
-export default function useDoc(collection, doc, dependency) {
-    const [docData, setDocData] = useState({});
+export default function useMenuItems(collection, doc, field) {
+    //Hook state
+    const [docData, setDocData] = useState([]);
     const [isDocLoading, setIsDocLoading] = useState(true);
     const [docError, setDocError] = useState('');
 
@@ -21,11 +22,8 @@ export default function useDoc(collection, doc, dependency) {
                     setDocError(e.message)
                     setIsDocLoading(false)
                 })
-                console.log("Getting data")
-        } else { 
-            console.log("Missed")
         }
-    }, [dependency]);
+    }, []);
 
     return {
         docData,

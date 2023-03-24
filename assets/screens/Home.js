@@ -8,7 +8,7 @@ export default function Home() {
 
     const { user, role, status} = useContext(AuthContext);
     const [expandedBooking, setExpandedBooking] = useState(false);
-    const [expandedAtClinic, setExpandedAtClinic] = useState(false);
+    // const [expandedAtClinic, setExpandedAtClinic] = useState(false);
 
     console.log("role:", role)
     console.log("status:", status)
@@ -18,10 +18,10 @@ export default function Home() {
         setExpandedBooking(!expandedBooking)
         setExpandedAtClinic(false)
     };
-    const handlePressAtClinic = () => {
-        setExpandedAtClinic(!expandedAtClinic)
-        setExpandedBooking(false)
-    };
+    // const handlePressAtClinic = () => {
+    //     setExpandedAtClinic(!expandedAtClinic)
+    //     setExpandedBooking(false)
+    // };
 
     return (
         <View style={HomeStyles.body}>
@@ -64,7 +64,7 @@ export default function Home() {
                         left={props => <List.Icon {...props} color='green' icon="format-list-bulleted-square" />}
                     />
                 </List.Accordion>
-                <List.Accordion
+                {/* <List.Accordion
                     title="What to do at the clinic"
                     expanded={expandedAtClinic}
                     onPress={handlePressAtClinic}>
@@ -98,7 +98,7 @@ export default function Home() {
                         description="You can cancel an appointment with a minimum of24hrs. Press and hold the appointment to cancel."
                         left={props => <List.Icon {...props} color='red' icon="cancel" />}
                     />
-                </List.Accordion>
+                </List.Accordion> */}
             </ScrollView>
         </View>
 

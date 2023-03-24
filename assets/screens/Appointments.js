@@ -9,15 +9,23 @@ import { deleteDocument } from '../FirestoreFunctions/FirestoreDelete';
 import useCollectionOnSnapshot from '../CustomHooks/useCollectionOnSnapshot';
 import { ProgressCircle } from '../components/ProgressCircle';
 import canCancel from '../logicFunctions.js/canCancel'
+import { List } from 'react-native-paper';
+import useDoc from '../CustomHooks/useDoc';
+import useDocOnSnapshot from '../CustomHooks/useDocOnSnapshot';
 
 export default function Appointments() {
     const { user } = useContext(AuthContext);
     const [filter, setFilter] = useState("Active");
     const [userError, setUserError] = useState('')
     const [clinicError, setClinicError] = useState('')
+    const [expandedAtClinic, setExpandedAtClinic] = useState(false);
 
     //custom hook to setup a listener on the users appointments collection
     const { appointmentsData, isCollectionLoading, collectionError } = useCollectionOnSnapshot(`Users/${user.uid}/Appointments`, filter)
+
+    const handlePressAtClinic = () => {
+        setExpandedAtClinic(!expandedAtClinic)
+    };
 
     //checks in user in users and clinics appointments sub-collection
     function handleUserCheckIn(status, userId, clinicId) {
@@ -76,23 +84,23 @@ export default function Appointments() {
         keyExtractor={(Item, index) => index.toString()}
         renderItem={({ item }) => (
             <View style={AppointmentStyles.card}>
-                <AppointmentCard 
-                clinicId={item.id} 
-                tester={item.calledBy} 
-                location={item.location} 
-                center={item.center} 
-                date={item.date} 
-                addDetails={item.addDetails}
-                clinicAddress = {item.clinicAddress}
-                clinicPostcode = {item.clinicPostcode}
-                time={item.time} 
-                slot={item.slot} 
-                checkedIn={item.checkedIn} 
-                called={item.called} 
-                wasSeen={item.wasSeen} 
-                cancel={item.status == 'Active' ? cancelAppointment : () => console.log("no function passed")} 
-                userCheckIn={() => handleUserCheckIn(item.status, user.uid, item.id)} status={item.status} 
-                isCancellable={canCancel(new Date(), new Date(`${item.date}T${item.time}:00Z`))}
+                <AppointmentCard
+                    clinicId={item.id}
+                    tester={item.calledBy}
+                    location={item.location}
+                    center={item.center}
+                    date={item.date}
+                    addDetails={item.addDetails}
+                    clinicAddress={item.clinicAddress}
+                    clinicPostcode={item.clinicPostcode}
+                    time={item.time}
+                    slot={item.slot}
+                    checkedIn={item.checkedIn}
+                    called={item.called}
+                    wasSeen={item.wasSeen}
+                    cancel={item.status == 'Active' ? cancelAppointment : () => console.log("no function passed")}
+                    userCheckIn={() => handleUserCheckIn(item.status, user.uid, item.id)} status={item.status}
+                    isCancellable={canCancel(new Date(), new Date(`${item.date}T${item.time}:00Z`))}
                 />
             </View>
         )}
@@ -108,9 +116,41 @@ export default function Appointments() {
                 {userError ? <Text style={AppointmentStyles.error}>{userError}</Text> : null}
                 {clinicError ? <Text style={AppointmentStyles.error}>{clinicError}</Text> : null}
                 <FilterAppointmentStatus filter={filter} setFilter={setFilter} />
-                <SafeAreaView>
+                <View style={AppointmentStyles.instruction}>
+                    <List.Accordion
+                        title="What to do at the clinic"
+                        expanded={expandedAtClinic}
+                        onPress={handlePressAtClinic}>
+                        <List.Item
+                            title="Check in"
+                            descriptionNumberOfLines={3}
+                            description="Press the red user icon to let the clinic know you have arrived"
+                            left={props => <List.Icon {...props} color='green' icon="account-check" />}
+                        />
+                        <List.Item
+                            title="Called"
+                            descriptionNumberOfLines={3}
+                            description="When called for your test the bell icon will turn purple and the testers name will be shown"
+                            left={props => <List.Icon {...props} color='purple' icon="bell" />}
+                        />
+                        <List.Item
+                            title="Test complete"
+                            descriptionNumberOfLines={3}
+                            description="When your test is complete the thumb icon will turn green"
+                            left={props => <List.Icon {...props} color='green' icon="thumb-up" />}
+                        />
+                        <List.Item
+                            title="Cancellations"
+                            descriptionNumberOfLines={3}
+                            description="You can cancel an appointment with a minimum of24hrs. Press and hold the appointment to cancel."
+                            left={props => <List.Icon {...props} color='red' icon="cancel" />}
+                        />
+                    </List.Accordion>
+                </View>
+
+                <SafeAreaView style={{ flex: 1 }}>
                     <View style={AppointmentStyles.appointments}>
-                        {appointmentsData.length > 0 ? appointmentList : <Text>You currently do not have any {filter} appointments to view</Text>}
+                        {appointmentsData.length > 0 ? appointmentList : <Text style={AppointmentStyles.text}>You currently do not have any {filter} appointments to view</Text>}
                     </View>
                 </SafeAreaView>
             </View >
@@ -126,7 +166,6 @@ const AppointmentStyles = StyleSheet.create({
     },
     appointments: {
         width: '100%',
-        textAlign: 'justify',
     },
     card: {
         marginBottom: 5,
@@ -135,6 +174,10 @@ const AppointmentStyles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    instruction: {
+        marginTop: 5,
+        marginBottom: 10,
     },
     error: {
         color: 'red',

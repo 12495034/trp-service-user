@@ -5,12 +5,15 @@ import { AuthContext } from '../context/AuthProvider';
 import DatePicker from '../CustomHooks/DatePicker';
 import { useController, useForm } from 'react-hook-form';
 import { FormBuilder } from 'react-native-paper-form-builder';
+import { ActivityIndicator } from 'react-native-paper';
 
 export default function CreateAccount() {
     const { createUser } = useContext(AuthContext);
 
     const [text, setText] = useState("")
     const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+
     const { control, setFocus, handleSubmit } = useForm({
         defaultValues: {
             pronouns: '',
@@ -31,13 +34,16 @@ export default function CreateAccount() {
 
     function handleCreateUser(data) {
         if (data.isAgreedTC == "checked") {
+            setIsLoading(true)
             createUser(data)
                 .then((e) => {
                     console.log("User Created")
+                    setIsLoading(false)
                 })
                 .catch((e) => {
                     console.log(e.message)
                     setError(e.message)
+                    setIsLoading(false)
                 })
         } else {
             setError("You must agree to T&C's before using the App")
@@ -107,12 +113,9 @@ export default function CreateAccount() {
             <View>
                 <DatePicker text={text} setText={setText} />
             </View>
-
-
-
         );
     }
-
+    
     return (
         <View style={styles.containerStyle}>
             <ScrollView contentContainerStyle={styles.scrollViewStyle}>
@@ -301,17 +304,18 @@ export default function CreateAccount() {
                     <View>
                         <Text style={styles.error}>{error}</Text>
                     </View>
-
-                    <Button color='pink' mode={'contained'} onPress={handleSubmit((data) => {
+                    {isLoading?<ActivityIndicator animating={true} color={'red'} size={'large'}/>
+                    :
+                    <Button color='pink' disabled={false} mode={'contained'} onPress={handleSubmit((data) => {
                         const combinedData = { ...data, dob: text }
                         handleCreateUser(combinedData)
                     })}>
                         Create Account
                     </Button>
+                    }
                 </Fragment>
             </ScrollView>
         </View >
-
     )
 }
 
