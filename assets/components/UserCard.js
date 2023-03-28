@@ -8,7 +8,7 @@ export default function UserCard(props) {
             <View style={UserCardStyles.title}>
                 {/* <Image style={{ height: 50, width: 50 }} source={require('../images/userProfileDefault.jpeg')} /> */}
                 <Text style={UserCardStyles.titleText}>{props.email}</Text>
-            </View> 
+            </View>
             <View style={UserCardStyles.userInfo}>
                 <View>
                     <Text style={UserCardStyles.detailText}>Pronouns:</Text>
@@ -32,13 +32,11 @@ export default function UserCard(props) {
                     <Text style={UserCardStyles.detailText}>{props.phoneNumber}</Text>
                     <Text style={UserCardStyles.detailText}>{props.dob}</Text>
                     <Text style={UserCardStyles.detailText}>{props.emailVerified ? "Yes" : "No"}</Text>
-                    <Text style={UserCardStyles.detailText}>{props.isAgreedTC}</Text>
+                    <Text style={UserCardStyles.detailText}>{props.isAgreedTC ? "Yes" : "No"}</Text>
                     <Text style={UserCardStyles.detailText}>{props.creationDate}</Text>
-                    <Text style={UserCardStyles.detailText}>{props.emailOptIn == "checked" ? "Yes" : "No"}</Text>
+                    <Text style={UserCardStyles.detailText}>{props.emailOptIn ? "Yes" : "No"}</Text>
                     <Text style={UserCardStyles.detailText}>{props.status}</Text>
                     <Text style={UserCardStyles.detailText}>{props.role}</Text>
-
-
                 </View>
             </View>
         </View>
@@ -70,16 +68,16 @@ const UserCardStyles = StyleSheet.create({
         padding: 20,
     },
     titleText: {
-        textAlign:'center',
-        fontSize:20,
-        color:'black',
-        backgroundColor:'#F2D6F3',
-        padding:10,
-        borderRadius:5,  
+        textAlign: 'center',
+        fontSize: 20,
+        color: 'black',
+        backgroundColor: '#F2D6F3',
+        padding: 10,
+        borderRadius: 5,
     },
     detailText: {
-        fontSize:15,
-        paddingBottom:2,
-        color:'black', 
+        fontSize: 15,
+        paddingBottom: 2,
+        color: 'black',
     }
 })

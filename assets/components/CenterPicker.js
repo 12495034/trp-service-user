@@ -13,7 +13,7 @@ export default function CenterPicker(props) {
                 disabled={props.chosenLocation == undefined ? true : false}
             >
                 <TextInput
-                    style={{ borderColor: 'red', backgroundColor: '#0000', color: 'black', height: 35 }}
+                   style={{ backgroundColor: '#0000', color: 'black', height: 60, fontSize:16, fontWeight:'600' }}
                     editable={false}
                     placeholder="Choose a test center (optional)"
                     value={props.chosenCenter} />
@@ -24,10 +24,10 @@ export default function CenterPicker(props) {
 
 const styles = StyleSheet.create({
     dropdown: {
-        fontSize: 20,
         paddingHorizontal: 10,
         paddingVertical: 5,
         borderWidth: 0.5,
         borderColor: 'black',
+        borderRadius: 5,
     }
 })

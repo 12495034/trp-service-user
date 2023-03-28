@@ -6,6 +6,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Picker } from '@react-native-picker/picker'
 import { updateDocument } from '../FirestoreFunctions/FirestoreUpdate';
 import { fetchDocumentData } from '../FirestoreFunctions/FirestoreRead';
+import CheckBox from '@react-native-community/checkbox';
 
 export default function EditDetails({ navigation }) {
     const { user } = useContext(AuthContext);
@@ -14,8 +15,6 @@ export default function EditDetails({ navigation }) {
     const { control, handleSubmit, reset, formState: { errors } } = useForm({
         userDetails
     });
-
-    //const { docData, isDocLoading, docError } = useDoc('Users', user.uid)
 
     useEffect(() => {
         fetchUserData()
@@ -41,6 +40,7 @@ export default function EditDetails({ navigation }) {
                         dob: documentSnapshot.data().dob,
                         Email: documentSnapshot.data().email,
                         PhoneNumber: documentSnapshot.data().PhoneNumber,
+                        notifications:documentSnapshot.data().emailOptIn,
                     })
                 } else {
                     console.log("No such document!");
@@ -182,6 +182,20 @@ export default function EditDetails({ navigation }) {
                     )}
                     name="Email"
                 />
+                {/* <Controller
+                    control={control}
+                    rules={{
+                        required: false,
+                    }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <input
+                        type='checkBox'
+                        checked={emailOptIn?true:false}
+                        onChange={onChange}
+                        />
+                    )}
+                    name="notifications"
+                /> */}
                 <Button
                     style={{ width: '100%', marginTop: 5 }}
                     labelStyle={{ fontSize: 12 }}

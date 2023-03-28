@@ -21,7 +21,7 @@ export default function Appointments() {
     const [expandedAtClinic, setExpandedAtClinic] = useState(false);
 
     //custom hook to setup a listener on the users appointments collection
-    const { appointmentsData, isCollectionLoading, collectionError } = useCollectionOnSnapshot(`Users/${user.uid}/Appointments`, filter)
+    const { collectionData, isCollectionLoading, collectionError } = useCollectionOnSnapshot(`Users/${user.uid}/Appointments`, filter)
 
     const handlePressAtClinic = () => {
         setExpandedAtClinic(!expandedAtClinic)
@@ -80,7 +80,7 @@ export default function Appointments() {
 
     //Data Rendering
     const appointmentList = <FlatList
-        data={appointmentsData}
+        data={collectionData}
         keyExtractor={(Item, index) => index.toString()}
         renderItem={({ item }) => (
             <View style={AppointmentStyles.card}>
@@ -108,15 +108,13 @@ export default function Appointments() {
 
     return (
         isCollectionLoading ?
-            <View style={AppointmentStyles.progress}>
-                <ProgressCircle />
-            </View>
+            <View style={AppointmentStyles.progress}><ProgressCircle /></View>
             :
             <View style={AppointmentStyles.body}>
                 {userError ? <Text style={AppointmentStyles.error}>{userError}</Text> : null}
                 {clinicError ? <Text style={AppointmentStyles.error}>{clinicError}</Text> : null}
                 <FilterAppointmentStatus filter={filter} setFilter={setFilter} />
-                <View style={AppointmentStyles.instruction}>
+                {filter === "Active" ? <View style={AppointmentStyles.instruction}>
                     <List.Accordion
                         title="What to do at the clinic"
                         expanded={expandedAtClinic}
@@ -146,11 +144,11 @@ export default function Appointments() {
                             left={props => <List.Icon {...props} color='red' icon="cancel" />}
                         />
                     </List.Accordion>
-                </View>
-
+                </View>:
+                null}
                 <SafeAreaView style={{ flex: 1 }}>
                     <View style={AppointmentStyles.appointments}>
-                        {appointmentsData.length > 0 ? appointmentList : <Text style={AppointmentStyles.text}>You currently do not have any {filter} appointments to view</Text>}
+                        {collectionData.length > 0 ? appointmentList : <Text style={AppointmentStyles.text}>You currently do not have any {filter} appointments to view</Text>}
                     </View>
                 </SafeAreaView>
             </View >

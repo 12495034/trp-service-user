@@ -11,6 +11,7 @@ import { ProgressCircle } from '../components/ProgressCircle';
 import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
 import { ProgressBar, MD3Colors } from 'react-native-paper';
 import { progressBarColor } from '../constants/Constants';
+import { List } from 'react-native-paper';
 
 export default function Book({ navigation }) {
 
@@ -20,6 +21,9 @@ export default function Book({ navigation }) {
     const [loading, setLoading] = useState(false)
     const [clinicList, setClinicList] = useState([])
     const [searchMessage, setSearchMessage] = useState("")
+
+    const [expanded, setExpanded] = useState(true);
+    const handlePress = () => setExpanded(!expanded);
 
     //custom hooks for standard data retrieval
     //retrieve Locations collection data
@@ -107,30 +111,37 @@ export default function Book({ navigation }) {
                 <ProgressBar progress={0.25} color={progressBarColor} />
             </View>
             <View style={BookStyles.body}>
-                <View style={BookStyles.inputOptions}>
-                    <LocationPicker locationData={locationData} chosenLocation={chosenLocation} setChosenLocation={setChosenLocation} />
-                    <CenterPicker chosenLocation={chosenLocation} centerData={centerData} chosenCenter={chosenCenter} setChosenCenter={setChosenCenter} />
-                    <DatePicker chosenDate={chosenDate} setChosenDate={setChosenDate} />
-                    <View style={BookStyles.searchButtons}>
-                        <Button
-                            style={{ width: '50%', borderBottomLeftRadius: 10, borderBottomRightRadius: 0, borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
-                            labelStyle={{ fontSize: 12 }}
-                            color='#FFB9B9'
-                            mode={'contained'}
-                            onPress={() => onSearch('Clinics', chosenLocation, chosenCenter, chosenDate, "clinicStatus", "Active")}>
-                            Search
-                        </Button>
-                        <Button
-                            style={{ width: '50%', borderBottomLeftRadius: 0, borderBottomRightRadius: 10, borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
-                            labelStyle={{ fontSize: 12 }}
-                            color='#F9A8E7'
-                            mode={'contained'}
-                            onPress={() => clearSearchFields()}>
-                            Reset
-                        </Button>
 
+                <List.Accordion expanded={expanded} onPress={handlePress} title="Clinic Search" id="1">
+                    <View style={BookStyles.inputOptions}>
+                        <LocationPicker locationData={locationData} chosenLocation={chosenLocation} setChosenLocation={setChosenLocation} />
+                        <CenterPicker chosenLocation={chosenLocation} centerData={centerData} chosenCenter={chosenCenter} setChosenCenter={setChosenCenter} />
+                        <DatePicker chosenDate={chosenDate} setChosenDate={setChosenDate} placeholder="Choose a date" />
+                        <View style={BookStyles.searchButtons}>
+                            <Button
+                                style={{ width: '50%', borderBottomLeftRadius: 5, borderBottomRightRadius: 0, borderTopLeftRadius: 5, borderTopRightRadius: 0 }}
+                                labelStyle={{ fontSize: 12 }}
+                                color='#FFB9B9'
+                                mode={'contained'}
+                                onPress={() => {
+                                    onSearch('Clinics', chosenLocation, chosenCenter, chosenDate, "clinicStatus", "Active")
+                                    setExpanded(false)
+                                    }}>
+                                Search
+                            </Button>
+                            <Button
+                                style={{ width: '50%', borderBottomLeftRadius: 0, borderBottomRightRadius: 5, borderTopLeftRadius: 0, borderTopRightRadius: 5 }}
+                                labelStyle={{ fontSize: 12 }}
+                                color='#F9A8E7'
+                                mode={'contained'}
+                                onPress={() => clearSearchFields()}>
+                                Reset
+                            </Button>
+
+                        </View>
                     </View>
-                </View>
+                </List.Accordion>
+
                 <View style={BookStyles.mainContent}>
                     {loading ?
                         <View style={BookStyles.progress}>
@@ -158,11 +169,11 @@ const BookStyles = StyleSheet.create({
     body: {
         flex: 1,
         backgroundColor: '#ffffff',
-        alignItems: 'center'
     },
     inputOptions: {
-        width: '90%',
-        backgroundColor: '#ffffff'
+        width: '95%',
+        backgroundColor: '#ffffff',
+        paddingLeft:15,
     },
     searchButtons: {
         flexDirection: 'row',
@@ -170,7 +181,8 @@ const BookStyles = StyleSheet.create({
     },
     mainContent: {
         flex: 0.83,
-        width: '90%',
+        width: '95%',
+        paddingLeft:15,
     },
     progress: {
         flex: 1,
@@ -178,6 +190,8 @@ const BookStyles = StyleSheet.create({
         alignItems: 'center',
     },
     message: {
-        marginBottom: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
+        alignItems:'center'
     }
 })

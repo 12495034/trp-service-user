@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { View, StyleSheet} from "react-native";
-import { Text } from "react-native-paper";
+import { View, StyleSheet } from "react-native";
+import { Text, TextInput } from "react-native-paper";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function DatePicker(props) {
@@ -14,10 +14,8 @@ export default function DatePicker(props) {
         setShow(Platform.OS === 'iso');
         setDate(currentDate);
 
-        //TODO:There is an issue with format between the web client and the mobile app. Mobile app is not using leading '0' when a single value month or day is used
-        //Modify format to make it consistent
         let tempDate = new Date(currentDate);
-        let fDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate();
+        let fDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() < 10 ? "0" + (tempDate.getMonth() + 1) : tempDate.getMonth() + 1) + '-' + tempDate.getDate();
         props.setChosenDate(fDate)
     }
 
@@ -25,10 +23,11 @@ export default function DatePicker(props) {
         setShow(true)
         setMode(currentMode)
     }
+
     return (
         <View>
             <View style={styles.dropdown}>
-                <Text style={styles.text} onPress={() => showMode('date')}>{props.chosenDate ? props.chosenDate : "Choose a Date"}</Text>
+                <Text style={styles.text} onPress={() => showMode('date')}>{props.chosenDate ? props.chosenDate : props.placeholder}</Text>
             </View>
             {show && <DateTimePicker
                 testId='dateTimePicker'
@@ -49,8 +48,11 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         borderWidth: 0.5,
         borderColor: 'black',
+        height: 60,
+        borderRadius: 5,
     },
     text: {
-        color: 'black',
+        color: 'grey',
+        fontSize: 16,
     }
 })

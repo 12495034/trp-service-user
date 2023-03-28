@@ -3,7 +3,7 @@ import { setCollectionListener } from '../FirestoreFunctions/FirestoreRead';
 
 export default function useCollectionOnSnapshot(collection, filter) {
     //Hook state
-    const [appointmentsData, setAppointmentsData] = useState([]);
+    const [collectionData, setCollectionData] = useState([]);
     const [isCollectionLoading, setIsCollectionLoading] = useState(true);
     const [collectionError, setCollectionError] = useState('');
 
@@ -19,14 +19,14 @@ export default function useCollectionOnSnapshot(collection, filter) {
                     const combined = Object.assign(data, id)
                     appointmentListArray.push(combined)
                 })
-                setAppointmentsData(appointmentListArray)
+                setCollectionData(appointmentListArray)
                 setIsCollectionLoading(false)
             });
         return () => subscriber()
     }, [filter])
 
     return {
-        appointmentsData,
+        collectionData,
         isCollectionLoading,
         collectionError
     }

@@ -15,7 +15,7 @@ export default function LocationPicker(props) {
             >
                 <TextInput
                     testID='selectedLocation'
-                    style={{ backgroundColor: '#0000', color: 'black', height: 35 }}
+                    style={{ backgroundColor: '#0000', color: 'black', height: 60, fontSize:16, fontWeight:'600' }}
                     editable={false}
                     placeholder="Choose a Location"
                     value={props.chosenLocation}
@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: 'black',
         marginTop: 5,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
+        borderRadius: 5,
     }
 })

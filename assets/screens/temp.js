@@ -6,10 +6,8 @@ import DatePicker from '../CustomHooks/DatePicker';
 import { useController, useForm } from 'react-hook-form';
 import { FormBuilder } from 'react-native-paper-form-builder';
 import { ActivityIndicator } from 'react-native-paper';
-import DialogBox from '../components/DialogBox';
-import { termsAndConditions } from '../content/Message';
-import { emailNotificationMessage } from '../content/Message';
-import useDoc from '../CustomHooks/useDoc';
+import TermsAndConditions from '../components/DialogBox';
+
 
 export default function CreateAccount() {
     const { createUser } = useContext(AuthContext);
@@ -18,21 +16,16 @@ export default function CreateAccount() {
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
-    //terms and conditions dialog state control
-    const [isTCAgreed, setIsTCAgreed] = useState("unchecked")
-    const [tcVisible, setTcVisible] = React.useState(false);
-    const showTcDialog = () => setTcVisible(true);
-    const hideTcDialog = () => setTcVisible(false);
+    const [isTCAgreed, setIsTCAgreed] = useState("checked")
+    //const [isEmailNotAgreed, setIsEmailNotAgreed] = useState("unchecked")
 
-    //Email notifications dialog state control
-    const [isEmailNotAgreed, setIsEmailNotAgreed] = useState("unchecked")
-    const [emailNotVisible, setEmailNotVisible] = React.useState(false);
-    const showEmailNotDialog = () => setEmailNotVisible(true);
-    const hideEmailNotDialog = () => setEmailNotVisible(false);
+    // const [visible, setVisible] = useState(false);
+    // const showDialog = () => setVisible(true);
+    // const hideDialog = () => setVisible(false);
 
-    const { docData, isDocLoading, docError } = useDoc('Supporting', 'pronouns', null)
-
-    console.log(docData)
+    // const [emailNotVisible, setEmailNotVisible] = useState(false);
+    // const showEmailNotDialog = () => setEmailNotVisible(true);
+    // const hideEmailNotDialog = () => setEmailNotVisible(false);
 
     const { control, setFocus, handleSubmit } = useForm({
         defaultValues: {
@@ -51,11 +44,10 @@ export default function CreateAccount() {
     });
 
     function handleCreateUser(data) {
-        console.log(data)
         if (data.isAgreedTC) {
             setIsLoading(true)
             createUser(data)
-                .then(() => {
+                .then((e) => {
                     console.log("User Created")
                     setIsLoading(false)
                 })
@@ -78,7 +70,6 @@ export default function CreateAccount() {
             defaultValue,
             control,
         });
-
         return (
             <List.Item
                 title={'Agree to terms an conditions'}
@@ -86,7 +77,8 @@ export default function CreateAccount() {
                     <Checkbox.Android
                         status={isTCAgreed}
                         onPress={() => {
-                            showTcDialog()
+                            // console.log("showing terms and conditions.....")
+                            // showDialog()
                             field.onChange(field.value === 'checked' ? 'unchecked' : 'checked')
                         }}
                     />
@@ -95,31 +87,32 @@ export default function CreateAccount() {
         );
     }
 
-    function emailOptIn(props) {
-        const { name, rules, shouldUnregister, defaultValue, control } = props;
-        const { field } = useController({
-            name,
-            rules,
-            shouldUnregister,
-            defaultValue,
-            control,
-        });
+    // function emailOptIn(props) {
+    //     const { name, rules, shouldUnregister, defaultValue, control } = props;
+    //     const { field } = useController({
+    //         name,
+    //         rules,
+    //         shouldUnregister,
+    //         defaultValue,
+    //         control,
+    //     });
 
-        return (
-            <List.Item
-                title={'Consent to Email Notifications'}
-                left={() => (
-                    <Checkbox.Android
-                        status={isEmailNotAgreed}
-                        onPress={() => {
-                            showEmailNotDialog()
-                            field.onChange(field.value === 'checked' ? 'unchecked' : 'checked');
-                        }}
-                    />
-                )}
-            />
-        );
-    }
+    //     return (
+    //         <List.Item
+    //             title={'Consent to Email Notifications'}
+    //             left={() => (
+    //                 <Checkbox.Android
+    //                     status={isEmailNotAgreed}
+    //                     onPress={() => {
+    //                         console.log("showing Email notifications information")
+    //                         showEmailNotDialog()
+    //                         field.onChange(field.value === 'checked' ? 'unchecked' : 'checked');
+    //                     }}
+    //                 />
+    //             )}
+    //         />
+    //     );
+    // }
 
     function selectDate(props) {
         const { name, rules, shouldUnregister, defaultValue, control } = props;
@@ -145,14 +138,13 @@ export default function CreateAccount() {
                         control={control}
                         setFocus={setFocus}
                         formConfigArray={[
-
                             {
                                 name: 'pronouns',
                                 type: 'select',
                                 textInputProps: {
                                     label: 'Pro-Nouns',
                                     mode: 'outlined',
-                                    outlineColor: '#F98AF9',
+                                    outlineColor: 'grey',
                                     activeOutlineColor: '#F98AF9',
                                 },
                                 rules: {
@@ -161,13 +153,29 @@ export default function CreateAccount() {
                                         message: 'Please select your preferred pronouns',
                                     },
                                 },
-                                options:docData.pronouns
+                                options: [
+                                    {
+                                        value: 'They/Them',
+                                        label: 'They/Them',
+                                    },
+                                    {
+                                        value: 'He/Him',
+                                        label: 'He/Him',
+                                    },
+                                    {
+                                        value: 'She/Her',
+                                        label: 'She/Her',
+                                    },
+                                    {
+                                        value: 'Prefer not to say',
+                                        label: 'Prefer not to say',
+                                    },
+                                ],
                             },
                             {
                                 name: 'firstname',
                                 type: 'text',
                                 textInputProps: {
-                                    autoComplete:'name',
                                     label: 'First Name',
                                     left: <TextInput.Icon name={'account'} />,
                                     mode: 'outlined',
@@ -186,7 +194,7 @@ export default function CreateAccount() {
                                 type: 'text',
                                 textInputProps: {
                                     label: 'Middle Name',
-                                    left: <TextInput.Icon name={'account'} />,
+                                    // left: <TextInput.Icon name={'account'} />,
                                     mode: 'outlined',
                                     outlineColor: 'grey',
                                     activeOutlineColor: '#F98AF9',
@@ -204,7 +212,7 @@ export default function CreateAccount() {
                                 textInputProps: {
                                     mode: 'outlined',
                                     label: 'Last Name',
-                                    left: <TextInput.Icon name={'account'} />,
+                                    // left: <TextInput.Icon name={'account'} />,
                                     outlineColor: 'grey',
                                     activeOutlineColor: '#F98AF9',
                                 },
@@ -219,6 +227,12 @@ export default function CreateAccount() {
                                 name: 'dob',
                                 type: 'custom',
                                 JSX: selectDate,
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'A date of birth is required',
+                                    },
+                                },
                             },
                             {
                                 name: 'email',
@@ -284,6 +298,14 @@ export default function CreateAccount() {
                                     },
                                 },
                             },
+                            // {
+                            //     name: 'emailOptIn',
+                            //     type: 'custom',
+                            //     JSX: emailOptIn,
+                            //     rules: {
+
+                            //     },
+                            // },
                             {
                                 name: 'isAgreedTC',
                                 type: 'custom',
@@ -295,46 +317,43 @@ export default function CreateAccount() {
                                     },
                                 },
                             },
-                            {
-                                name: 'emailOptIn',
-                                type: 'custom',
-                                JSX: emailOptIn,
-                                rules: {
-
-                                },
-                            },
                         ]}
                     />
                     <View>
                         <Text style={styles.error}>{error}</Text>
                     </View>
-                    {isLoading ? <ActivityIndicator animating={true} color={'red'} size={'large'} />
-                        :
+                    {/* {isLoading ? <ActivityIndicator animating={true} color={'red'} size={'large'} />
+                        : */}
                         <Button color='pink' disabled={false} mode={'contained'} onPress={handleSubmit((data) => {
+                            console.log(data)
                             //required to ammend variables to type boolean from string
-                            var isAgreedTCflag = false
-                            var emailOptInflag = false
+                            // var isAgreedTCflag = false
+                            // var emailOptInflag = false
 
-                            if (data.isAgreedTC == "checked") {
-                                isAgreedTCflag = true
-                            }
-                            if (data.emailOptIn == "checked") {
-                                emailOptInflag = true
-                            }
-                            const combinedData = { ...data, dob: chosenDate, isAgreedTC: isAgreedTCflag, emailOptIn: emailOptInflag }
+                            // if (data.isAgreedTC == "checked") {
+                            //     isAgreedTCflag = true
+                            // }
+                            // if (data.emailOptIn == "checked") {
+                            //     emailOptInflag = true
+                            // }
+                            //const combinedData = { ...data, dob: chosenDate,isAgreedTC: isAgreedTCflag, emailOptIn: emailOptInflag }
+                            const combinedData = { ...data, dob: chosenDate }
                             handleCreateUser(combinedData)
                         })}>
                             Create Account
                         </Button>
-                    }
+                    {/* } */}
                 </Fragment>
-
             </ScrollView>
-            <DialogBox title="Terms and conditions" content={termsAndConditions} visible={tcVisible} showDialog={showTcDialog} hideDialog={hideTcDialog} setIsAgreed={setIsTCAgreed} />
-            <DialogBox title="Email Notifications" content={emailNotificationMessage} visible={emailNotVisible} showDialog={showEmailNotDialog} hideDialog={hideEmailNotDialog} setIsAgreed={setIsEmailNotAgreed} />
+
+            {/* <TermsAndConditions
+                visible={visible} hideDialog={hideDialog} setIsTCAgreed={setIsTCAgreed}
+            /> */}
+            {/* <NotificationConsent
+                visible={emailNotVisible} showEmailNotDialog={showEmailNotDialog} hideEmailNotDialog={hideEmailNotDialog} setIsEmailNotAgreed={setIsEmailNotAgreed}
+            /> */}
+
         </View >
-
-
     )
 }
 
