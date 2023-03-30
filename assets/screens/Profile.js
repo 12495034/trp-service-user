@@ -63,7 +63,7 @@ export default function Profile({ navigation }) {
 
     return (
         <View style={ProfileStyles.body}>
-            {false ?
+            {isDocLoading ?
                 <View>
                     <ProgressCircle />
                 </View>
@@ -72,7 +72,7 @@ export default function Profile({ navigation }) {
                     {deleteAuthError ? <Text>{deleteAuthError}</Text> : null}
                     <UserCard
                         status={status}
-                        role={role}
+                        // role={role}
                         proNouns={docData.ProNouns}
                         firstName={docData.FirstName}
                         middleName={docData.MiddleName}
@@ -81,7 +81,7 @@ export default function Profile({ navigation }) {
                         email={docData.email}
                         emailVerified={user.emailVerified}
                         phoneNumber={docData.PhoneNumber}
-                        isAgreedTC={docData.isAgreedTC}
+                        // isAgreedTC={docData.isAgreedTC}
                         emailOptIn={docData.emailOptIn}
                         creationDate={convertFirestoreTimeStamp(docData.createdAt)}
                     />

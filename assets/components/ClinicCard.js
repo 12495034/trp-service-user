@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Card, Text, Badge } from 'react-native-paper';
 import { StyleSheet, View, Pressable } from 'react-native';
+import { createDateString } from '../commonFunctions/createDateString';
 
 function ClinicCard(props) {
     return (
@@ -12,9 +13,9 @@ function ClinicCard(props) {
             onPress={() => props.slots == 0 ? null : props.details(props.id)}
         >
             <Card mode='outlined' style={styles.card}>
-                <Card.Title title={props.location} subtitle={`${props.center}, ${props.addDetails}` } />
+                <Card.Title title={props.location} titleStyle={{fontSize:18}} subtitleStyle={{fontSize:14}} subtitle={`${props.center}, ${props.addDetails}` } />
                 <Card.Content>
-                    <Text variant="titleMedium">{props.date}</Text>
+                    <Text variant="titleMedium">{createDateString(props.date)}</Text>
                     <Text variant="titleLarge">Start Time: {props.time}</Text>
                     <View style={styles.availabilityRow}>
                         <Text variant="titleLarge">Capacity: {props.capacity}</Text>

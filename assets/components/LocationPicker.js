@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     dropdown: {
         fontSize: 20,
         paddingHorizontal: 10,
-        paddingVertical: 5,
+        paddingVertical: 0,
         borderWidth: 0.5,
         borderColor: 'black',
         marginTop: 5,

@@ -1,18 +1,28 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect, useContext, Fragment } from 'react'
+import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { TextInput, Checkbox, Button, List } from 'react-native-paper';
 import { AuthContext } from '../context/AuthProvider';
-import { Button, TextInput } from 'react-native-paper';
-import { Text, View, StyleSheet, ScrollView } from "react-native";
-import { useForm, Controller } from "react-hook-form";
-import { Picker } from '@react-native-picker/picker'
-import { updateDocument } from '../FirestoreFunctions/FirestoreUpdate';
+import DatePicker from '../CustomHooks/DatePicker';
+import { useController, useForm } from 'react-hook-form';
+import { FormBuilder } from 'react-native-paper-form-builder';
+import { ActivityIndicator } from 'react-native-paper';
+import useDoc from '../CustomHooks/useDoc';
 import { fetchDocumentData } from '../FirestoreFunctions/FirestoreRead';
-import CheckBox from '@react-native-community/checkbox';
+import { updateDocumentGeneral } from '../FirestoreFunctions/FirestoreUpdate';
 
 export default function EditDetails({ navigation }) {
+    const [chosenDate, setChosenDate] = useState("")
+    const [error, setError] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
     const { user } = useContext(AuthContext);
     const [userDetails, setUserDetails] = useState({})
-    const [error, setError] = useState("")
-    const { control, handleSubmit, reset, formState: { errors } } = useForm({
+
+    console.log(userDetails)
+
+    //populate pronouns drop down menu with options from firestore database
+    const { docData, isDocLoading, docError } = useDoc('Supporting', 'pronouns', null)
+
+    const { control, setFocus, reset, handleSubmit } = useForm({
         userDetails
     });
 
@@ -31,17 +41,23 @@ export default function EditDetails({ navigation }) {
     function fetchUserData() {
         fetchDocumentData('Users', `${user.uid}`)
             .then(documentSnapshot => {
+                let emailOptInFlag
+                if (documentSnapshot.data().emailOptIn) {
+                    emailOptInFlag = "checked"
+                } else {
+                    emailOptInFlag = "unchecked"
+                }
                 if (documentSnapshot.exists) {
                     setUserDetails({
                         ProNouns: documentSnapshot.data().ProNouns,
                         FirstName: documentSnapshot.data().FirstName,
                         MiddleName: documentSnapshot.data().MiddleName,
                         LastName: documentSnapshot.data().LastName,
-                        dob: documentSnapshot.data().dob,
-                        Email: documentSnapshot.data().email,
+                        email: documentSnapshot.data().email,
                         PhoneNumber: documentSnapshot.data().PhoneNumber,
-                        notifications:documentSnapshot.data().emailOptIn,
+                        emailOptIn: emailOptInFlag,
                     })
+                    setChosenDate(documentSnapshot.data().dob)
                 } else {
                     console.log("No such document!");
                 }
@@ -51,192 +67,227 @@ export default function EditDetails({ navigation }) {
             })
     }
 
-    return (
-        <ScrollView>
-            <View style={EditDetailsStyles.container}>
-                <Controller
-                    control={control}
-                    rules={{
-                        required: true,
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <Picker
-                            style={EditDetailsStyles.dropdown}
-                            selectedValue={userDetails.ProNouns}
-                            onValueChange={currentPronoun => setUserDetails({ ...userDetails, ProNouns: currentPronoun })}>
-                            <Picker.Item label="He/Him" value="He/Him" />
-                            <Picker.Item label="She/Her" value="She/Her" />
-                            <Picker.Item label="They/Them" value="They/Them" />
-                            <Picker.Item label="Prefer not to say" value="Prefer not to say" />
-                        </Picker>
-                    )}
-                    name="ProNouns"
-                />
-                <Controller
-                    control={control}
-                    rules={{
-                        required: true,
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            underlineColor='grey'
-                            activeUnderlineColor='#F98AF9'
-                            style={EditDetailsStyles.inputBox}
-                            label='First Name'
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                        />
-                    )}
-                    name="FirstName"
-                />
-                <Controller
-                    control={control}
-                    rules={{
-                        required: false,
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            underlineColor='grey'
-                            activeUnderlineColor='#F98AF9'
-                            style={EditDetailsStyles.inputBox}
-                            label='Middle Name'
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                        />
-                    )}
-                    name="MiddleName"
-                />
-                <Controller
-                    control={control}
-                    rules={{
-                        required: true,
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            underlineColor='grey'
-                            activeUnderlineColor='#F98AF9'
-                            style={EditDetailsStyles.inputBox}
-                            label='Last Name'
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                        />
-                    )}
-                    name="LastName"
-                />
-                <Controller
-                    control={control}
-                    rules={{
-                        required: true,
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            underlineColor='grey'
-                            activeUnderlineColor='#F98AF9'
-                            style={EditDetailsStyles.inputBox}
-                            label='Date of Birth'
-                            keyboardType='numeric'
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                        />
-                    )}
-                    name="dob"
-                />
-                <Controller
-                    control={control}
-                    rules={{
-                        required: true,
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            underlineColor='grey'
-                            activeUnderlineColor='#F98AF9'
-                            style={EditDetailsStyles.inputBox}
-                            label='Phone Number'
-                            keyboardType='numeric'
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                        />
-                    )}
-                    name="PhoneNumber"
-                />
-                <Controller
-                    control={control}
-                    rules={{
-                        required: true,
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            style={EditDetailsStyles.inputBox}
-                            label='Email'
-                            keyboardType='email-address'
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                            disabled={true}
-                        />
-                    )}
-                    name="Email"
-                />
-                {/* <Controller
-                    control={control}
-                    rules={{
-                        required: false,
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <input
-                        type='checkBox'
-                        checked={emailOptIn?true:false}
-                        onChange={onChange}
-                        />
-                    )}
-                    name="notifications"
-                /> */}
-                <Button
-                    style={{ width: '100%', marginTop: 5 }}
-                    labelStyle={{ fontSize: 12 }}
-                    color='pink'
-                    mode={'contained'}
-                    onPress={handleSubmit((data) => {
-                        updateDocument("Users", user.uid, data).then(() => console.log("user updated")).catch((e) => setError(e.message))
-                        navigateTo("User Details")
-                    })}>
-                    Save changes
-                </Button>
-                {errors.FirstName && <Text style={EditDetailsStyles.error}>A first name is required.</Text>}
-                {errors.LastName && <Text style={EditDetailsStyles.error}>A last name is required.</Text>}
-                {errors.PhoneNumber && <Text style={EditDetailsStyles.error}>A phone number is required.</Text>}
-                {errors.dob && <Text style={EditDetailsStyles.error}>A valid dob number is required.</Text>}
-                {error && <Text style={EditDetailsStyles.error}>{error}</Text>}
+    function emailOptIn(props) {
+        const { name, rules, shouldUnregister, defaultValue, control } = props;
+        const { field } = useController({
+            name,
+            rules,
+            shouldUnregister,
+            defaultValue,
+            control,
+        });
+
+        return (
+            <List.Item
+                title={'Consent to Email Notifications'}
+                left={() => (
+                    <Checkbox.Android
+                        status={field.value}
+                        onPress={() => {
+                            field.onChange(field.value === 'checked' ? 'unchecked' : 'checked');
+                        }}
+                    />
+                )}
+            />
+        );
+    }
+
+    function selectDate(props) {
+        const { name, rules, shouldUnregister, defaultValue, control } = props;
+        const { field } = useController({
+            name,
+            rules,
+            shouldUnregister,
+            defaultValue,
+            control,
+        });
+        return (
+            <View>
+                <DatePicker chosenDate={chosenDate} setChosenDate={setChosenDate} placeholder="Select your date of birth" />
             </View>
-        </ScrollView >
-    );
+        );
+    }
+
+    return (
+        <View style={styles.containerStyle}>
+            <ScrollView contentContainerStyle={styles.scrollViewStyle}>
+                <Fragment>
+                    <FormBuilder
+                        control={control}
+                        setFocus={setFocus}
+                        formConfigArray={[
+                            {
+                                name: 'ProNouns',
+                                type: 'select',
+                                textInputProps: {
+                                    label: 'Pro-Nouns',
+                                    mode: 'outlined',
+                                    outlineColor: '#F98AF9',
+                                    activeOutlineColor: '#F98AF9',
+                                },
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'Please select your preferred pronouns',
+                                    },
+                                },
+                                options: docData.pronouns
+                            },
+                            {
+                                name: 'FirstName',
+                                type: 'text',
+                                textInputProps: {
+                                    autoComplete: 'name',
+                                    label: 'First Name',
+                                    left: <TextInput.Icon name={'account'} />,
+                                    mode: 'outlined',
+                                    outlineColor: 'grey',
+                                    activeOutlineColor: '#F98AF9',
+                                },
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'First name is required',
+                                    },
+                                },
+                            },
+                            {
+                                name: 'MiddleName',
+                                type: 'text',
+                                textInputProps: {
+                                    label: 'Middle Name',
+                                    left: <TextInput.Icon name={'account'} />,
+                                    mode: 'outlined',
+                                    outlineColor: 'grey',
+                                    activeOutlineColor: '#F98AF9',
+                                },
+                                rules: {
+                                    required: {
+                                        value: false,
+                                        message: 'middle name is optional',
+                                    },
+                                },
+                            },
+                            {
+                                name: 'LastName',
+                                type: 'text',
+                                textInputProps: {
+                                    mode: 'outlined',
+                                    label: 'Last Name',
+                                    left: <TextInput.Icon name={'account'} />,
+                                    outlineColor: 'grey',
+                                    activeOutlineColor: '#F98AF9',
+                                },
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'last name is required',
+                                    },
+                                },
+                            },
+                            {
+                                name: 'dob',
+                                type: 'custom',
+                                JSX: selectDate,
+                            },
+                            {
+                                name: 'email',
+                                type: 'email',
+                                textInputProps: {
+                                    label: 'Email',
+                                    disabled: true,
+                                    left: <TextInput.Icon name={'email'} />,
+                                    mode: 'outlined',
+                                    outlineColor: 'grey',
+                                    activeOutlineColor: '#F98AF9',
+                                },
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'Email is required',
+                                    },
+                                    pattern: {
+                                        value:
+                                            /[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})/,
+                                        message: 'Email is invalid',
+                                    },
+                                },
+                            },
+                            {
+                                name: 'PhoneNumber',
+                                type: 'text',
+                                textInputProps: {
+                                    label: 'Phone Number',
+                                    left: <TextInput.Icon name={'phone'} />,
+                                    mode: 'outlined',
+                                    outlineColor: 'grey',
+                                    activeOutlineColor: '#F98AF9',
+                                },
+                                rules: {
+                                    required: {
+                                        value: true,
+                                        message: 'phone number is required',
+                                    },
+                                },
+                            },
+                            {
+                                name: 'emailOptIn',
+                                type: 'custom',
+                                JSX: emailOptIn,
+                                rules: {
+                                },
+                            },
+                        ]}
+                    />
+                    <View>
+                        <Text style={styles.error}>{error}</Text>
+                    </View>
+                    {isLoading ? <ActivityIndicator animating={true} color={'red'} size={'large'} />
+                        :
+                        <View>
+                            <Button style={{ marginBottom: 5 }} color='green' disabled={false} mode={'contained'} onPress={handleSubmit((data) => {
+                                //required to ammend variables to type boolean from string
+                                var emailOptInflag = false
+                                if (data.emailOptIn == "checked") {
+                                    emailOptInflag = true
+                                }
+                                const combinedData = { ...data, dob: chosenDate, emailOptIn: emailOptInflag }
+                                updateDocumentGeneral("Users", user.uid, combinedData).then(() => console.log("user updated")).catch((e) => setError(e.message))
+                                navigateTo("User Details")
+                            })}>
+                                Save Changes
+                            </Button>
+                            <Button color='orange' disabled={false} mode={'contained'} onPress={() => navigateTo("User Details")}>Cancel Changes</Button>
+                        </View>
+                    }
+                </Fragment>
+
+            </ScrollView>
+        </View >
+
+
+    )
 }
 
-
-const EditDetailsStyles = StyleSheet.create({
-    container: {
-        margin: 10,
-        flex: 1
+const styles = StyleSheet.create({
+    containerStyle: {
+        flex: 1,
     },
-    inputBox: {
-        backgroundColor: 'white',
-
+    scrollViewStyle: {
+        // flex: 1,
+        padding: 15,
+        justifyContent: 'center',
     },
-    dropdown: {
-        backgroundColor: 'white',
-        borderStyle: 'solid',
-        borderBottomColor: 'grey',
-        borderBottomWidth: 1,
+    headingStyle: {
+        fontSize: 30,
+        textAlign: 'center',
+        marginBottom: 40,
     },
     error: {
-        paddingTop: 10,
         color: 'red',
-        textAlign: 'center'
+        marginBottom: 10,
+    },
+    datePicker: {
+        backgroundColor: 'white'
     }
-})
-
+});

@@ -3,12 +3,17 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { List } from 'react-native-paper';
 import { AuthContext } from '../context/AuthProvider';
 import { welcomeMessageHome1, welcomeMessageHome2 } from '../content/Message';
+import useFilteredCollection from '../CustomHooks/useFilteredCollection';
+
 
 export default function Home() {
 
-    const { user, role, status} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [expandedBooking, setExpandedBooking] = useState(false);
+    const { filteredCollectionData, filteredCollectionSize, filteredCollectionError } = useFilteredCollection("Clinics", "clinicStatus", "==", "Active")
 
+    console.log(filteredCollectionData)
+    
     //state set to close one accordion if another is opened to limit information overload
     const handlePressBooking = () => {
         setExpandedBooking(!expandedBooking)
@@ -19,6 +24,7 @@ export default function Home() {
             <ScrollView>
                 <Text testID='WelcomeText' style={HomeStyles.title}>Welcome {user.displayName}</Text>
                 <Text style={HomeStyles.message}>{welcomeMessageHome1}</Text>
+                <Text style={HomeStyles.message}>{`Active Clinics: ${filteredCollectionSize}`}</Text>
                 <Text style={HomeStyles.message}>{welcomeMessageHome2}</Text>
                 <List.Accordion
                     title="How to book an appointment"
@@ -88,6 +94,7 @@ const HomeStyles = StyleSheet.create({
         flex: 1,
     },
     message: {
+        color: 'black',
         fontSize: 15,
         fontWeight: '400',
         textAlign: 'justify',

@@ -18,11 +18,11 @@ export default function UserCard(props) {
                     <Text style={UserCardStyles.detailText}>Phone Number:</Text>
                     <Text style={UserCardStyles.detailText}>Date of Birth:</Text>
                     <Text style={UserCardStyles.detailText}>Email Verified:</Text>
-                    <Text style={UserCardStyles.detailText}>Agreed to T&C:</Text>
+                    {/* <Text style={UserCardStyles.detailText}>Agreed to T&C:</Text> */}
                     <Text style={UserCardStyles.detailText}>Created On:</Text>
                     <Text style={UserCardStyles.detailText}>Notifications:</Text>
                     <Text style={UserCardStyles.detailText}>Status:</Text>
-                    <Text style={UserCardStyles.detailText}>Role:</Text>
+                    {/* <Text style={UserCardStyles.detailText}>Role:</Text> */}
                 </View>
                 <View>
                     <Text style={UserCardStyles.detailText}>{props.proNouns}</Text>
@@ -32,11 +32,11 @@ export default function UserCard(props) {
                     <Text style={UserCardStyles.detailText}>{props.phoneNumber}</Text>
                     <Text style={UserCardStyles.detailText}>{props.dob}</Text>
                     <Text style={UserCardStyles.detailText}>{props.emailVerified ? "Yes" : "No"}</Text>
-                    <Text style={UserCardStyles.detailText}>{props.isAgreedTC ? "Yes" : "No"}</Text>
+                    {/* <Text style={UserCardStyles.detailText}>{props.isAgreedTC ? "Yes" : "No"}</Text> */}
                     <Text style={UserCardStyles.detailText}>{props.creationDate}</Text>
                     <Text style={UserCardStyles.detailText}>{props.emailOptIn ? "Yes" : "No"}</Text>
                     <Text style={UserCardStyles.detailText}>{props.status}</Text>
-                    <Text style={UserCardStyles.detailText}>{props.role}</Text>
+                    {/* <Text style={UserCardStyles.detailText}>{props.role}</Text> */}
                 </View>
             </View>
         </View>
@@ -70,10 +70,11 @@ const UserCardStyles = StyleSheet.create({
     titleText: {
         textAlign: 'center',
         fontSize: 20,
-        color: 'black',
+        color: 'blue',
         backgroundColor: '#F2D6F3',
         padding: 10,
         borderRadius: 5,
+        elevation:5,
     },
     detailText: {
         fontSize: 15,

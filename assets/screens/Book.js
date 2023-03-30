@@ -52,6 +52,7 @@ export default function Book({ navigation }) {
     //performs a query on the firestore database clinics collection
     async function onSearch(collection, chosenLocation, chosenCenter, chosenDate, searchField, clinicStatus) {
         setLoading(true)
+        setClinicList([])
         const clinicListArray = [];
         var clinicsFound = 0;
         if (chosenLocation) {
@@ -69,8 +70,10 @@ export default function Book({ navigation }) {
                         //set states with compiled data
                         setClinicList(clinicListArray)
                         setSearchMessage(<Text>{clinicsFound} matching clinics found</Text>)
+                        setExpanded(false)
                     } else {
                         setSearchMessage(<Text>No matching clinics found</Text>)
+                        setExpanded(true)
                     }
                     setLoading(false)
                 })
@@ -111,7 +114,6 @@ export default function Book({ navigation }) {
                 <ProgressBar progress={0.25} color={progressBarColor} />
             </View>
             <View style={BookStyles.body}>
-
                 <List.Accordion expanded={expanded} onPress={handlePress} title="Clinic Search" id="1">
                     <View style={BookStyles.inputOptions}>
                         <LocationPicker locationData={locationData} chosenLocation={chosenLocation} setChosenLocation={setChosenLocation} />
@@ -125,8 +127,7 @@ export default function Book({ navigation }) {
                                 mode={'contained'}
                                 onPress={() => {
                                     onSearch('Clinics', chosenLocation, chosenCenter, chosenDate, "clinicStatus", "Active")
-                                    setExpanded(false)
-                                    }}>
+                                }}>
                                 Search
                             </Button>
                             <Button
@@ -173,7 +174,7 @@ const BookStyles = StyleSheet.create({
     inputOptions: {
         width: '95%',
         backgroundColor: '#ffffff',
-        paddingLeft:15,
+        paddingLeft: 20,
     },
     searchButtons: {
         flexDirection: 'row',
@@ -182,7 +183,7 @@ const BookStyles = StyleSheet.create({
     mainContent: {
         flex: 0.83,
         width: '95%',
-        paddingLeft:15,
+        paddingLeft: 15,
     },
     progress: {
         flex: 1,
@@ -192,6 +193,6 @@ const BookStyles = StyleSheet.create({
     message: {
         paddingTop: 10,
         paddingBottom: 10,
-        alignItems:'center'
+        alignItems: 'center'
     }
 })

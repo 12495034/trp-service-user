@@ -77,6 +77,7 @@ const AppStack = (props) => {
               size={size}
             />
           ),
+          tabBarBadge: 2
         })}
       />
       <Tab.Screen

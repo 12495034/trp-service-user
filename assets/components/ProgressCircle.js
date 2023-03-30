@@ -1,17 +1,13 @@
 import React from 'react'
-import * as Progress from 'react-native-progress';
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 
 export function ProgressCircle() {
     return (
-        <Progress.Circle
-            size={60}
-            indeterminate={true}
-            endAngle={0.6}
-            animated={true}
-            color={'red'}
-            borderColor={'red'}
-            borderWidth={5}
-            showsText={true} 
+            <ActivityIndicator 
+            size='60'
+            animating={true} 
+            color={'red'} 
+            hidesWhenStopped={true}
             />
     )
 }

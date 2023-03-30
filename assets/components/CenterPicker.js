@@ -25,7 +25,7 @@ export default function CenterPicker(props) {
 const styles = StyleSheet.create({
     dropdown: {
         paddingHorizontal: 10,
-        paddingVertical: 5,
+        paddingVertical: 0,
         borderWidth: 0.5,
         borderColor: 'black',
         borderRadius: 5,

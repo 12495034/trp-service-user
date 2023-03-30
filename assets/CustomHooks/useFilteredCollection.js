@@ -5,6 +5,9 @@ import { fetchFilteredCollection } from '../FirestoreFunctions/FirestoreRead';
 export default function useFilteredCollection(collection, searchField, operator, searchValue) {
     //Hook state
     const [filteredCollectionData, setFilteredCollectionData] = useState([]);
+    //rather than determining the size of the filtered collection use count() method as a new custom hook
+    //the document arent downloaded and therefore do not add to the firestore read quota
+    const [filteredCollectionSize, setFilteredCollectionSize] = useState(0)
     const [isFilteredCollectionLoading, setIsFilteredCollectionLoading] = useState(true);
     const [filteredCollectionError, setFilteredCollectionError] = useState('');
 
@@ -19,7 +22,7 @@ export default function useFilteredCollection(collection, searchField, operator,
                 .then(querySnapshot => {
                     let filteredCollectionDataArray = []
                     let combined = {}
-
+                    setFilteredCollectionSize(querySnapshot.size)
                     if (querySnapshot.size > 0) {
                         querySnapshot.forEach((doc) => {
                             setFilteredCollectionError(null);
@@ -42,6 +45,7 @@ export default function useFilteredCollection(collection, searchField, operator,
 
     return {
         filteredCollectionData,
+        filteredCollectionSize,
         isFilteredCollectionLoading,
         filteredCollectionError
     }

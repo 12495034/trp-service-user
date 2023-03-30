@@ -3,13 +3,13 @@ import firestore from '@react-native-firebase/firestore';
 
 //returns appropriate firestore query syntax based on what data has been entered into the search fields
 export default function searchLogic(collection, chosenLocation, chosenCenter, chosenDate, searchField, status) {
-    
+
     var query = ""
-    if (chosenCenter === undefined && chosenDate != undefined) {
+    if (chosenLocation === true && chosenCenter === undefined && chosenDate !== undefined) {
         query = firestore().collection(`${collection}`).where(`${searchField}`, '==', `${status}`)
             .where('location', '==', `${chosenLocation}`)
             .where('date', '==', `${chosenDate}`)
-    } else if (chosenCenter != undefined && chosenDate === undefined) {
+    } else if (chosenCenter !== undefined && chosenDate === undefined) {
         query = firestore().collection(`${collection}`).where(`${searchField}`, '==', `${status}`)
             .where('location', '==', `${chosenLocation}`)
             .where('center', '==', `${chosenCenter}`)
