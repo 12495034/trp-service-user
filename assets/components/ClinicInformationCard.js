@@ -5,18 +5,18 @@ export default function ClinicInformationCard(props) {
     return (
         <View style={ClinicInformationCardStyles.content}>
             <View style={ClinicInformationCardStyles.col1}>
-                <Text>Test Center: </Text>
-                <Text>Address: </Text>
-                <Text>City: </Text>
-                <Text>Postcode: </Text>
-                <Text>Date: </Text>
+                <Text style={ClinicInformationCardStyles.text}>Test Center: </Text>
+                <Text style={ClinicInformationCardStyles.text}>Address: </Text>
+                <Text style={ClinicInformationCardStyles.text}>City: </Text>
+                <Text style={ClinicInformationCardStyles.text}>Postcode: </Text>
+                <Text style={ClinicInformationCardStyles.text}>Date: </Text>
             </View>
             <View style={ClinicInformationCardStyles.col2}>
-                <Text>{props.clinicData.center}</Text>
-                {props.locationData.length == 1 ? <Text>{props.locationData[0].line1}</Text> : null}
-                <Text>{props.clinicData.location}</Text>
-                {props.locationData.length == 1 ? <Text>{props.locationData[0].postcode}</Text> : null}
-                <Text>{props.clinicData.date}</Text>
+                <Text style={ClinicInformationCardStyles.text}>{props.clinicData.center}</Text>
+                {props.locationData.length == 1 ? <Text style={ClinicInformationCardStyles.text}>{props.locationData[0].line1}</Text> : null}
+                <Text style={ClinicInformationCardStyles.text}>{props.clinicData.location}</Text>
+                {props.locationData.length == 1 ? <Text style={ClinicInformationCardStyles.text}>{props.locationData[0].postcode}</Text> : null}
+                <Text style={ClinicInformationCardStyles.text}>{props.clinicData.date}</Text>
             </View>
         </View>
     )
@@ -31,7 +31,7 @@ const ClinicInformationCardStyles = StyleSheet.create({
         borderColor: 'black',
         borderRadius: 5,
         padding: 10,
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
     col1: {
         flexDirection: 'column'
@@ -39,4 +39,8 @@ const ClinicInformationCardStyles = StyleSheet.create({
     col2: {
         flexDirection: 'column'
     },
+    text:{
+        color:'black',
+        fontSize:14,
+    }
 })

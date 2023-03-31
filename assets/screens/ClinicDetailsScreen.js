@@ -15,8 +15,7 @@ import useFilteredCollection from '../CustomHooks/useFilteredCollection';
 
 import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
 import ClinicInformationCard from '../components/ClinicInformationCard';
-import { ProgressBar, MD3Colors } from 'react-native-paper';
-import { progressBarColor } from '../constants/Constants';
+import BookingProgress from '../components/BookingProgress';
 
 
 export default function ClinicDetailsScreen({ route, navigation }) {
@@ -89,7 +88,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
         return (
             <>
                 <View>
-                    <ProgressBar progress={0.50} color={progressBarColor} />
+                    <BookingProgress progress={0.50} />
                 </View>
 
                 <View style={ClinicDetailStyles.body}>

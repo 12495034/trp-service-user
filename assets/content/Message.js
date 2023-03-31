@@ -1,12 +1,12 @@
 //message text used on specific screens can be edited here
 import { Text } from "react-native-paper"
 
-export const welcomeMessageHome1 = "to the rainbow project Rapid HIV & syphillis testing service. Through this app you can book a rapid HIV test at one of our scheduled clinics"
-export const welcomeMessageHome2 = "If you are unsure about how to book an appointment or what to do when you attend a test center. Please consult the step by step guides below"
+export const welcomeMessageHome1 = "The rainbow project Rapid HIV & syphillis testing service allows you to book a rapid HIV test at one of our scheduled clinics."
+export const welcomeMessageHome2 = "Check out the new Booking tab and following the on screen instructions to book an appointment in your area."
 
 export const Message1Question = "In some circumstances a rapid HIV & syhpillus test may not be the most suitible course of action."
-export const Message2Question = "You may be seeking a text because you have had unprotected sex or you just want a routine test"
-export const Message3Question = "If you believe you have had un-protected sex, please indicate how long it has been below."
+export const Message2Question = "You may be seeking a test because you have had unprotected sex or you just want a routine test"
+export const Message3Question = "If you believe you may have had un-protected sex, please indicate how long it has been below. Or select routine appointment for a checkup."
 
 export const BookingSuccessfulAlertTitle = "Booking successful"
 export const BookingSuccessfulAlertBody = "If you no longer require your appointment please cancel at least 24 hrs before the clinic"

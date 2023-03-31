@@ -9,16 +9,16 @@ import { handleAlertInformation } from '../commonFunctions/Alerts';
 import { BgTimer } from '../CustomHooks/BgTimer';
 import { appointmentConfirmation1, BookingCancelAlertBody, BookingCancelAlertTitle, BookingSuccessfulAlertBody, BookingSuccessfulAlertTitle } from '../content/Message';
 import { handleAlertDecision } from '../commonFunctions/Alerts';
-import { createDocument } from '../FirestoreFunctions/FirestoreCreate';
 import { clinicAppointmentData, userAppointmentData } from '../constants/Constants';
 import { useNetInfo } from '@react-native-community/netinfo'
-import { ProgressBar, MD3Colors } from 'react-native-paper';
-import { progressBarColor } from '../constants/Constants';
+import BookingProgress from '../components/BookingProgress';
+import firestore from '@react-native-firebase/firestore';
+
 
 export default function AppointmentConfirmation({ route, navigation }) {
 
     const { user } = useContext(AuthContext);
-    const netInfo = useNetInfo()
+    const netInfo = useNetInfo();
 
     //data passed to from clinic details screen
     const {
@@ -56,44 +56,40 @@ export default function AppointmentConfirmation({ route, navigation }) {
         return () => backHandler.remove();
     }, []);
 
-
+    //new appointment documents created in two sub-collections using a transaction
     function createNewAppointment() {
-        //create new document in Clinic appointments subcollection
-        createDocument(`Clinics/${clinicId}/Appointments`, `${user.uid}`, clinicAppointmentData(selectedSlot, selectedTime))
+        const ref1 = firestore().doc(`Users/${user.uid}/Appointments/${clinicId}`)
+        const ref2 = firestore().doc(`Clinics/${clinicId}/Appointments/${user.uid}`)
+        firestore().runTransaction(async transaction => {
+            transaction.set(ref1, userAppointmentData(selectedSlot, selectedTime, location, center, addDetails, clinicAddress, clinicPostcode, date));
+            transaction.set(ref2, clinicAppointmentData(selectedSlot, selectedTime));
+        })
             .then(() => {
-                console.log('Appointment added to clinic!');
-                //create new document in Users appointments subcollection
-                createDocument(`Users/${user.uid}/Appointments`, `${clinicId}`, userAppointmentData(selectedSlot, selectedTime, location, center, addDetails, clinicAddress, clinicPostcode, date))
-                    .then(() => {
-                        console.log('Appointment added to user appointment history!');
-                        //pop to top of stack
-                        navigation.dispatch(StackActions.popToTop())
-                        //show newly created appointment on the appointments tab
-                        navigation.navigate("Appointments")
-                        //inform user that appointment has been confirmed and policy with regard to cancellation
-                        handleAlertInformation(BookingSuccessfulAlertTitle, BookingSuccessfulAlertBody)
-                    })
-                    .catch((e) => {
-                        console.log(e.message)
-                        setError(e.message)
-                    });
+                console.log('User appointment created');
+                //pop to top of stack
+                navigation.dispatch(StackActions.popToTop())
+                //show newly created appointment on the appointments tab
+                navigation.navigate("Appointments")
+                //inform user that appointment has been confirmed and policy with regard to cancellation
+                handleAlertInformation(BookingSuccessfulAlertTitle, BookingSuccessfulAlertBody)
             })
             .catch((e) => {
                 console.log(e.message)
+                setError('')
                 setError(e.message)
-            });
+            })
     }
 
+    //function that cancels the current booking request by releasing the selected booking slot
     function cancelBookingRequest() {
         addSlotToMap(selectedSlot, selectedTime, clinicId)
         navigation.dispatch(StackActions.popToTop())
-        console.log("Booking Request cancelled")
     }
 
     return (
         <>
             <View>
-                <ProgressBar progress={0.75} color={progressBarColor} />
+                <BookingProgress progress={0.75} />
             </View>
 
             <View style={AppointConfirmStyles.body}>
@@ -141,7 +137,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
                 </View>
                 <View style={AppointConfirmStyles.timer}>
                     {/* //count down timer component can be commented in or out to turn this functionality on and off */}
-                    {/* <BgTimer timeLimit={timeLimit} callBack={cancelBookingRequest} /> */}
+                    <BgTimer timeLimit={timeLimit} callBack={cancelBookingRequest} />
                 </View>
                 <Text style={AppointConfirmStyles.error}>{error}</Text>
                 <View style={AppointConfirmStyles.options}>

@@ -57,7 +57,7 @@ export function BgTimer(props) {
     <View style={styles.container}>
       <Text style={styles.time}>
         {/* {clockify().displayHours} Hours {clockify().displayMins} Mins{" "} */}
-        Slot will be released in {clockify().displaySecs} seconds
+        Appointment slot will be released in {clockify().displaySecs} seconds
       </Text>
     </View>
   )

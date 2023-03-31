@@ -4,20 +4,17 @@ import { Text } from 'react-native-paper';
 import AppointmentCard from '../components/AppointmentCard';
 import FilterAppointmentStatus from '../components/FilterAppointmentStatus';
 import { AuthContext } from '../context/AuthProvider';
-import { addSlotToMap, updateDocumentGeneral } from '../FirestoreFunctions/FirestoreUpdate';
-import { deleteDocument } from '../FirestoreFunctions/FirestoreDelete';
+import { addSlotToMap } from '../FirestoreFunctions/FirestoreUpdate';
 import useCollectionOnSnapshot from '../CustomHooks/useCollectionOnSnapshot';
 import { ProgressCircle } from '../components/ProgressCircle';
 import canCancel from '../logicFunctions.js/canCancel'
 import { List } from 'react-native-paper';
-import useDoc from '../CustomHooks/useDoc';
-import useDocOnSnapshot from '../CustomHooks/useDocOnSnapshot';
+import firestore from '@react-native-firebase/firestore';
 
 export default function Appointments() {
     const { user } = useContext(AuthContext);
     const [filter, setFilter] = useState("Active");
-    const [userError, setUserError] = useState('')
-    const [clinicError, setClinicError] = useState('')
+    const [error, setError] = useState('')
     const [expandedAtClinic, setExpandedAtClinic] = useState(false);
 
     //custom hook to setup a listener on the users appointments collection
@@ -33,48 +30,41 @@ export default function Appointments() {
         var data = {
             checkedIn: true,
         }
-
+        const ref1 = firestore().doc(`Users/${userId}/Appointments/${clinicId}`)
+        const ref2 = firestore().doc(`Clinics/${clinicId}/Appointments/${userId}`)
         if (status == "Active") {
-            updateDocumentGeneral(`Users/${userId}/Appointments`, `${clinicId}`, data)
+            firestore().runTransaction(async transaction => {
+                transaction.update(ref1, data);
+                transaction.update(ref2, data);
+            })
                 .then(() => {
-                    console.log('User checked in in clinic sub-collection!');
+                    console.log('User checked In');
                 })
                 .catch((e) => {
                     console.log(e.message)
+                    setError('')
+                    setError(e.message)
                 })
-            updateDocumentGeneral(`Clinics/${clinicId}/Appointments`, `${userId}`, data)
-                .then(() => {
-                    console.log('User checked in in users sub-collection!');
-                })
-                .catch((e) => {
-                    console.log(e.message)
-                })
-        } else {
-            console.log("Appointment is not active, therefore changes cannot be made")
         }
     }
 
-    //deletes appointment from Users and Clinics Appointments subcollection
-    //risk using the current approach that it will be deleted from one location and not the other
-    //improvement here would be to use batch write
-    function cancelAppointment(slot, time, clinicId) {
-        deleteDocument(`Users/${user.uid}/Appointments`, clinicId)
+    //deletes appointment from Users and Clinics Appointments subcollection using a transaction
+    //transactions fail if the user is offline or all operations do not complete
+    function cancelAppointment(slot, time, clinicId, userId) {
+        const ref1 = firestore().doc(`Users/${userId}/Appointments/${clinicId}`)
+        const ref2 = firestore().doc(`Clinics/${clinicId}/Appointments/${userId}`)
+        firestore().runTransaction(async transaction => {
+            transaction.delete(ref1);
+            transaction.delete(ref2);
+        })
             .then(() => {
-                console.log('Appointment deleted from users collection!');
-                deleteDocument(`Clinics/${clinicId}/Appointments`, user.uid)
-                    .then(() => {
-                        console.log('Appointment deleted from clinics collection!');
-                        //add slot to map making it available to other users
-                        addSlotToMap(slot, time, clinicId)
-                    })
-                    .catch((e) => {
-                        console.log("Clinic Collection Error:", e.message)
-                        setClinicError(e.message)
-                    })
+                console.log('User appointment deleted');
+                addSlotToMap(slot, time, clinicId)
             })
             .catch((e) => {
-                console.log("User Collection Error:", e.message)
-                setUserError(e.message)
+                setError('')
+                setError(e.message)
+                console.log(e.message)
             })
     }
 
@@ -85,6 +75,7 @@ export default function Appointments() {
         renderItem={({ item }) => (
             <View style={AppointmentStyles.card}>
                 <AppointmentCard
+                    userId={user.uid}
                     clinicId={item.id}
                     tester={item.calledBy}
                     location={item.location}
@@ -98,7 +89,7 @@ export default function Appointments() {
                     checkedIn={item.checkedIn}
                     called={item.called}
                     wasSeen={item.wasSeen}
-                    cancel={item.status == 'Active' ? cancelAppointment : () => console.log("no function passed")}
+                    cancel={item.status == 'Active' ? cancelAppointment : null}
                     userCheckIn={() => handleUserCheckIn(item.status, user.uid, item.id)} status={item.status}
                     isCancellable={canCancel(new Date(), new Date(`${item.date}T${item.time}:00Z`))}
                 />
@@ -111,8 +102,6 @@ export default function Appointments() {
             <View style={AppointmentStyles.progress}><ProgressCircle /></View>
             :
             <View style={AppointmentStyles.body}>
-                {userError ? <Text style={AppointmentStyles.error}>{userError}</Text> : null}
-                {clinicError ? <Text style={AppointmentStyles.error}>{clinicError}</Text> : null}
                 <FilterAppointmentStatus filter={filter} setFilter={setFilter} />
                 {filter === "Active" ? <View style={AppointmentStyles.instruction}>
                     <List.Accordion
@@ -144,11 +133,12 @@ export default function Appointments() {
                             left={props => <List.Icon {...props} color='red' icon="cancel" />}
                         />
                     </List.Accordion>
-                </View>:
-                null}
+                </View> :
+                    null}
+                {error ? <Text style={AppointmentStyles.error}>{error}</Text> : null}
                 <SafeAreaView style={{ flex: 1 }}>
                     <View style={AppointmentStyles.appointments}>
-                        {collectionData.length > 0 ? appointmentList : <Text style={AppointmentStyles.text}>You currently do not have any {filter} appointments to view</Text>}
+                        {collectionData.length != [] ? appointmentList : <Text style={AppointmentStyles.text}>You currently do not have any {filter} appointments to view</Text>}
                     </View>
                 </SafeAreaView>
             </View >

@@ -5,14 +5,14 @@ import FilterQuestionRadio from '../components/FilterQuestionRadio';
 import { Message1Question, Message3Question } from '../content/Message';
 import useFilteredCollection from '../CustomHooks/useFilteredCollection';
 import { ProgressCircle } from '../components/ProgressCircle';
-import { ProgressBar, MD3Colors } from 'react-native-paper';
-import { progressBarColor } from '../constants/Constants';
+import BookingProgress from '../components/BookingProgress';
 
 export default function QuestionsScreen({ navigation }) {
 
   const [radioValue, setRadioValue] = useState(undefined);
-  const { filteredCollectionData, isFilteredCollectionLoading, filteredCollectionError } = useFilteredCollection('Questions', 'priority', '==', radioValue)
+  const { filteredCollectionData, isFilteredCollectionLoading, filteredCollectionError } = useFilteredCollection('Questions', 'question', '==', radioValue)
 
+  console.log(filteredCollectionData)
   function navigateTo(screen) {
     navigation.navigate(screen)
   }
@@ -20,7 +20,7 @@ export default function QuestionsScreen({ navigation }) {
   //-----------------------------------------------------------------------------------
   //  Data Rendering
   //-----------------------------------------------------------------------------------
-  const adviceMessage =
+  const adviceMessage = 
     <FlatList
       data={filteredCollectionData}
       keyExtractor={(Item, index) => index.toString()}
@@ -43,12 +43,11 @@ export default function QuestionsScreen({ navigation }) {
   return (
     <>
       <View>
-        <ProgressBar progress={0} color={progressBarColor} />
+        <BookingProgress progress={0}/>
       </View>
       <View style={QuestionStyles.body}>
-
         <View style={QuestionStyles.content}>
-          <Text style={QuestionStyles.message}>{Message1Question}</Text>
+          {/* <Text style={QuestionStyles.message}>{Message1Question}</Text> */}
           <Text style={QuestionStyles.message}>{Message3Question}</Text>
           <FilterQuestionRadio radioValue={radioValue} setRadioValue={setRadioValue} />
         </View>
@@ -64,11 +63,11 @@ const QuestionStyles = StyleSheet.create({
   body: {
     flex: 1,
     backgroundColor: '#ffffff',
+    padding:10
   },
   content: {
     flex: 1,
-    paddingLeft: 15,
-    paddingRight: 15,
+    
   },
   message: {
     fontSize: 15,
@@ -78,13 +77,17 @@ const QuestionStyles = StyleSheet.create({
     marginBottom: 10,
   },
   advice: {
-    padding: 15,
+    flex:1,
+    // paddingLeft: 10,
+    // paddingRight:15,
+    // paddingTop:0,
+    // paddingBottom:0,
     justifyContent: 'center',
     alignItems: 'center',
   },
   adviceMessage: {
     width: '100%',
-    color: 'darkblue',
+    color: 'green',
     textAlign: 'justify',
     fontSize: 15,
     paddingBottom: 20,

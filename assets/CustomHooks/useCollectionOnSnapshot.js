@@ -5,7 +5,7 @@ export default function useCollectionOnSnapshot(collection, filter) {
     //Hook state
     const [collectionData, setCollectionData] = useState([]);
     const [isCollectionLoading, setIsCollectionLoading] = useState(true);
-    const [collectionError, setCollectionError] = useState('');
+    const [collectionError, setCollectionError] = useState();
 
     useEffect(() => {
         const subscriber = setCollectionListener(collection, filter)

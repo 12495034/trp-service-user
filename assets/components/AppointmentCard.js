@@ -21,7 +21,7 @@ export default function AppointmentCard(props) {
                         "Cancel Appointment",
                         "Do you wish to cancel this appointment?",
                         "Yes", "No",
-                        () => props.cancel(props.slot, props.time, props.clinicId))
+                        () => props.cancel(props.slot, props.time, props.clinicId, props.userId))
                 } else {
                     handleAlertInformation("Cancel Appointment", "You are unable to cancel this appointment as it is less than 24 hrs until you are due to attend. If you are not able to make the appointment please inform the rainbow project on 02890 319030 or you will be marked as un-attended")
                 }

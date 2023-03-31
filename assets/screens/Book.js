@@ -9,9 +9,8 @@ import useCollection from '../CustomHooks/useCollection';
 import searchLogic from '../logicFunctions.js/searchLogic';
 import { ProgressCircle } from '../components/ProgressCircle';
 import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
-import { ProgressBar, MD3Colors } from 'react-native-paper';
-import { progressBarColor } from '../constants/Constants';
 import { List } from 'react-native-paper';
+import BookingProgress from '../components/BookingProgress';
 
 export default function Book({ navigation }) {
 
@@ -39,6 +38,7 @@ export default function Book({ navigation }) {
         setLoading(false)
         setClinicList([])
         setSearchMessage("")
+        setExpanded(true)
     }
 
     //navigates to clinic detail screen, passing the chosen clinic id as a parameter
@@ -57,8 +57,7 @@ export default function Book({ navigation }) {
         var clinicsFound = 0;
         if (chosenLocation) {
             const query = searchLogic(collection, chosenLocation, chosenCenter, chosenDate, searchField, clinicStatus)
-            await query
-                .get()
+            await query.get()
                 .then(querySnapshot => {
                     //log the number of matchin clinics found from the search
                     clinicsFound = querySnapshot.size
@@ -111,7 +110,7 @@ export default function Book({ navigation }) {
     return (
         <>
             <View>
-                <ProgressBar progress={0.25} color={progressBarColor} />
+                <BookingProgress progress={0.25}/>
             </View>
             <View style={BookStyles.body}>
                 <List.Accordion expanded={expanded} onPress={handlePress} title="Clinic Search" id="1">

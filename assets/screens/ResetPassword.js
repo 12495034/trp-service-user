@@ -51,6 +51,9 @@ export default function ResetPassword({ navigation }) {
                             },
                             textInputProps: {
                                 label: 'Email',
+                                mode: 'outlined',
+                                outlineColor: '#F98AF9',
+                                activeOutlineColor: '#F98AF9',
                             },
                         },
                     ]}
@@ -92,7 +95,7 @@ const ResetStyles = StyleSheet.create({
         color: 'red',
         fontSize: 15,
     },
-    message:{
+    message: {
         textAlign: 'justify',
         marginTop: 10,
         color: 'green',

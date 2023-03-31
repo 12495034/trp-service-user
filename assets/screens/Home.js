@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { ImageBackground } from 'react-native';
 import { List } from 'react-native-paper';
 import { AuthContext } from '../context/AuthProvider';
 import { welcomeMessageHome1, welcomeMessageHome2 } from '../content/Message';
 import useFilteredCollection from '../CustomHooks/useFilteredCollection';
+import { Badge } from 'react-native-paper';
 
 
 export default function Home() {
@@ -12,8 +14,6 @@ export default function Home() {
     const [expandedBooking, setExpandedBooking] = useState(false);
     const { filteredCollectionData, filteredCollectionSize, filteredCollectionError } = useFilteredCollection("Clinics", "clinicStatus", "==", "Active")
 
-    console.log(filteredCollectionData)
-    
     //state set to close one accordion if another is opened to limit information overload
     const handlePressBooking = () => {
         setExpandedBooking(!expandedBooking)
@@ -21,12 +21,28 @@ export default function Home() {
 
     return (
         <View style={HomeStyles.body}>
-            <ScrollView>
+
+            <View style={HomeStyles.imageContainer}>
+                <ImageBackground source={require('../images/splash_screen.jpg')} resizeMode='cover' style={HomeStyles.backgroundImage} />
+            </View>
+
+            {/* <ScrollView> */}
+            <View style={HomeStyles.introduction}>
                 <Text testID='WelcomeText' style={HomeStyles.title}>Welcome {user.displayName}</Text>
                 <Text style={HomeStyles.message}>{welcomeMessageHome1}</Text>
-                <Text style={HomeStyles.message}>{`Active Clinics: ${filteredCollectionSize}`}</Text>
+                <Text style={HomeStyles.message}>Currently clinics are scheduled in Belfast only</Text>
+            </View>
+            <Text style={HomeStyles.subtitle}>Active Clinics</Text>
+            <View style={HomeStyles.badge}>
+
+                <Badge visible={true} size={30}>{filteredCollectionSize}</Badge>
+            </View>
+
+            <View style={HomeStyles.callToAction}>
                 <Text style={HomeStyles.message}>{welcomeMessageHome2}</Text>
-                <List.Accordion
+            </View>
+
+            {/* <List.Accordion
                     title="How to book an appointment"
                     expanded={expandedBooking}
                     onPress={handlePressBooking}>
@@ -66,8 +82,9 @@ export default function Home() {
                         description="Any confirmed bookings and your booking history can be found on the appointments tab"
                         left={props => <List.Icon {...props} color='green' icon="calendar" />}
                     />
-                </List.Accordion>
-            </ScrollView>
+                </List.Accordion> */}
+            {/* </ScrollView> */}
+
         </View>
 
     )
@@ -76,37 +93,58 @@ export default function Home() {
 const HomeStyles = StyleSheet.create({
     body: {
         flex: 1,
-        backgroundColor: '#ffffff',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-        padding: 10,
-    },
-    title: {
-        // flex: 0.3,
-        color: '#e7665e',
-        fontWeight: '800',
-        fontSize: 19,
-        fontWeight: '400',
-        textAlign: 'left',
-        margin: 10,
+        flexDirection: 'column',
+        // backgroundColor: '#ffffff',
+        // padding: 10,
     },
     introduction: {
         flex: 1,
+    },
+    title: {
+        color: '#e7665e',
+        fontWeight: '800',
+        fontSize: 23,
+        fontWeight: '400',
+        textAlign: 'left',
+        margin: 10,
     },
     message: {
         color: 'black',
         fontSize: 15,
         fontWeight: '400',
         textAlign: 'justify',
+        textAlignVertical: 'bottom',
+        margin: 10,
+        opacity: 1.0,
+    },
+    subtitle: {
+        color: 'blue',
+        fontSize: 20,
+        fontWeight: '400',
+        textAlign: 'center',
         margin: 10,
     },
-    instruction: {
-        flex: 1,
-        width: '100%'
+    badge: {
+        flex: 0,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    listItem: {
-        textAlign: 'justify',
-    }
+    callToAction: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+    },
+    backgroundImage: {
+        width: '100%',
+        height: '100%', 
+    },
+    imageContainer: {
+        ...StyleSheet.absoluteFillObject,
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: 0.20,
+      },
 
 })
 
