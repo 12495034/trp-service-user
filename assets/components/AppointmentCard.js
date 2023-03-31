@@ -6,6 +6,7 @@ import TestCompleteIcon from '../Icons/TestCompleteIcon'
 import { AlertCancel } from '../commonFunctions/AlertCancel'
 import { Text } from 'react-native-paper';
 import { handleAlertInformation } from '../commonFunctions/Alerts'
+import { createDateString } from '../commonFunctions/createDateString'
 
 export default function AppointmentCard(props) {
        return (
@@ -37,7 +38,7 @@ export default function AppointmentCard(props) {
                     <Text>{props.clinicPostcode}</Text>
                 </View>
                 <View style={styles.col2}>
-                    <Text>{props.date}</Text>
+                    <Text>{createDateString(props.date)}</Text>
                     <Text >Slot {props.slot} @ {props.time}</Text>
                     <Text style={styles.hilight}>Tester: {props.tester}</Text>
                     <Text></Text>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import { createDateString } from '../commonFunctions/createDateString'
 
 export default function ClinicInformationCard(props) {
     return (
@@ -16,7 +17,7 @@ export default function ClinicInformationCard(props) {
                 {props.locationData.length == 1 ? <Text style={ClinicInformationCardStyles.text}>{props.locationData[0].line1}</Text> : null}
                 <Text style={ClinicInformationCardStyles.text}>{props.clinicData.location}</Text>
                 {props.locationData.length == 1 ? <Text style={ClinicInformationCardStyles.text}>{props.locationData[0].postcode}</Text> : null}
-                <Text style={ClinicInformationCardStyles.text}>{props.clinicData.date}</Text>
+                <Text style={ClinicInformationCardStyles.text}>{createDateString(props.clinicData.date)}</Text>
             </View>
         </View>
     )
