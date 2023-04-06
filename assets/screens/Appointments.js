@@ -1,14 +1,15 @@
 import React, { useState, useContext } from 'react'
 import { StyleSheet, View, SafeAreaView, FlatList } from 'react-native'
-import { Text } from 'react-native-paper';
-import AppointmentCard from '../components/AppointmentCard';
-import FilterAppointmentStatus from '../components/FilterAppointmentStatus';
+import { Text, List } from 'react-native-paper';
+
 import { AuthContext } from '../context/AuthProvider';
 import { addSlotToMap } from '../FirestoreFunctions/FirestoreUpdate';
 import useCollectionOnSnapshot from '../CustomHooks/useCollectionOnSnapshot';
+import FilterAppointmentStatus from '../components/FilterAppointmentStatus';
+import AppointmentCard from '../components/AppointmentCard';
 import { ProgressCircle } from '../components/ProgressCircle';
 import canCancel from '../logicFunctions.js/canCancel'
-import { List } from 'react-native-paper';
+
 import firestore from '@react-native-firebase/firestore';
 
 export default function Appointments() {
@@ -38,10 +39,9 @@ export default function Appointments() {
                 transaction.update(ref2, data);
             })
                 .then(() => {
-                    console.log('User checked In');
+                    //user checked in indicated by icon turning green
                 })
                 .catch((e) => {
-                    console.log(e.message)
                     setError('')
                     setError(e.message)
                 })
@@ -58,13 +58,11 @@ export default function Appointments() {
             transaction.delete(ref2);
         })
             .then(() => {
-                console.log('User appointment deleted');
                 addSlotToMap(slot, time, clinicId)
             })
             .catch((e) => {
                 setError('')
                 setError(e.message)
-                console.log(e.message)
             })
     }
 

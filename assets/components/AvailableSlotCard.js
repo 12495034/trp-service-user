@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Pressable } from 'react-native'
 import { Text } from 'react-native-paper'
 
-//creates a pressable component for each bookable slot that can be selected by the user
+//creates a pressable component for each bookable slot that can be selected by the user on the clinic details screen
 export default function AvailableSlotCard(props) {
     return (
         <Pressable

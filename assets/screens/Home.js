@@ -1,23 +1,22 @@
 import React, { useContext, useState } from 'react'
-import { View, Text, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { ImageBackground } from 'react-native';
-import { List } from 'react-native-paper';
+import { Badge } from 'react-native-paper';
+
 import { AuthContext } from '../context/AuthProvider';
 import { welcomeMessageHome1, welcomeMessageHome2 } from '../content/Message';
 import useFilteredCollection from '../CustomHooks/useFilteredCollection';
-import { Badge } from 'react-native-paper';
-
+import { ProgressCircle } from '../components/ProgressCircle';
 
 export default function Home() {
-
     const { user } = useContext(AuthContext);
-    const [expandedBooking, setExpandedBooking] = useState(false);
-    const { filteredCollectionData, filteredCollectionSize, filteredCollectionError } = useFilteredCollection("Clinics", "clinicStatus", "==", "Active")
+    //const [expandedBooking, setExpandedBooking] = useState(false);
+    const { filteredCollectionData, filteredCollectionSize, isfilteredCollectionLoading, filteredCollectionError } = useFilteredCollection("Clinics", "clinicStatus", "==", "Active")
 
     //state set to close one accordion if another is opened to limit information overload
-    const handlePressBooking = () => {
-        setExpandedBooking(!expandedBooking)
-    };
+    // const handlePressBooking = () => {
+    //     setExpandedBooking(!expandedBooking)
+    // };
 
     return (
         <View style={HomeStyles.body}>
@@ -33,11 +32,13 @@ export default function Home() {
                 <Text style={HomeStyles.message}>Currently clinics are scheduled in Belfast only</Text>
             </View>
             <Text style={HomeStyles.subtitle}>Active Clinics</Text>
-            <View style={HomeStyles.badge}>
-
-                <Badge visible={true} size={30}>{filteredCollectionSize}</Badge>
-            </View>
-
+            {isfilteredCollectionLoading ?
+                <ProgressCircle />
+                :
+                <View style={HomeStyles.badge}>
+                    <Badge visible={true} size={30}>{filteredCollectionSize}</Badge>
+                </View>
+            }
             <View style={HomeStyles.callToAction}>
                 <Text style={HomeStyles.message}>{welcomeMessageHome2}</Text>
             </View>
@@ -137,14 +138,14 @@ const HomeStyles = StyleSheet.create({
     },
     backgroundImage: {
         width: '100%',
-        height: '100%', 
+        height: '100%',
     },
     imageContainer: {
         ...StyleSheet.absoluteFillObject,
         justifyContent: 'center',
         alignItems: 'center',
         opacity: 0.20,
-      },
+    },
 
 })
 

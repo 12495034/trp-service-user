@@ -1,5 +1,4 @@
 import React from 'react'
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 

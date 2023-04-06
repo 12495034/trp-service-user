@@ -1,11 +1,12 @@
 import React, { useState, useContext, Fragment } from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { TextInput, Checkbox, Button, List } from 'react-native-paper';
-import { AuthContext } from '../context/AuthProvider';
-import DatePicker from '../CustomHooks/DatePicker';
 import { useController, useForm } from 'react-hook-form';
 import { FormBuilder } from 'react-native-paper-form-builder';
 import { ActivityIndicator } from 'react-native-paper';
+
+import { AuthContext } from '../context/AuthProvider';
+import DatePicker from '../CustomHooks/DatePicker';
 import DialogBox from '../components/DialogBox';
 import { termsAndConditions } from '../content/Message';
 import { emailNotificationMessage } from '../content/Message';
@@ -31,9 +32,6 @@ export default function CreateAccount() {
     const hideEmailNotDialog = () => setEmailNotVisible(false);
 
     const { docData, isDocLoading, docError } = useDoc('Supporting', 'pronouns', null)
-
-    console.log(docData)
-
     const { control, setFocus, handleSubmit } = useForm({
         defaultValues: {
             pronouns: '',
@@ -51,16 +49,13 @@ export default function CreateAccount() {
     });
 
     function handleCreateUser(data) {
-        console.log(data)
         if (data.isAgreedTC) {
             setIsLoading(true)
             createUser(data)
                 .then(() => {
-                    console.log("User Created")
                     setIsLoading(false)
                 })
                 .catch((e) => {
-                    console.log(e.message)
                     setError(e.message)
                     setIsLoading(false)
                 })

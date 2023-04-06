@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react"
-import { View, Text, StyleSheet, Button } from "react-native"
+import { View, Text, StyleSheet } from "react-native"
 import BackgroundTimer from "react-native-background-timer"
 import { handleAlertInformation } from "../commonFunctions/Alerts";
 
+//Background timer runs even if the app screen is minimised. Ensures the user can only hold the appointment for a specified duration
 export function BgTimer(props) {
   const [secondsLeft, setSecondsLeft] = useState(props.timeLimit);
   const [timerOn, setTimerOn] = useState(false);
 
   function clockify() {
-    let hours = Math.floor(secondsLeft / 60 / 60)
-    let mins = Math.floor((secondsLeft / 60) % 60)
+    //let hours = Math.floor(secondsLeft / 60 / 60)
+    //let mins = Math.floor((secondsLeft / 60) % 60)
     let seconds = Math.floor(secondsLeft % 60)
-    let displayHours = hours < 10 ? `0${hours}` : hours
-    let displayMins = mins < 10 ? `0${mins}` : mins
+    //let displayHours = hours < 10 ? `0${hours}` : hours
+    //let displayMins = mins < 10 ? `0${mins}` : mins
     let displaySecs = seconds < 10 ? `0${seconds}` : seconds
     return {
       //displayHours,

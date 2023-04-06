@@ -1,5 +1,12 @@
 //constants used throughout the source code can be altered here, review comments for description of constant usage
 
+//Radio button colors
+export const radioButtonSelectColor = 'green'
+export const radioButtonUnselectedColor = 'red'
+
+//progress bar color
+export const progressBarColor = 'green'
+
 //Defines the time allowed in seconds by the user to confirm their appointment slot before it is made available again
 export const timeLimit = 10 * 5.9
 
@@ -39,6 +46,3 @@ export function userAppointmentData(selectedSlot, selectedTime, location, center
     }
 }
 
-export const radioButtonSelectColor = 'green'
-export const radioButtonUnselectedColor = 'red'
-export const progressBarColor = 'green'

@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
 import { Text, Button } from 'react-native-paper'
+
 import FilterQuestionRadio from '../components/FilterQuestionRadio';
-import { Message1Question, Message3Question } from '../content/Message';
+import { Message3Question } from '../content/Message';
 import useFilteredCollection from '../CustomHooks/useFilteredCollection';
 import { ProgressCircle } from '../components/ProgressCircle';
 import BookingProgress from '../components/BookingProgress';
 
 export default function QuestionsScreen({ navigation }) {
-
   const [radioValue, setRadioValue] = useState(undefined);
   const { filteredCollectionData, isFilteredCollectionLoading, filteredCollectionError } = useFilteredCollection('Questions', 'question', '==', radioValue)
 
-  console.log(filteredCollectionData)
   function navigateTo(screen) {
     navigation.navigate(screen)
   }

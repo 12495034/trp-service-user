@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { fetchDocumentData } from '../FirestoreFunctions/FirestoreRead';
 
+//Custom hook to retrieve document data
+//Single read
 export default function useDoc(collection, doc, dependency) {
     const [docData, setDocData] = useState({});
     const [isDocLoading, setIsDocLoading] = useState(true);
@@ -21,10 +23,7 @@ export default function useDoc(collection, doc, dependency) {
                     setDocError(e.message)
                     setIsDocLoading(false)
                 })
-                console.log("Getting data")
-        } else { 
-            console.log("Missed")
-        }
+        } 
     }, [dependency]);
 
     return {

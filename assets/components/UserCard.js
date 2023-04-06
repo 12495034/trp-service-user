@@ -1,7 +1,9 @@
 import React from 'react'
 import { StyleSheet, View, Image } from 'react-native';
 import { Text } from 'react-native-paper';
+import { Linking } from 'react-native';
 
+//User card component stores personal details entered by the user at signup
 export default function UserCard(props) {
     return (
         <View style={UserCardStyles.body}>
@@ -22,7 +24,12 @@ export default function UserCard(props) {
                     <Text style={UserCardStyles.detailText}>Created On:</Text>
                     <Text style={UserCardStyles.detailText}>Notifications:</Text>
                     <Text style={UserCardStyles.detailText}>Status:</Text>
-                    {/* <Text style={UserCardStyles.detailText}>Role:</Text> */}
+                    <Text></Text>
+                    <Text
+                        style={{ color: 'blue', textDecorationLine: 'underline', }}
+                        onPress={() => Linking.openURL('https://trp-developement.web.app/privacy-policy-mobile')}>
+                        View Privacy Policy
+                    </Text>
                 </View>
                 <View>
                     <Text style={UserCardStyles.detailText}>{props.proNouns}</Text>
@@ -74,7 +81,7 @@ const UserCardStyles = StyleSheet.create({
         backgroundColor: '#F2D6F3',
         padding: 10,
         borderRadius: 5,
-        elevation:5,
+        elevation: 5,
     },
     detailText: {
         fontSize: 15,

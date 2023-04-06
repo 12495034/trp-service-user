@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import { setDocListener } from '../FirestoreFunctions/FirestoreRead';
 
+//Custom hook to retrieve document data
+//Real time updates
 export default function useDocOnSnapshot(collection, doc, dependency) {
     //Hook state
     const [docData, setDocData] = useState({});
     const [isDocLoading, setIsDocLoading] = useState(true);
     const [docError, setDocError] = useState('');
-
-    console.log("Collection:", collection)
-    console.log("doc:", doc)
 
     useEffect(() => {
         if (collection) {

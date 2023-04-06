@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { setCollectionListener } from '../FirestoreFunctions/FirestoreRead';
 
+//Custom hook to retrieve all document details stored in a collection
+//Real time updates
 export default function useCollectionOnSnapshot(collection, filter) {
-    //Hook state
     const [collectionData, setCollectionData] = useState([]);
     const [isCollectionLoading, setIsCollectionLoading] = useState(true);
     const [collectionError, setCollectionError] = useState();

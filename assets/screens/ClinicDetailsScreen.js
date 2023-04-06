@@ -1,22 +1,20 @@
 import React, { useState, useContext } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { Text, Button } from 'react-native-paper'
-import * as Progress from 'react-native-progress';
+import { useNetInfo } from '@react-native-community/netinfo'
 
 import { AuthContext } from '../context/AuthProvider';
 import { removeSlotFromMap } from '../FirestoreFunctions/FirestoreDelete';
-import { useNetInfo } from '@react-native-community/netinfo'
 
 import AvailableSlotCard from '../components/AvailableSlotCard';
 import UnverifiedEmail from '../components/UnverifiedEmail';
+import ClinicInformationCard from '../components/ClinicInformationCard';
+import BookingProgress from '../components/BookingProgress';
+import { ProgressCircle } from '../components/ProgressCircle';
 import useDuplicateCheck from '../CustomHooks/useDuplicateCheck';
 import useDocOnSnapshot from '../CustomHooks/useDocOnSnapshot';
 import useFilteredCollection from '../CustomHooks/useFilteredCollection';
-
 import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
-import ClinicInformationCard from '../components/ClinicInformationCard';
-import BookingProgress from '../components/BookingProgress';
-
 
 export default function ClinicDetailsScreen({ route, navigation }) {
     const { user, verificationEmail } = useContext(AuthContext);
@@ -61,7 +59,6 @@ export default function ClinicDetailsScreen({ route, navigation }) {
                 setMessage(`Verification email sent to ${email}, please check your inbox`)
             })
             .catch((e) => {
-                console.log(e)
                 setError(e.message)
             })
     }
@@ -96,14 +93,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
                     <View style={ClinicDetailStyles.clinicInformation}>
                         {isFilteredCollectionLoading ?
                             <View style={ClinicDetailStyles.progress}>
-                                <Progress.Circle
-                                    size={60}
-                                    indeterminate={true}
-                                    endAngle={0.6}
-                                    animated={true}
-                                    color={'red'}
-                                    borderColor={'red'}
-                                    showsText={true} />
+                                <ProgressCircle/>
                             </View>
                             :
                             <View>

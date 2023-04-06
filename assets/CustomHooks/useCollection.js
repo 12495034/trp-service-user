@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { fetchCollectionDocuments } from '../FirestoreFunctions/FirestoreRead';
 
+//Custom hook to retrieve all document details stored in a collection
+//single read
+
 export default function useCollection(collection, dependency) {
-    //Hook state
     const [collectionData, setCollectionData] = useState([]);
     const [isCollectionLoading, setIsCollectionLoading] = useState(true);
     const [collectionError, setCollectionError] = useState('');

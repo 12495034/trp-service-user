@@ -2,6 +2,8 @@ import React, { createContext, useState, useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
+//Auth provider manages user state changes and persists the user state across the app
+//App is wrapper within AuthContext.Provider allowing state and functions to be retrieved at any level below
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -19,7 +21,7 @@ export const AuthProvider = ({ children }) => {
                     setStatus(idTokenResult.claims.accountStatus)
                 })
                 .catch((error) => {
-                    console.log(error);
+                    //console.log(error);
                 });
         } else {
             setUser(null)
@@ -33,15 +35,12 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     async function signIn(email, password) {
-        console.log("signIn function running")
         return auth().signInWithEmailAndPassword(email, password)
     }
 
     async function createUser(data) {
-        console.log("creating a new user with input details")
         await auth().createUserWithEmailAndPassword(data.email, data.password)
             .then(() => {
-                console.log("Adding firestore instance of user details")
                 firestore().collection('Users').doc(auth().currentUser.uid)
                     .set({
                         ProNouns: data.pronouns,
@@ -57,14 +56,12 @@ export const AuthProvider = ({ children }) => {
                     })
             })
             .then(async () => {
-                console.log("Updating user auth profile with display name")
                 await auth().currentUser.updateProfile({
                     displayName: `${data.firstname} ${data.lastname}`,
                 })
             })
             .then(async () => {
                 //verification email sent following account signup, this will be available in the metadata
-                console.log("Sending verification email to users account")
                 await verificationEmail()
             })
             .catch((e) => {
@@ -73,10 +70,10 @@ export const AuthProvider = ({ children }) => {
             
         await logOut()
             .then(() => {
-                console.log("Logging out to refresh custom claims")
+                //logging out to refresh custom claims
             })
             .catch((error) => {
-                console.log(error.message)
+                //console.log(error.message)
             })
     }
 
@@ -85,22 +82,18 @@ export const AuthProvider = ({ children }) => {
     }
 
     async function logOut() {
-        console.log("logout function running")
         return auth().signOut();
     }
 
     async function deleteUserAuth() {
-        console.log("logout function running")
         return auth().currentUser.delete();
     }
 
     async function offlineMode(state) {
         await firestore().settings({ persistence: state })
-        console.log("offline persistence:", state)
     }
 
     function reset(email) {
-        console.log("Password reset method running")
         return auth().sendPasswordResetEmail(email)
     }
 

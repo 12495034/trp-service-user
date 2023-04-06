@@ -1,13 +1,15 @@
 import React from 'react'
 import { View, StyleSheet, Pressable } from 'react-native'
+import { Text } from 'react-native-paper';
+
 import CalledIcon from '../Icons/CalledIcon'
 import CheckInIcon from '../Icons/CheckInIcon'
 import TestCompleteIcon from '../Icons/TestCompleteIcon'
 import { AlertCancel } from '../commonFunctions/AlertCancel'
-import { Text } from 'react-native-paper';
 import { handleAlertInformation } from '../commonFunctions/Alerts'
 import { createDateString } from '../commonFunctions/createDateString'
 
+//creates an appointment card component that is displayed on the users appointments tab for each appointment
 export default function AppointmentCard(props) {
        return (
         <Pressable
@@ -40,7 +42,7 @@ export default function AppointmentCard(props) {
                 <View style={styles.col2}>
                     <Text>{createDateString(props.date)}</Text>
                     <Text >Slot {props.slot} @ {props.time}</Text>
-                    <Text style={styles.hilight}>Tester: {props.tester}</Text>
+                    <Text style={styles.hilight}>{props.tester}</Text>
                     <Text></Text>
                     <Text>{props.status}</Text>
                     

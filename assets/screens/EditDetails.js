@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext, Fragment } from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import { TextInput, Checkbox, Button, List } from 'react-native-paper';
-import { AuthContext } from '../context/AuthProvider';
-import DatePicker from '../CustomHooks/DatePicker';
+import { TextInput, Checkbox, Button, List, ActivityIndicator } from 'react-native-paper';
 import { useController, useForm } from 'react-hook-form';
 import { FormBuilder } from 'react-native-paper-form-builder';
-import { ActivityIndicator } from 'react-native-paper';
+
+import { AuthContext } from '../context/AuthProvider';
+import DatePicker from '../CustomHooks/DatePicker';
 import useDoc from '../CustomHooks/useDoc';
 import { fetchDocumentData } from '../FirestoreFunctions/FirestoreRead';
 import { updateDocumentGeneral } from '../FirestoreFunctions/FirestoreUpdate';
@@ -16,8 +16,6 @@ export default function EditDetails({ navigation }) {
     const [isLoading, setIsLoading] = useState(false)
     const { user } = useContext(AuthContext);
     const [userDetails, setUserDetails] = useState({})
-
-    console.log(userDetails)
 
     //populate pronouns drop down menu with options from firestore database
     const { docData, isDocLoading, docError } = useDoc('Supporting', 'pronouns', null)
@@ -58,12 +56,10 @@ export default function EditDetails({ navigation }) {
                         emailOptIn: emailOptInFlag,
                     })
                     setChosenDate(documentSnapshot.data().dob)
-                } else {
-                    console.log("No such document!");
-                }
+                } 
             })
             .catch((e) => {
-                console.log(e.message)
+                //console.log(e.message)
             })
     }
 

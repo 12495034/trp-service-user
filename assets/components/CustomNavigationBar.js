@@ -1,10 +1,8 @@
 import React from 'react'
 import { Appbar, Menu } from 'react-native-paper'
-import { StyleSheet, Text} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { StyleSheet} from 'react-native';
 
+//*** Not currently used in the app, but may be employed at a later stage ***
 export default function CustomNavigationBar({ navigation, back, route }) {
 
     const [visible, setVisible] = React.useState(false);

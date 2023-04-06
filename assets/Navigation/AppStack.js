@@ -9,10 +9,12 @@ import BookStackScreen from './BookStack';
 import ProfileStackScreen from './ProfileStack';
 import { useNetInfo } from '@react-native-community/netinfo'
 import { AuthContext } from '../context/AuthProvider';
+import useCountOnSnapshot from '../CustomHooks/useCountOnSnapshot';
 
 const Tab = createBottomTabNavigator();
-
 const AppStack = (props) => {
+  const { user } = useContext(AuthContext);
+  const { countData, isCountLoading, countError } = useCountOnSnapshot(`Users/${user.uid}/Appointments`, "Active")
 
   //use of netinfo hook to retrieve device connectivity information
   const netInfo = useNetInfo()
@@ -69,15 +71,16 @@ const AppStack = (props) => {
         name="Appointments"
         component={Appointments}
         options={({ route }) => ({
+          tabBarBadge: `${countData}`,
           tabBarLabel: 'Appointments',
-          tabBarIcon: ({ focused, color, size }) => (
-            <MaterialCommunityIcons
-              name={focused ? "calendar-account" : "calendar-blank"}
-              color={color}
-              size={size}
-            />
-          ),
-          tabBarBadge: 2
+      tabBarIcon: ({focused, color, size}) => (
+      <MaterialCommunityIcons
+        name={focused ? "calendar-account" : "calendar-blank"}
+        color={color}
+        size={size}
+      />
+      ),
+          
         })}
       />
       <Tab.Screen

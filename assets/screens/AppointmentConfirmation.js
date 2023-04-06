@@ -1,19 +1,19 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, BackHandler, Alert } from 'react-native'
-import { AuthContext } from '../context/AuthProvider';
-import { timeLimit } from '../constants/Constants';
 import { StackActions } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
-import { addSlotToMap } from '../FirestoreFunctions/FirestoreUpdate';
-import { handleAlertInformation } from '../commonFunctions/Alerts';
-import { BgTimer } from '../CustomHooks/BgTimer';
-import { appointmentConfirmation1, BookingCancelAlertBody, BookingCancelAlertTitle, BookingSuccessfulAlertBody, BookingSuccessfulAlertTitle } from '../content/Message';
-import { handleAlertDecision } from '../commonFunctions/Alerts';
+
+import { AuthContext } from '../context/AuthProvider';
+import { timeLimit } from '../constants/Constants';
 import { clinicAppointmentData, userAppointmentData } from '../constants/Constants';
+import { appointmentConfirmation1, BookingCancelAlertBody, BookingCancelAlertTitle, BookingSuccessfulAlertBody, BookingSuccessfulAlertTitle } from '../content/Message';
+import { addSlotToMap } from '../FirestoreFunctions/FirestoreUpdate';
+import { BgTimer } from '../CustomHooks/BgTimer';
+import { handleAlertDecision, handleAlertInformation } from '../commonFunctions/Alerts';
 import { useNetInfo } from '@react-native-community/netinfo'
 import BookingProgress from '../components/BookingProgress';
-import firestore from '@react-native-firebase/firestore';
 
+import firestore from '@react-native-firebase/firestore';
 
 export default function AppointmentConfirmation({ route, navigation }) {
 
@@ -65,7 +65,6 @@ export default function AppointmentConfirmation({ route, navigation }) {
             transaction.set(ref2, clinicAppointmentData(selectedSlot, selectedTime));
         })
             .then(() => {
-                console.log('User appointment created');
                 //pop to top of stack
                 navigation.dispatch(StackActions.popToTop())
                 //show newly created appointment on the appointments tab
@@ -74,7 +73,6 @@ export default function AppointmentConfirmation({ route, navigation }) {
                 handleAlertInformation(BookingSuccessfulAlertTitle, BookingSuccessfulAlertBody)
             })
             .catch((e) => {
-                console.log(e.message)
                 setError('')
                 setError(e.message)
             })

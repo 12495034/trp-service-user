@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { View, Text, StyleSheet, Alert } from 'react-native'
 import { Button } from 'react-native-paper';
+
 import { AuthContext } from '../context/AuthProvider';
 import UserCard from '../components/UserCard';
 import useDocOnSnapshot from '../CustomHooks/useDocOnSnapshot';
@@ -8,16 +9,14 @@ import { ProgressCircle } from '../components/ProgressCircle';
 import { convertFirestoreTimeStamp } from '../SpecialFunctions/convertFirestoreTimeStamp';
 
 export default function Profile({ navigation }) {
-
     const [deleteAuthError, setDeleteAuthError] = useState('')
-
     const { logOut, user, role, status, deleteUserAuth } = useContext(AuthContext);
     const { docData, isDocLoading, docError } = useDocOnSnapshot('Users', user.uid, user)
 
     async function handleLogOut() {
         await logOut()
             .then(() => {
-                console.log("Log out successful")
+                //user logged out
             })
             .catch((e) => {
                 //catch errors here
@@ -28,10 +27,9 @@ export default function Profile({ navigation }) {
         //cloud function handles the deletion of user data in firestore when triggered by User deletion
         await deleteUserAuth()
             .then(() => {
-                console.log("User Authentication deleted at users request")
+                //user is automatically logged out when authentication is deleted successfully
             })
             .catch((e) => {
-                console.log(e.message)
                 setDeleteAuthError(e.message)
             })
     }

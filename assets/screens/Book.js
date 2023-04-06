@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
-import { Text, Button } from 'react-native-paper'
+import { Text, Button, List } from 'react-native-paper'
+
 import CenterPicker from '../components/CenterPicker';
 import ClinicCard from '../components/ClinicCard';
-import DatePicker from '../CustomHooks/DatePicker';
 import LocationPicker from '../components/LocationPicker';
+import { ProgressCircle } from '../components/ProgressCircle';
+import BookingProgress from '../components/BookingProgress';
+import DatePicker from '../CustomHooks/DatePicker';
 import useCollection from '../CustomHooks/useCollection';
 import searchLogic from '../logicFunctions.js/searchLogic';
-import { ProgressCircle } from '../components/ProgressCircle';
 import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
-import { List } from 'react-native-paper';
-import BookingProgress from '../components/BookingProgress';
 
 export default function Book({ navigation }) {
 
@@ -77,7 +77,6 @@ export default function Book({ navigation }) {
                     setLoading(false)
                 })
                 .catch((e) => {
-                    console.log(e.message)
                     setLoading(false)
                 })
         } else {

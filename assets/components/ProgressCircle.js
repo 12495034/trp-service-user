@@ -1,6 +1,7 @@
 import React from 'react'
-import { ActivityIndicator, MD2Colors } from 'react-native-paper';
+import { ActivityIndicator } from 'react-native-paper';
 
+//loading circle component to indicate when data is being loaded or information processing is occurring
 export function ProgressCircle() {
     return (
             <ActivityIndicator 

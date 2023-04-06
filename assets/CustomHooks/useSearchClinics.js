@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { fetchCollectionDocuments } from '../FirestoreFunctions/FirestoreRead';
 
+//custom hook to search firestore collection for clinics based on input criteria
 export default function useSearchClinics(collection, chosenLocation, chosenCenter, chosenDate, dependency) {
     //Hook state
     const [clinicList, setClinicList] = useState([]);
@@ -47,7 +47,7 @@ export default function useSearchClinics(collection, chosenLocation, chosenCente
                 setClinicList(clinicListArray)
             })
             .catch((e) => {
-                console.log(e.message)
+                //console.log(e.message)
             })
         setLoading(false)
         setSearchMessage("")

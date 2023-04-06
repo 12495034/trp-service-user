@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { ScrollView, View } from 'react-native';
-import { Button, Dialog, Portal, Provider, Text } from 'react-native-paper';
+import React from "react";
+import { ScrollView} from 'react-native';
+import { Button, Dialog, Portal, Provider} from 'react-native-paper';
 
+// dialog box component used to display information to the user, such as terms and conditions
 const DialogBox = (props) => {
-  console.log("Dialog box displayed")
   return (
     <Provider>
         <Portal>

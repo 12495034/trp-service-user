@@ -1,12 +1,9 @@
-import React from 'react'
 import { useState, useEffect } from 'react'
 import { fetchFilteredCollection } from '../FirestoreFunctions/FirestoreRead';
 
+//custom hook to return data from documents stored in a collection based on a filter criteria
 export default function useFilteredCollection(collection, searchField, operator, searchValue) {
-    //Hook state
     const [filteredCollectionData, setFilteredCollectionData] = useState([]);
-    //rather than determining the size of the filtered collection use count() method as a new custom hook
-    //the document arent downloaded and therefore do not add to the firestore read quota
     const [filteredCollectionSize, setFilteredCollectionSize] = useState(0)
     const [isFilteredCollectionLoading, setIsFilteredCollectionLoading] = useState(true);
     const [filteredCollectionError, setFilteredCollectionError] = useState('');

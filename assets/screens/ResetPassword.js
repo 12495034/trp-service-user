@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react'
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
-import { AuthContext } from '../context/AuthProvider';
 import { Button } from 'react-native-paper';
 import { FormBuilder } from 'react-native-paper-form-builder';
 import { useForm } from 'react-hook-form';
+
+import { AuthContext } from '../context/AuthProvider';
 
 export default function ResetPassword({ navigation }) {
 
@@ -24,7 +25,6 @@ export default function ResetPassword({ navigation }) {
                 setMessage(`Reset email sent to ${email}, please check your inbox`)
             })
             .catch((e) => {
-                console.log(e)
                 setError(e.message)
             })
     }
@@ -62,7 +62,6 @@ export default function ResetPassword({ navigation }) {
                     color='orange'
                     mode={'contained'}
                     onPress={handleSubmit((data) => {
-                        console.log(data.email);
                         resetHandle(data.email)
                     })}>
                     Request password reset email

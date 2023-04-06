@@ -1,13 +1,11 @@
 import React, { useState, useContext, Fragment } from 'react'
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native'
-import { AuthContext } from '../context/AuthProvider';
 import { FormBuilder } from 'react-native-paper-form-builder';
 import { useForm } from 'react-hook-form';
 import { Button, TextInput } from 'react-native-paper';
+
+import { AuthContext } from '../context/AuthProvider';
 import { ProgressCircle } from '../components/ProgressCircle';
-import { version } from 'react';
-
-
 
 export default function Login({ navigation }) {
 
@@ -28,7 +26,6 @@ export default function Login({ navigation }) {
         if (userName.length != 0 && password.length != 0) {
             await signIn(userName, password)
                 .then(() => {
-                    console.log("User sign in successful")
                     setLoginProcessing(false)
                 })
                 .catch((e) => {
@@ -48,10 +45,8 @@ export default function Login({ navigation }) {
                         style={LoginStyles.tinyLogo}
                         source={require('../images/logo.png')}
                     />
-                    <Text style={LoginStyles.headingStyle}>The Rainbow Project Rapid HIV & Syphillis Testing</Text>
-                  
-                <Text>Version: 1.0.0</Text>
-           
+                    <Text style={LoginStyles.headingStyle}>Rapid HIV testing</Text>
+                    <Text>Version: 1.0.0</Text>
                 </View>
                 <Fragment>
                     <Text style={LoginStyles.error}>{error}</Text>
@@ -98,7 +93,7 @@ export default function Login({ navigation }) {
                             },
                         ]}
                     />
-                    {loginProcessing ? <View style={{ alignItems: 'center' }}><ProgressCircle /></View>
+                    {loginProcessing ? <View style={{ width:'90%', alignItems: 'center' }}><ProgressCircle /></View>
                         :
                         <View>
                             <Button
@@ -136,7 +131,7 @@ export default function Login({ navigation }) {
                 </Fragment>
 
             </ScrollView>
-            
+
         </View>
     );
 }
@@ -150,6 +145,7 @@ const LoginStyles = StyleSheet.create({
     logo: {
         width: '100%',
         alignItems: 'center',
+        marginBottom: 20,
     },
     error: {
         color: 'red',
@@ -167,8 +163,6 @@ const LoginStyles = StyleSheet.create({
     headingStyle: {
         fontSize: 20,
         textAlign: 'center',
-        marginTop: 20,
-        marginBottom: 20,
     },
     tinyLogo: {
         width: 150,
