@@ -5,13 +5,13 @@ import { Badge } from 'react-native-paper';
 
 import { AuthContext } from '../context/AuthProvider';
 import { welcomeMessageHome1, welcomeMessageHome2 } from '../content/Message';
-import useFilteredCollection from '../CustomHooks/useFilteredCollection';
 import { ProgressCircle } from '../components/ProgressCircle';
+import useCountOnSnapshot from '../CustomHooks/useCountOnSnapshot';
 
 export default function Home() {
     const { user } = useContext(AuthContext);
     //const [expandedBooking, setExpandedBooking] = useState(false);
-    const { filteredCollectionData, filteredCollectionSize, isfilteredCollectionLoading, filteredCollectionError } = useFilteredCollection("Clinics", "clinicStatus", "==", "Active")
+    const { countData, isCountLoading, countError } = useCountOnSnapshot("Clinics", "clinicStatus", "Active")
 
     //state set to close one accordion if another is opened to limit information overload
     // const handlePressBooking = () => {
@@ -32,13 +32,16 @@ export default function Home() {
                 <Text style={HomeStyles.message}>Currently clinics are scheduled in Belfast only</Text>
             </View>
             <Text style={HomeStyles.subtitle}>Active Clinics</Text>
-            {isfilteredCollectionLoading ?
-                <ProgressCircle />
+            {isCountLoading ?
+                <View>
+                    <ProgressCircle />
+                </View>
                 :
                 <View style={HomeStyles.badge}>
-                    <Badge visible={true} size={30}>{filteredCollectionSize}</Badge>
+                    <Badge visible={true} size={30}>{countData}</Badge>
                 </View>
             }
+            {countError ? <Text style={HomeStyles.error}>{countError}</Text> : null}
             <View style={HomeStyles.callToAction}>
                 <Text style={HomeStyles.message}>{welcomeMessageHome2}</Text>
             </View>
@@ -121,7 +124,12 @@ const HomeStyles = StyleSheet.create({
     subtitle: {
         color: 'blue',
         fontSize: 20,
-        fontWeight: '400',
+        textAlign: 'center',
+        margin: 10,
+    },
+    error: {
+        color: 'red',
+        fontSize: 15,
         textAlign: 'center',
         margin: 10,
     },

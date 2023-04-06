@@ -21,7 +21,7 @@ export function setDocListener(collection, doc) {
 }
 
 //fetch data for a specific document, returns a promise
-export function setCollectionListener(collection, filter) {
-    return firestore().collection(`${collection}`).where('status', '==', `${filter}`);
+export function setCollectionListener(collection, field, filter) {
+    return firestore().collection(`${collection}`).where(`${field}`, '==', `${filter}`);
 }
 

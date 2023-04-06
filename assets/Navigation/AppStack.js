@@ -71,16 +71,15 @@ const AppStack = (props) => {
         name="Appointments"
         component={Appointments}
         options={({ route }) => ({
-          tabBarBadge: `${countData}`,
+          tabBarBadge: countData > 0 ? countData : null,
           tabBarLabel: 'Appointments',
-      tabBarIcon: ({focused, color, size}) => (
-      <MaterialCommunityIcons
-        name={focused ? "calendar-account" : "calendar-blank"}
-        color={color}
-        size={size}
-      />
-      ),
-          
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons
+              name={focused ? "calendar-account" : "calendar-blank"}
+              color={color}
+              size={size}
+            />
+          ),
         })}
       />
       <Tab.Screen

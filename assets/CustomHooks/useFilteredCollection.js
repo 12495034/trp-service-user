@@ -30,9 +30,10 @@ export default function useFilteredCollection(collection, searchField, operator,
                         setFilteredCollectionError('Collection is empty or does not exist');
                     }
                     setFilteredCollectionData(filteredCollectionDataArray)
-                    return false
                 })
-                .then((data) => setIsFilteredCollectionLoading(data))
+                .then((data) => {
+                    setIsFilteredCollectionLoading(false)
+                })
                 .catch((e) => {
                     setFilteredCollectionError(e.message)
                     setIsFilteredCollectionLoading(false)

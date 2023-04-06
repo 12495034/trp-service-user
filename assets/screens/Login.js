@@ -6,6 +6,7 @@ import { Button, TextInput } from 'react-native-paper';
 
 import { AuthContext } from '../context/AuthProvider';
 import { ProgressCircle } from '../components/ProgressCircle';
+import packageJson from '../../package.json'
 
 export default function Login({ navigation }) {
 
@@ -46,7 +47,7 @@ export default function Login({ navigation }) {
                         source={require('../images/logo.png')}
                     />
                     <Text style={LoginStyles.headingStyle}>Rapid HIV testing</Text>
-                    <Text>Version: 1.0.0</Text>
+                    <Text>Version: {packageJson.version}</Text>
                 </View>
                 <Fragment>
                     <Text style={LoginStyles.error}>{error}</Text>
