@@ -9,8 +9,9 @@ import { ProgressCircle } from '../components/ProgressCircle';
 import BookingProgress from '../components/BookingProgress';
 import DatePicker from '../CustomHooks/DatePicker';
 import useCollection from '../CustomHooks/useCollection';
-import searchLogic from '../logicFunctions.js/searchLogic';
+import searchLogic from '../logic/searchLogic';
 import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
+import { buttonStyle } from '../constants/Constants';
 
 export default function Book({ navigation }) {
 
@@ -120,7 +121,7 @@ export default function Book({ navigation }) {
                         <View style={BookStyles.searchButtons}>
                             <Button
                                 style={{ width: '50%', borderBottomLeftRadius: 5, borderBottomRightRadius: 0, borderTopLeftRadius: 5, borderTopRightRadius: 0 }}
-                                labelStyle={{ fontSize: 12 }}
+                                labelStyle={buttonStyle.MDLabel}
                                 color='#FFB9B9'
                                 mode={'contained'}
                                 onPress={() => {
@@ -130,7 +131,7 @@ export default function Book({ navigation }) {
                             </Button>
                             <Button
                                 style={{ width: '50%', borderBottomLeftRadius: 0, borderBottomRightRadius: 5, borderTopLeftRadius: 0, borderTopRightRadius: 5 }}
-                                labelStyle={{ fontSize: 12 }}
+                                labelStyle={buttonStyle.MDLabel}
                                 color='#F9A8E7'
                                 mode={'contained'}
                                 onPress={() => clearSearchFields()}>

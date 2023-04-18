@@ -5,9 +5,9 @@ import { Text } from 'react-native-paper';
 import CalledIcon from '../Icons/CalledIcon'
 import CheckInIcon from '../Icons/CheckInIcon'
 import TestCompleteIcon from '../Icons/TestCompleteIcon'
-import { AlertCancel } from '../commonFunctions/AlertCancel'
-import { handleAlertInformation } from '../commonFunctions/Alerts'
-import { createDateString } from '../commonFunctions/createDateString'
+import { AlertCancel } from '../functions/generalFunctions/AlertCancel'
+import { handleAlertInformation } from '../functions/generalFunctions/Alerts'
+import { createDateString } from '../functions/generalFunctions/createDateString'
 
 //creates an appointment card component that is displayed on the users appointments tab for each appointment
 export default function AppointmentCard(props) {
@@ -52,6 +52,9 @@ export default function AppointmentCard(props) {
                     <CalledIcon checkedIn={props.checkedIn} called={props.called} />
                     <TestCompleteIcon checkedIn={props.checkedIn} complete={props.wasSeen} />
                 </View>
+            </View>
+            <View>
+                
             </View>
         </Pressable>
     )

@@ -8,7 +8,7 @@ import useCollectionOnSnapshot from '../CustomHooks/useCollectionOnSnapshot';
 import FilterAppointmentStatus from '../components/FilterAppointmentStatus';
 import AppointmentCard from '../components/AppointmentCard';
 import { ProgressCircle } from '../components/ProgressCircle';
-import canCancel from '../logicFunctions.js/canCancel'
+import canCancel from '../functions/SpecialFunctions/canCancel'
 
 import firestore from '@react-native-firebase/firestore';
 
@@ -19,18 +19,19 @@ export default function Appointments() {
     const [expandedAtClinic, setExpandedAtClinic] = useState(false);
 
     //custom hook to setup a listener on the users appointments collection
-    const { collectionData, isCollectionLoading, collectionError } = useCollectionOnSnapshot(`Users/${user.uid}/Appointments`, filter)
+    const { collectionData, isCollectionLoading, collectionError } = useCollectionOnSnapshot(`Users/${user.uid}/Appointments`, `status`, filter)
 
     const handlePressAtClinic = () => {
         setExpandedAtClinic(!expandedAtClinic)
     };
 
     //checks in user in users and clinics appointments sub-collection
-    function handleUserCheckIn(status, userId, clinicId) {
+    function handleUserCheckIn(status, userId, clinicId, checkInStatus) {
         //data to update checkin status with
-        var data = {
-            checkedIn: true,
-        }
+        var data = {}
+        //toggle check in status
+        checkInStatus ? data = { checkedIn: false } : data = { checkedIn: true }
+
         const ref1 = firestore().doc(`Users/${userId}/Appointments/${clinicId}`)
         const ref2 = firestore().doc(`Clinics/${clinicId}/Appointments/${userId}`)
         if (status == "Active") {
@@ -88,8 +89,9 @@ export default function Appointments() {
                     called={item.called}
                     wasSeen={item.wasSeen}
                     cancel={item.status == 'Active' ? cancelAppointment : null}
-                    userCheckIn={() => handleUserCheckIn(item.status, user.uid, item.id)} status={item.status}
-                    isCancellable={canCancel(new Date(), new Date(`${item.date}T${item.time}:00Z`))}
+                    userCheckIn={() => handleUserCheckIn(item.status, user.uid, item.id, item.checkedIn)}
+                    status={item.status}
+                    isCancellable={canCancel(new Date(), new Date(`${item.date}T${item.time}:00.000`))}
                 />
             </View>
         )}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { View, Text, StyleSheet } from "react-native"
 import BackgroundTimer from "react-native-background-timer"
-import { handleAlertInformation } from "../commonFunctions/Alerts";
+import { handleAlertInformation } from "../functions/generalFunctions/Alerts";
 
 //Background timer runs even if the app screen is minimised. Ensures the user can only hold the appointment for a specified duration
 export function BgTimer(props) {
@@ -56,9 +56,12 @@ export function BgTimer(props) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.time}>
+      <Text style={styles.message}>
         {/* {clockify().displayHours} Hours {clockify().displayMins} Mins{" "} */}
-        Appointment slot will be released in {clockify().displaySecs} seconds
+        Appointment slot will be released in
+      </Text>
+      <Text style={styles.time}>
+        {clockify().displaySecs} seconds
       </Text>
     </View>
   )
@@ -70,9 +73,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flex: 1,
   },
-  time: {
+  message: {
     fontSize: 18,
     color: "#000",
+    marginBottom: 30,
+    textAlign: "center",
+  },
+  time: {
+    fontSize: 18,
+    color: "red",
     marginBottom: 30,
     textAlign: "center",
   },

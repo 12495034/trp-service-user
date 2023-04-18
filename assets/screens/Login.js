@@ -7,6 +7,7 @@ import { Button, TextInput } from 'react-native-paper';
 import { AuthContext } from '../context/AuthProvider';
 import { ProgressCircle } from '../components/ProgressCircle';
 import packageJson from '../../package.json'
+import { buttonStyle } from '../constants/Constants';
 
 export default function Login({ navigation }) {
 
@@ -49,90 +50,91 @@ export default function Login({ navigation }) {
                     <Text style={LoginStyles.headingStyle}>Rapid HIV testing</Text>
                     <Text>Version: {packageJson.version}</Text>
                 </View>
-                <Fragment>
-                    <Text style={LoginStyles.error}>{error}</Text>
-                    <FormBuilder
-                        control={control}
-                        setFocus={setFocus}
-                        formConfigArray={[
-                            {
-                                type: 'email',
-                                name: 'email',
-                                textInputProps: {
-                                    label: 'Email',
-                                    mode: 'outlined',
-                                    outlineColor: 'grey',
-                                    activeOutlineColor: '#F98AF9',
-                                    left: <TextInput.Icon name={'email'} />
-                                },
-                                rules: {
-                                    required: {
-                                        value: true,
-                                        message: 'Email is required',
+                <View style={LoginStyles.inputs}>
+                    <Fragment>
+                        <Text style={LoginStyles.error}>{error}</Text>
+                        <FormBuilder
+                            control={control}
+                            setFocus={setFocus}
+                            formConfigArray={[
+                                {
+                                    type: 'email',
+                                    name: 'email',
+                                    textInputProps: {
+                                        label: 'Email',
+                                        mode: 'outlined',
+                                        outlineColor: 'grey',
+                                        activeOutlineColor: '#F98AF9',
+                                        left: <TextInput.Icon name={'email'} />
                                     },
-                                },
+                                    rules: {
+                                        required: {
+                                            value: true,
+                                            message: 'Email is required',
+                                        },
+                                    },
 
-                            },
-                            {
-                                type: 'password',
-                                name: 'password',
-                                textInputProps: {
-                                    label: 'Password',
-                                    mode: 'outlined',
-                                    secureTextEntry: true,
-                                    outlineColor: 'grey',
-                                    activeOutlineColor: '#F98AF9',
-                                    left: <TextInput.Icon name={'lock'}
-                                    />
                                 },
-                                rules: {
-                                    required: {
-                                        value: true,
-                                        message: 'Password is required',
+                                {
+                                    type: 'password',
+                                    name: 'password',
+                                    textInputProps: {
+                                        label: 'Password',
+                                        mode: 'outlined',
+                                        secureTextEntry: true,
+                                        outlineColor: 'grey',
+                                        activeOutlineColor: '#F98AF9',
+                                        left: <TextInput.Icon name={'lock'}
+                                        />
+                                    },
+                                    rules: {
+                                        required: {
+                                            value: true,
+                                            message: 'Password is required',
+                                        },
                                     },
                                 },
-                            },
-                        ]}
-                    />
-                    {loginProcessing ? <View style={{ width:'90%', alignItems: 'center' }}><ProgressCircle /></View>
-                        :
-                        <View>
-                            <Button
-                                testID='loginButton'
-                                style={{ width: '100%' }}
-                                labelStyle={{ fontSize: 15 }}
-                                color='lightgreen'
-                                mode={'contained'}
-                                onPress={handleSubmit((data) => {
-                                    loginHandle(data.email, data.password)
-                                })}>
-                                Login
-                            </Button>
-                            <View style={LoginStyles.options}>
+                            ]}
+                        />
+                        {loginProcessing ? <View style={{ flex: 1, justifyContent: 'center' }}><ProgressCircle /></View>
+                            :
+                            <View>
                                 <Button
-                                    testID='newAccountButton'
-                                    style={{ width: '49%' }}
-                                    labelStyle={{ fontSize: 12 }}
-                                    color='pink'
+                                    testID='loginButton'
+                                    style={{ width: '100%'}}
+                                    labelStyle={{ fontSize: 15, height:36, textAlignVertical:'center' }}
+                                    color='lightgreen'
                                     mode={'contained'}
-                                    onPress={() => navigation.push('Signup')}>
-                                    New Account
+                                    onPress={handleSubmit((data) => {
+                                        loginHandle(data.email, data.password)
+                                    })}>
+                                    Login
                                 </Button>
-                                <Button
-                                    testID='resetButton'
-                                    style={{ width: '50%' }}
-                                    labelStyle={{ fontSize: 12 }}
-                                    color='orange'
-                                    mode={'contained'}
-                                    onPress={() => navigation.push('Reset')}>
-                                    Reset Password
-                                </Button>
+                                <View style={LoginStyles.options}>
+                                    <Button
+                                        testID='newAccountButton'
+                                        style={{ width: '49%' }}
+                                        labelStyle={buttonStyle.MDLabel}
+                                        color='pink'
+                                        mode={'contained'}
+                                        onPress={() => navigation.push('Signup')}>
+                                        New Account
+                                    </Button>
+                                    <Button
+                                        testID='resetButton'
+                                        style={{ width: '50%', }}
+                                        labelStyle={{ fontSize: 12, height:36, textAlignVertical:'center' }}
+                                        color='orange'
+                                        mode={'contained'}
+                                        onPress={() => navigation.push('Reset')}>
+                                        Reset Password
+                                    </Button>
+                                </View>
                             </View>
-                        </View>}
-                </Fragment>
-
+                        }
+                    </Fragment>
+                </View>
             </ScrollView>
-
         </View>
     );
 }
@@ -141,9 +143,9 @@ const LoginStyles = StyleSheet.create({
     body: {
         flex: 1,
         backgroundColor: '#ffffff',
-        alignItems: 'center',
     },
     logo: {
+        flex: 1,
         width: '100%',
         alignItems: 'center',
         marginBottom: 20,
@@ -151,6 +153,9 @@ const LoginStyles = StyleSheet.create({
     error: {
         color: 'red',
         textAlign: 'justify'
+    },
+    inputs: {
+        width: '100%',
     },
     options: {
         width: '100%',

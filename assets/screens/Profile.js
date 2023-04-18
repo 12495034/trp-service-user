@@ -1,12 +1,15 @@
 import React, { useContext, useState } from 'react'
 import { View, Text, StyleSheet, Alert } from 'react-native'
 import { Button } from 'react-native-paper';
+import { StackActions, NavigationActions } from '@react-navigation/native';
 
 import { AuthContext } from '../context/AuthProvider';
 import UserCard from '../components/UserCard';
 import useDocOnSnapshot from '../CustomHooks/useDocOnSnapshot';
 import { ProgressCircle } from '../components/ProgressCircle';
-import { convertFirestoreTimeStamp } from '../SpecialFunctions/convertFirestoreTimeStamp';
+import { convertFirestoreTimeStamp } from '../functions/SpecialFunctions/convertFirestoreTimeStamp';
+import { buttonStyle } from '../constants/Constants';
+import { handleAlertInformation } from '../functions/generalFunctions/Alerts';
 
 export default function Profile({ navigation }) {
     const [deleteAuthError, setDeleteAuthError] = useState('')
@@ -16,7 +19,12 @@ export default function Profile({ navigation }) {
     async function handleLogOut() {
         await logOut()
             .then(() => {
-                //user logged out
+                //clearing the navigator following logout to ensure 'home' screen is the initial screen
+                const resetAction = StackActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: "Login" })],
+                  });
+                  navigation.dispatch(resetAction);
             })
             .catch((e) => {
                 //catch errors here
@@ -25,16 +33,18 @@ export default function Profile({ navigation }) {
 
     async function handleDeleteUser(userId) {
         //cloud function handles the deletion of user data in firestore when triggered by User deletion
+        //prior to user authentication profile being deleted all Active user appointments should be cancelled
         await deleteUserAuth()
             .then(() => {
                 //user is automatically logged out when authentication is deleted successfully
             })
             .catch((e) => {
                 setDeleteAuthError(e.message)
+                handleAlertInformation("Delete Account",e.message)
             })
     }
 
-    function handleAlert() {
+    function handleUserDeleteAlert() {
         Alert.alert(
             'Delete Account',
             'You will lose access the app and all stored information will be deleted. This operation cannot be un-done. Do you wish to continue ?',
@@ -48,13 +58,13 @@ export default function Profile({ navigation }) {
                 },
                 {
                     text: 'No',
-                    onPress: () => console.log("User account not deleted"),
+                    onPress: () => {},
                     style: 'cancel',
                 },
             ],
             {
                 cancelable: true,
-                onDismiss: () => console.log("Alert cancelled by pressing outside box"),
+                onDismiss: () => {},
             },
         );
     }
@@ -67,7 +77,11 @@ export default function Profile({ navigation }) {
                 </View>
                 :
                 <>
-                    {deleteAuthError ? <Text>{deleteAuthError}</Text> : null}
+                    {/* {deleteAuthError ?
+                        <Text style={ProfileStyles.error}>{deleteAuthError}</Text>
+                        :
+                        null
+                    } */}
                     <UserCard
                         status={status}
                         // role={role}
@@ -86,7 +100,7 @@ export default function Profile({ navigation }) {
                     <Button
                         testID='signOutButton'
                         style={{ width: '100%' }}
-                        labelStyle={{ fontSize: 12 }}
+                        labelStyle={buttonStyle.MDLabel}
                         color='green'
                         mode={'contained'}
                         onPress={handleLogOut}>
@@ -96,7 +110,7 @@ export default function Profile({ navigation }) {
                         <Button
                             testID='editDetailsButton'
                             style={{ width: '49%' }}
-                            labelStyle={{ fontSize: 12 }}
+                            labelStyle={buttonStyle.MDLabel}
                             color='orange'
                             mode={'contained'}
                             onPress={() => navigation.navigate("Edit User Details")}>
@@ -105,10 +119,10 @@ export default function Profile({ navigation }) {
                         <Button
                             testID='deleteAccountButton'
                             style={{ width: '49%', marginTop: 0 }}
-                            labelStyle={{ fontSize: 12 }}
+                            labelStyle={buttonStyle.MDLabel}
                             color='red'
                             mode={'contained'}
-                            onPress={handleAlert}>
+                            onPress={handleUserDeleteAlert}>
                             Delete Account
                         </Button>
                     </View>
@@ -137,8 +151,12 @@ const ProfileStyles = StyleSheet.create({
     },
     options: {
         width: '100%',
-        marginTop: 10,
+        marginTop: 5,
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
+    error: {
+        color: 'red',
+        paddingBottom:10
+    }
 })

@@ -9,6 +9,7 @@ import DatePicker from '../CustomHooks/DatePicker';
 import useDoc from '../CustomHooks/useDoc';
 import { fetchDocumentData } from '../FirestoreFunctions/FirestoreRead';
 import { updateDocumentGeneral } from '../FirestoreFunctions/FirestoreUpdate';
+import { buttonStyle } from '../constants/Constants';
 
 export default function EditDetails({ navigation }) {
     const [chosenDate, setChosenDate] = useState("")
@@ -56,7 +57,7 @@ export default function EditDetails({ navigation }) {
                         emailOptIn: emailOptInFlag,
                     })
                     setChosenDate(documentSnapshot.data().dob)
-                } 
+                }
             })
             .catch((e) => {
                 //console.log(e.message)
@@ -241,19 +242,19 @@ export default function EditDetails({ navigation }) {
                     {isLoading ? <ActivityIndicator animating={true} color={'red'} size={'large'} />
                         :
                         <View>
-                            <Button style={{ marginBottom: 5 }} color='green' disabled={false} mode={'contained'} onPress={handleSubmit((data) => {
+                            <Button style={{ marginBottom: 5 }} labelStyle={buttonStyle.MDLabel} color='green' disabled={false} mode={'contained'} onPress={handleSubmit((data) => {
                                 //required to ammend variables to type boolean from string
                                 var emailOptInflag = false
                                 if (data.emailOptIn == "checked") {
                                     emailOptInflag = true
                                 }
                                 const combinedData = { ...data, dob: chosenDate, emailOptIn: emailOptInflag }
-                                updateDocumentGeneral("Users", user.uid, combinedData).then(() => console.log("user updated")).catch((e) => setError(e.message))
+                                updateDocumentGeneral("Users", user.uid, combinedData).then(() => { }).catch((e) => setError(e.message))
                                 navigateTo("User Details")
                             })}>
                                 Save Changes
                             </Button>
-                            <Button color='orange' disabled={false} mode={'contained'} onPress={() => navigateTo("User Details")}>Cancel Changes</Button>
+                            <Button labelStyle={buttonStyle.MDLabel} color='orange' disabled={false} mode={'contained'} onPress={() => navigateTo("User Details")}>Cancel Changes</Button>
                         </View>
                     }
                 </Fragment>

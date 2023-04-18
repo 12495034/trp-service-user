@@ -9,9 +9,10 @@ import { ProgressCircle } from '../components/ProgressCircle';
 import useCountOnSnapshot from '../CustomHooks/useCountOnSnapshot';
 
 export default function Home() {
-    const { user } = useContext(AuthContext);
+    const { user} = useContext(AuthContext);
     //const [expandedBooking, setExpandedBooking] = useState(false);
     const { countData, isCountLoading, countError } = useCountOnSnapshot("Clinics", "clinicStatus", "Active")
+    //console.log(countData)
 
     //state set to close one accordion if another is opened to limit information overload
     // const handlePressBooking = () => {

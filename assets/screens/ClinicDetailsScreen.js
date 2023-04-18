@@ -15,6 +15,7 @@ import useDuplicateCheck from '../CustomHooks/useDuplicateCheck';
 import useDocOnSnapshot from '../CustomHooks/useDocOnSnapshot';
 import useFilteredCollection from '../CustomHooks/useFilteredCollection';
 import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
+import { buttonStyle } from '../constants/Constants';
 
 export default function ClinicDetailsScreen({ route, navigation }) {
     const { user, verificationEmail } = useContext(AuthContext);
@@ -23,6 +24,8 @@ export default function ClinicDetailsScreen({ route, navigation }) {
     const { clinicId } = route.params;
     const [selectedSlot, setSelectedSlot] = useState(undefined)
     const [selectedTime, setSelectedTime] = useState(undefined)
+    const [loading, setLoading] = useState(false)
+    const [sent, setSent] = useState(false)
     const [error, setError] = useState("")
     const [message, setMessage] = useState()
 
@@ -54,12 +57,17 @@ export default function ClinicDetailsScreen({ route, navigation }) {
     }
 
     async function handleVerificationEmail(email) {
+        setLoading(true)
         await verificationEmail()
             .then(() => {
                 setMessage(`Verification email sent to ${email}, please check your inbox`)
+                setSent(true)
+                setLoading(false)
             })
             .catch((e) => {
                 setError(e.message)
+                setSent(false)
+                setLoading(false)
             })
     }
 
@@ -93,7 +101,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
                     <View style={ClinicDetailStyles.clinicInformation}>
                         {isFilteredCollectionLoading ?
                             <View style={ClinicDetailStyles.progress}>
-                                <ProgressCircle/>
+                                <ProgressCircle />
                             </View>
                             :
                             <View>
@@ -115,7 +123,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
                             <View style={ClinicDetailStyles.Button}>
                                 <Button
                                     style={{ width: '100%' }}
-                                    labelStyle={{ fontSize: 12 }}
+                                    labelStyle={buttonStyle.MDLabel}
                                     color='pink'
                                     mode={'contained'}
                                     disabled={netInfo.isInternetReachable ? false : true}
@@ -135,7 +143,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
         )
     } else {
         return (
-            <UnverifiedEmail message={message} error={error} action={handleVerificationEmail} email={user.email} />
+            <UnverifiedEmail loading={loading} setLoading={setLoading} sent={sent} setSent={setSent} message={message} error={error} action={handleVerificationEmail} email={user.email} />
         );
     }
 }

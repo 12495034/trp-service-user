@@ -1,4 +1,4 @@
-import { cancelLimit } from '../constants/Constants';
+import { cancelLimit } from '../../constants/Constants';
 
 //calculate the full number of hours between two dates
 export function canCancel(dateTime1, dateTime2) {

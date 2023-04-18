@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { createDateString } from '../commonFunctions/createDateString'
+import { createDateString } from '../functions/generalFunctions/createDateString'
 
 //Component stores clinic information and displays it on the clinic details screen
 export default function ClinicInformationCard(props) {

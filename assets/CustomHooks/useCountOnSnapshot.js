@@ -11,8 +11,8 @@ export default function useCountOnSnapshot(collection, field, filter) {
     useEffect(() => {
         const subscriber = setCollectionListener(collection, field, filter)
             .onSnapshot(querySnapshot => {
-                setCountData(querySnapshot.size)
-                setIsCountLoading(false)
+                    setCountData(querySnapshot.size)
+                    setIsCountLoading(false)
             });
         return () => subscriber()
     }, [filter])

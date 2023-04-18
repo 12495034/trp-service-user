@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { refresh } from '@react-native-community/netinfo';
 
 //Auth provider manages user state changes and persists the user state across the app
 //App is wrapper within AuthContext.Provider allowing state and functions to be retrieved at any level below
@@ -15,7 +16,7 @@ export const AuthProvider = ({ children }) => {
         if (user) {
             setUser(user)
             //retrieves the custom claims role and status
-            await auth().currentUser.getIdTokenResult(true)
+            await auth().currentUser.getIdTokenResult()
                 .then((idTokenResult) => {
                     setRole(idTokenResult.claims.role)
                     setStatus(idTokenResult.claims.accountStatus)
@@ -39,14 +40,15 @@ export const AuthProvider = ({ children }) => {
     }
 
     async function createUser(data) {
-        await auth().createUserWithEmailAndPassword(data.email, data.password)
-            .then(() => {
-                firestore().collection('Users').doc(auth().currentUser.uid)
+        auth().createUserWithEmailAndPassword(data.email, data.password)
+            .then((userCredential) => {
+                //create new firestore document record using newly created user credentials
+                firestore().collection('Users').doc(userCredential.user.uid)
                     .set({
                         ProNouns: data.pronouns,
-                        FirstName: data.firstname,
-                        MiddleName: data.middlename,
-                        LastName: data.lastname,
+                        FirstName: data.firstname.charAt(0).toUpperCase() + data.firstname.slice(1),
+                        MiddleName: data.middlename.charAt(0).toUpperCase() + data.middlename.slice(1),
+                        LastName: data.lastname.charAt(0).toUpperCase() + data.lastname.slice(1),
                         PhoneNumber: data.phonenumber,
                         dob: data.dob,
                         email: data.email,
@@ -55,27 +57,35 @@ export const AuthProvider = ({ children }) => {
                         createdAt: firestore.Timestamp.fromDate(new Date()),
                     })
             })
-            .then(async () => {
-                await auth().currentUser.updateProfile({
-                    displayName: `${data.firstname} ${data.lastname}`,
-                })
+            .then(()=>{
+                updateAuthProfile(data)
             })
-            .then(async () => {
-                //verification email sent following account signup, this will be available in the metadata
-                await verificationEmail()
+            .then(() => {
+                verificationEmail()
             })
-            .catch((e) => {
+            .catch((e)=>{
                 return Promise.reject(e)
             })
-            
-        await logOut()
-            .then(() => {
-                //logging out to refresh custom claims
+    }
+
+    async function updateAuthProfile(data) {
+        auth().currentUser.updateProfile({
+            displayName: `${data.firstname} ${data.lastname}`,
+        })
+    }
+
+    async function refreshUserToken() {
+        auth().currentUser.getIdTokenResult(true)
+            .then((idTokenResult) => {
+                // console.log("refreshed Token:", idTokenResult.claims.role)
+                setRole(idTokenResult.claims.role)
+                setStatus(idTokenResult.claims.accountStatus)
             })
-            .catch((error) => {
-                //console.log(error.message)
+            .catch((e) => {
+                // console.log(e.message)
             })
     }
+
 
     async function verificationEmail() {
         return auth().currentUser.sendEmailVerification();
@@ -98,7 +108,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, role, status, signIn, createUser, logOut, reset, deleteUserAuth, verificationEmail, offlineMode }}>
+        <AuthContext.Provider value={{ user, role, status, signIn, createUser, logOut, reset, deleteUserAuth, verificationEmail, offlineMode, refreshUserToken }}>
             {children}
         </AuthContext.Provider>
     );

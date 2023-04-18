@@ -30,17 +30,16 @@ export default function AvailableSlotCard(props) {
 
 const appointmentCardStyles = StyleSheet.create({
     card: {
+        height:53,
         flexDirection:'row',
         borderColor: 'black',
         borderWidth: 0.5,
+        borderRadius:5,
         justifyContent: 'space-evenly',
         padding: 10,
     },
     text: {
         textAlign: 'center',
-    },
-    button: {
-        borderRadius: 10,
-
+        textAlignVertical:'center',
     },
 })

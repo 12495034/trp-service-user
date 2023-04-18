@@ -1,5 +1,5 @@
 
-import canCancel from "../logicFunctions.js/canCancel";
+import canCancel from "../functions/SpecialFunctions/canCancel";
 
 export function formatSlotsData(slotsData, clinicDate) {
     //need to clear selected slot on every render so that its not possible to select a slot that has been booked

@@ -1,5 +1,7 @@
 //constants used throughout the source code can be altered here, review comments for description of constant usage
 
+import { StyleSheet } from "react-native"
+
 //Radio button colors
 export const radioButtonSelectColor = 'green'
 export const radioButtonUnselectedColor = 'red'
@@ -45,4 +47,12 @@ export function userAppointmentData(selectedSlot, selectedTime, location, center
         status: "Active"
     }
 }
+
+export const buttonStyle = StyleSheet.create({
+    MDLabel:{
+        fontSize: 12, 
+        height: 36, 
+        textAlignVertical: 'center'
+    }
+})
 

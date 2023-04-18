@@ -14,7 +14,10 @@ import useCountOnSnapshot from '../CustomHooks/useCountOnSnapshot';
 const Tab = createBottomTabNavigator();
 const AppStack = (props) => {
   const { user } = useContext(AuthContext);
-  const { countData, isCountLoading, countError } = useCountOnSnapshot(`Users/${user.uid}/Appointments`, "Active")
+  const { countData, isCountLoading, countError } = useCountOnSnapshot(`Users/${user.uid}/Appointments`, 'status', "Active")
+
+  //console.log(countData)
+  //console.log(isCountLoading)
 
   //use of netinfo hook to retrieve device connectivity information
   const netInfo = useNetInfo()
@@ -91,6 +94,7 @@ const AppStack = (props) => {
           ),
         })}
       />
+      
     </Tab.Navigator >
   );
 };

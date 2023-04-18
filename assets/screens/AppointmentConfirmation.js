@@ -9,9 +9,10 @@ import { clinicAppointmentData, userAppointmentData } from '../constants/Constan
 import { appointmentConfirmation1, BookingCancelAlertBody, BookingCancelAlertTitle, BookingSuccessfulAlertBody, BookingSuccessfulAlertTitle } from '../content/Message';
 import { addSlotToMap } from '../FirestoreFunctions/FirestoreUpdate';
 import { BgTimer } from '../CustomHooks/BgTimer';
-import { handleAlertDecision, handleAlertInformation } from '../commonFunctions/Alerts';
+import { handleAlertDecision, handleAlertInformation } from '../functions/generalFunctions/Alerts';
 import { useNetInfo } from '@react-native-community/netinfo'
 import BookingProgress from '../components/BookingProgress';
+import { buttonStyle } from '../constants/Constants';
 
 import firestore from '@react-native-firebase/firestore';
 
@@ -19,7 +20,6 @@ export default function AppointmentConfirmation({ route, navigation }) {
 
     const { user } = useContext(AuthContext);
     const netInfo = useNetInfo();
-
     //data passed to from clinic details screen
     const {
         clinicId,
@@ -141,7 +141,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
                 <View style={AppointConfirmStyles.options}>
                     <Button
                         style={{ width: '49%' }}
-                        labelStyle={{ fontSize: 12 }}
+                        labelStyle={buttonStyle.MDLabel}
                         color='green'
                         mode={'contained'}
                         disabled={netInfo.isInternetReachable ? false : true}
@@ -152,7 +152,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
                     </Button>
                     <Button
                         style={{ width: '49%' }}
-                        labelStyle={{ fontSize: 12 }}
+                        labelStyle={buttonStyle.MDLabel}
                         color='red'
                         mode={'contained'}
                         onPress={() => {

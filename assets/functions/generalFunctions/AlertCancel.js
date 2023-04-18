@@ -13,16 +13,16 @@ export function AlertCancel(status, isCheckedIn, title, body, acceptText, reject
                 },
                 {
                     text: rejectText,
-                    onPress: () => console.log("Appointment not cancelled"),
+                    onPress: () => {},
                     style: 'cancel',
                 },
             ],
             {
                 cancelable: true,
-                onDismiss: () => console.log("Alert cancelled by pressing outside box"),
+                onDismiss: () => {},
             },
         );
     } else {
-        console.log("Appointment is not active, therefore changes cannot be made")
+        //console.log("Appointment is not active, therefore changes cannot be made")
     }
 }

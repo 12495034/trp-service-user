@@ -30,6 +30,7 @@ export default function UserCard(props) {
                         onPress={() => Linking.openURL('https://trp-developement.web.app/privacy-policy-mobile')}>
                         View Privacy Policy
                     </Text>
+
                 </View>
                 <View>
                     <Text style={UserCardStyles.detailText}>{props.proNouns}</Text>
@@ -72,11 +73,11 @@ const UserCardStyles = StyleSheet.create({
         padding: 20,
     },
     title: {
-        padding: 20,
+        padding: 5,
     },
     titleText: {
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: 18,
         color: 'blue',
         backgroundColor: '#F2D6F3',
         padding: 10,

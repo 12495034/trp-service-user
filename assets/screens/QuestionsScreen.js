@@ -7,6 +7,7 @@ import { Message3Question } from '../content/Message';
 import useFilteredCollection from '../CustomHooks/useFilteredCollection';
 import { ProgressCircle } from '../components/ProgressCircle';
 import BookingProgress from '../components/BookingProgress';
+import { buttonStyle } from '../constants/Constants';
 
 export default function QuestionsScreen({ navigation }) {
   const [radioValue, setRadioValue] = useState(undefined);
@@ -19,30 +20,39 @@ export default function QuestionsScreen({ navigation }) {
   //-----------------------------------------------------------------------------------
   //  Data Rendering
   //-----------------------------------------------------------------------------------
-  const adviceMessage = 
+  const adviceMessage =
     <FlatList
       data={filteredCollectionData}
       keyExtractor={(Item, index) => index.toString()}
       renderItem={({ item }) => (
-        <View style={QuestionStyles.advice}>
-          <Text style={QuestionStyles.adviceMessage}>{item.onAgree}</Text>
-          <Button
-            disabled={item.test ? false : true}
-            style={{ width: '100%' }}
-            labelStyle={{ fontSize: 12 }}
-            color='#FFC1BE'
-            mode={'contained'}
-            onPress={() => navigateTo("Search for a Clinic")}>
-            Search for a clinic
-          </Button>
+        <View>
+          {!item.test ?
+            <View style={QuestionStyles.advice}>
+              <Text style={QuestionStyles.adviceMessage}>{item.onAgree}</Text>
+            </View>
+            :
+            <View style={QuestionStyles.advice}>
+              <Text style={QuestionStyles.adviceMessage}>{item.onAgree}</Text>
+              <Button
+                disabled={item.test ? false : true}
+                style={{ width: '100%' }}
+                labelStyle={buttonStyle.MDLabel}
+                color='#FFC1BE'
+                mode={'contained'}
+                onPress={() => navigateTo("Search for a Clinic")}>
+                Search for a clinic
+              </Button>
+            </View>
+          }
         </View>
-      )}
+      )
+      }
     />
 
   return (
     <>
       <View>
-        <BookingProgress progress={0}/>
+        <BookingProgress progress={0} />
       </View>
       <View style={QuestionStyles.body}>
         <View style={QuestionStyles.content}>
@@ -62,34 +72,30 @@ const QuestionStyles = StyleSheet.create({
   body: {
     flex: 1,
     backgroundColor: '#ffffff',
-    padding:10
+    padding: 10
   },
   content: {
     flex: 1,
-    
+
   },
   message: {
     fontSize: 15,
-    fontWeight: '400',
     textAlign: 'justify',
-    paddingTop: 5,
     marginBottom: 10,
   },
   advice: {
-    flex:1,
-    // paddingLeft: 10,
-    // paddingRight:15,
-    // paddingTop:0,
-    // paddingBottom:0,
+    flex: 1,
+    flexDirection:'column',
     justifyContent: 'center',
     alignItems: 'center',
+    
   },
   adviceMessage: {
     width: '100%',
     color: 'green',
     textAlign: 'justify',
     fontSize: 15,
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
   progress: {
     flex: 0.75,

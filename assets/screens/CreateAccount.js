@@ -11,8 +11,9 @@ import DialogBox from '../components/DialogBox';
 import { termsAndConditions } from '../content/Message';
 import { emailNotificationMessage } from '../content/Message';
 import useDoc from '../CustomHooks/useDoc';
+import { buttonStyle } from '../constants/Constants';
 
-export default function CreateAccount() {
+export default function CreateAccount({ navigation }) {
     const { createUser } = useContext(AuthContext);
 
     const [chosenDate, setChosenDate] = useState("")
@@ -156,13 +157,13 @@ export default function CreateAccount() {
                                         message: 'Please select your preferred pronouns',
                                     },
                                 },
-                                options:docData.pronouns
+                                options: docData.pronouns
                             },
                             {
                                 name: 'firstname',
                                 type: 'text',
                                 textInputProps: {
-                                    autoComplete:'name',
+                                    autoComplete: 'name',
                                     label: 'First Name',
                                     left: <TextInput.Icon name={'account'} />,
                                     mode: 'outlined',
@@ -305,7 +306,7 @@ export default function CreateAccount() {
                     </View>
                     {isLoading ? <ActivityIndicator animating={true} color={'red'} size={'large'} />
                         :
-                        <Button color='pink' disabled={false} mode={'contained'} onPress={handleSubmit((data) => {
+                        <Button color='pink' labelStyle={buttonStyle.MDLabel} disabled={false} mode={'contained'} onPress={handleSubmit((data) => {
                             //required to ammend variables to type boolean from string
                             var isAgreedTCflag = false
                             var emailOptInflag = false

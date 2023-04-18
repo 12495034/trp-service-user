@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { Button } from 'react-native-paper';
 import { FormBuilder } from 'react-native-paper-form-builder';
 import { useForm } from 'react-hook-form';
+import { buttonStyle } from '../constants/Constants';
+import { ProgressCircle } from '../components/ProgressCircle';
 
 import { AuthContext } from '../context/AuthProvider';
 
@@ -10,6 +12,8 @@ export default function ResetPassword({ navigation }) {
 
     const { reset } = useContext(AuthContext)
 
+    const [loading, setLoading] = useState(false)
+    const [sent, setSent] = useState(false)
     const [error, setError] = useState()
     const [message, setMessage] = useState('')
     const { control, setFocus, handleSubmit } = useForm({
@@ -20,12 +24,17 @@ export default function ResetPassword({ navigation }) {
     });
 
     async function resetHandle(email) {
+        setLoading(true)
         await reset(email)
             .then(() => {
+                setSent(true)
                 setMessage(`Reset email sent to ${email}, please check your inbox`)
+                setLoading(false)
             })
             .catch((e) => {
+                setSent(false)
                 setError(e.message)
+                setLoading(false)
             })
     }
 
@@ -58,14 +67,19 @@ export default function ResetPassword({ navigation }) {
                         },
                     ]}
                 />
-                <Button
-                    color='orange'
-                    mode={'contained'}
-                    onPress={handleSubmit((data) => {
-                        resetHandle(data.email)
-                    })}>
-                    Request password reset email
-                </Button>
+                {loading ?
+                    <ProgressCircle />
+                    :
+                    <Button
+                        disabled={sent}
+                        labelStyle={buttonStyle.MDLabel}
+                        color='orange'
+                        mode={'contained'}
+                        onPress={handleSubmit((data) => {
+                            resetHandle(data.email)
+                        })}>
+                        Request password reset email
+                    </Button>}
                 <Text style={ResetStyles.error}>{error}</Text>
                 <Text style={ResetStyles.message}>{message}</Text>
             </ScrollView>
@@ -84,6 +98,7 @@ const ResetStyles = StyleSheet.create({
         justifyContent: 'center',
     },
     instructionText: {
+        color: 'black',
         fontSize: 15,
         textAlign: 'justify',
         marginBottom: 10,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Card, Text, Badge } from 'react-native-paper';
 import { StyleSheet, View, Pressable } from 'react-native';
-import { createDateString } from '../commonFunctions/createDateString';
+import { createDateString } from '../functions/generalFunctions/createDateString';
 
 //Clinic card component displays the details of a clinic when searched for
 function ClinicCard(props) {
