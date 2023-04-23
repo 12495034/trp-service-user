@@ -110,7 +110,7 @@ export default function Book({ navigation }) {
     return (
         <>
             <View>
-                <BookingProgress progress={0.25}/>
+                <BookingProgress progress={0.25} />
             </View>
             <View style={BookStyles.body}>
                 <List.Accordion expanded={expanded} onPress={handlePress} title="Clinic Search" id="1">
