@@ -10,13 +10,20 @@ export default function DatePicker(props) {
     const [show, setShow] = useState(false)
 
     function onChange(event, selectedDate) {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'iso');
-        setDate(currentDate);
+        setShow(false)
+        setDate(selectedDate);
+        console.log(event.type)
 
-        let tempDate = new Date(currentDate);
-        let fDate = tempDate.getFullYear() + '-' + (tempDate.getMonth() < 10 ? "0" + (tempDate.getMonth() + 1) : tempDate.getMonth() + 1) + '-' + tempDate.getDate();
-        props.setChosenDate(fDate)
+        //if date is set run logic below. If user cancels out of date picker skip this logic
+        if (event.type === "set") {
+            let tempDate = new Date(selectedDate);
+            //date string formatted to match format used by the service provider app with leading zeros (eg. 2023-05-04 not 2023-05-4)
+            //Note: getMonth() is zero indexed
+            let fDate = tempDate.getFullYear() + '-'
+                + (tempDate.getMonth() < 10 ? "0" + (tempDate.getMonth() + 1) : tempDate.getMonth() + 1) + '-'
+                + (tempDate.getDate() < 10 ? "0" + (tempDate.getDate()) : tempDate.getDate());
+            props.setChosenDate(fDate)
+        } 
     }
 
     function showMode(currentMode) {
