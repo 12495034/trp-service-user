@@ -36,7 +36,7 @@ Note: If you have installed react-native-cli package please remove it as it may 
      
 ## Installation
 
-1. Clone the repository (Local copy only)
+1. Clone the repository - If you wish to contribute to the app please consult the `How to contribute` Section
    - Open Git Bash
    - Type `git clone https://github.com/12495034/trp-service-user.git`
    - Press enter
