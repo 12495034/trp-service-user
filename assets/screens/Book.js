@@ -27,9 +27,11 @@ export default function Book({ navigation }) {
 
     //custom hooks for standard data retrieval
     //retrieve Locations collection data
-    const { collectionData: locationData, isCollectionLoading: isLocationLoaded, collectionError: locationError } = useCollection(`Location`)
+    const { collectionData: locationData, isCollectionLoading: isLocationLoaded, collectionError: locationError } 
+    = useCollection(`Location`)
     //retrieve centers collection data
-    const { collectionData: centerData, isCollectionLoading: isCenterLoaded, collectionError: centerError } = useCollection(`Location/${chosenLocation}/Centers`, chosenLocation)
+    const { collectionData: centerData, isCollectionLoading: isCenterLoaded, collectionError: centerError } 
+    = useCollection(`Location/${chosenLocation}/Centers`, chosenLocation)
 
     //resets all state related to search fields
     function clearSearchFields() {

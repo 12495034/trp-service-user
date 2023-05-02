@@ -14,7 +14,8 @@ function ClinicCard(props) {
             onPress={() => props.slots == 0 ? null : props.details(props.id)}
         >
             <Card mode='outlined' style={styles.card}>
-                <Card.Title title={props.location} titleStyle={{fontSize:18}} subtitleStyle={{fontSize:14}} subtitle={`${props.center}, ${props.addDetails}` } />
+                <Card.Title title={props.location} titleStyle={{fontSize:18}} 
+                subtitleStyle={{fontSize:14}} subtitle={`${props.center}, ${props.addDetails}` } />
                 <Card.Content>
                     <Text variant="titleMedium">{createDateString(props.date)}</Text>
                     <Text variant="titleLarge">Start Time: {props.time}</Text>

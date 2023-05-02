@@ -32,7 +32,8 @@ export default function ClinicDetailsScreen({ route, navigation }) {
     //custom hook to check if the user already has an appointment booked
     const { docData, isDocLoading: snapShotLoading, docError: listenerError } = useDocOnSnapshot(`Clinics`, clinicId)
     const { isDocPresent, isDocLoading, docError } = useDuplicateCheck(`Users/${user.uid}/Appointments`, clinicId)
-    const { filteredCollectionData, isFilteredCollectionLoading, filteredCollectionError } = useFilteredCollection(`Location/${docData.location}/Centers`, 'name', '==', docData.center)
+    const { filteredCollectionData, isFilteredCollectionLoading, filteredCollectionError } = 
+    useFilteredCollection(`Location/${docData.location}/Centers`, 'name', '==', docData.center)
 
     //parameters passed to appointment confirmation screen, passed rather than re-read to minimise number of calls made to database
     function confirmAppointment() {

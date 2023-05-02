@@ -11,13 +11,13 @@ import { createDateString } from '../functions/generalFunctions/createDateString
 
 //creates an appointment card component that is displayed on the users appointments tab for each appointment
 export default function AppointmentCard(props) {
-       return (
+    return (
         <Pressable
             style={({ pressed }) => [
                 { backgroundColor: pressed ? '#F7C3E9' : '#0000', borderRadius: 5 },
             ]}
             onLongPress={() => {
-                if (props.isCancellable) {
+                if (props.isCancellable && props.status === "Active") {
                     AlertCancel(
                         props.status,
                         props.checkedIn,
@@ -25,8 +25,10 @@ export default function AppointmentCard(props) {
                         "Do you wish to cancel this appointment?",
                         "Yes", "No",
                         () => props.cancel(props.slot, props.time, props.clinicId, props.userId))
-                } else {
+                } else if (props.status === "Active") {
                     handleAlertInformation("Cancel Appointment", "You are unable to cancel this appointment as it is less than 24 hrs until you are due to attend. If you are not able to make the appointment please inform the rainbow project on 02890 319030 or you will be marked as un-attended")
+                } else {
+                    //do nothing
                 }
 
             }}
@@ -45,7 +47,7 @@ export default function AppointmentCard(props) {
                     <Text style={styles.hilight}>{props.tester}</Text>
                     <Text></Text>
                     <Text>{props.status}</Text>
-                    
+
                 </View>
                 <View style={styles.col3} onTouchStart={props.userCheckIn}>
                     <CheckInIcon checkedIn={props.checkedIn} />
@@ -54,7 +56,7 @@ export default function AppointmentCard(props) {
                 </View>
             </View>
             <View>
-                
+
             </View>
         </Pressable>
     )
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius: 5,
-        
+
     },
     col1: {
         flexDirection: 'column',

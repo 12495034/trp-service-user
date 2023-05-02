@@ -89,7 +89,7 @@ export default function Appointments() {
                     called={item.called}
                     wasSeen={item.wasSeen}
                     cancel={item.status == 'Active' ? cancelAppointment : null}
-                    userCheckIn={() => handleUserCheckIn(item.status, user.uid, item.id, item.checkedIn)}
+                    userCheckIn={() => !item.called ? handleUserCheckIn(item.status, user.uid, item.id, item.checkedIn) : null}
                     status={item.status}
                     isCancellable={canCancel(new Date(), new Date(`${item.date}T${item.time}:00.000`))}
                 />

@@ -1,7 +1,7 @@
 import { Alert } from "react-native"
 
 export function AlertCancel(status, isCheckedIn, title, body, acceptText, rejectText, callbackAccept) {
-    if (status == "Active" && isCheckedIn != true) {
+    if (isCheckedIn != true) {
         Alert.alert(
             title,
             body,
