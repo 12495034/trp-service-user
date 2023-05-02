@@ -12,8 +12,7 @@ https://user-images.githubusercontent.com/94055886/235634889-ca110765-d47a-49ef-
 
 A seperate web application was developed to allow The Rainbow Project to created and manage testing clinics. The web app repository can be found [HERE](https://github.com/12495034/trp-serviceprovider_2).
 
-The mobile app was developed as a cross platform mobile using React-Native with Firebase utilised for user authentication and data storage. As the mobile app is cross platform it is compatible with both Android and iOS devices. However, the primary objective of the project was to deliver a mobile app for the android platform. The system has completed user testing but is still in developement to resolve outstanding key issues. Have a look at the 'How to contribute' section if you would like to get involved with solving these issues.
-
+The mobile app was developed as a cross platform mobile using React-Native and the Firebase client sdk for implementation of user authentication and data storage. As the mobile app is cross platform it is compatible with both Android and iOS devices. However, the primary objective of the project was to deliver a mobile app for the android platform. The system has completed user testing but is still in developement to resolve outstanding key issues. Have a look at the `How to contribute` section if you would like to get involved with solving these issues. 
 
 ## 2. Environment Setup
 
