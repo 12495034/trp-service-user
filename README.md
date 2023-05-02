@@ -33,7 +33,7 @@ For more details consult the React_native developement environment setup [HERE](
 
 Note: If you have installed react-native-cli package please remove it as it may cause unexpected issues. The command line interface can be accessed using the `npx` command, which ships with node.
      
-## Installation
+## 3. Installation
 
 1. Clone the repository - If you wish to contribute to the app please consult the `How to contribute` Section
    - Open Git Bash
@@ -41,7 +41,7 @@ Note: If you have installed react-native-cli package please remove it as it may 
    - Press enter
 2. Navigate to the project root directory and Run `npm install` to install dependencies
 
-## Run the App
+## 4. Run the App
 It is recommended to use a physical device to run the mobile app as newer version of the android issues caused issues with firebase.
 
 1. Connect device to developement machine using USB cable
@@ -51,16 +51,16 @@ It is recommended to use a physical device to run the mobile app as newer versio
    - If the device is not listed try changing `USB Configuration` to `PTP`
 2. Run `npx react-native run-android start`
 
-## 3. credits
+## 5. credits
 The Rainbow project provided vital user feedback of the mobile app during developement and also conducted user testing. I'd like to thank them for the help they gave me during this project. Additionally I would like to thank my project supervisor Leo Gallway for keeping me on the straight and narrow during this difficult project.
 
-## 4. Testing
+## 6. Testing
 
 Unit tests and snapshot tests were utilised within the mobile app. Unit tests have the suffix `.test.js` and are located next the the file they are testing within the project folder structure. Snapshots were performed to confirm basic rendering of critical components and are stored within the _tests_ folder within the project. Tests were carried out using the JEST framework and react-native-testing-library.
 
 Run `npm test`
 
-## 5. How to contribute
+## 7. How to contribute
 For a list of known issues with the mobile app and areas you can contribute please consult the issues log. Additional recommendations are always welcome so if you have an idea for an app improvement, please leave a comment for discussion.
 
 For a detailed explanation on performing the steps below please consult the following [ARTICLE](https://www.dataschool.io/how-to-contribute-on-github/)
@@ -82,3 +82,5 @@ For a detailed explanation on performing the steps below please consult the foll
     - What does the change implement/Fix? Please explain your changes clearly
     - Include any additional information you feel is relevant eg. additional dependencies required, etc
 14. Review Pull Request
+
+Note: Pull requests shall only be merged with the master branch if there is sufficient justification for the change.
