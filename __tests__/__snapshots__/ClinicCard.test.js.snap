@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders clinicCard component correctly 1`] = `
+exports[`Clinic Card Tests renders clinicCard component correctly 1`] = `
 <View
   accessible={true}
   collapsable={false}
@@ -122,7 +122,9 @@ exports[`renders clinicCard component correctly 1`] = `
                       {
                         "marginBottom": 0,
                       },
-                      undefined,
+                      {
+                        "fontSize": 18,
+                      },
                     ],
                   ],
                 ],
@@ -166,14 +168,16 @@ exports[`renders clinicCard component correctly 1`] = `
                         "minHeight": 20,
                         "paddingRight": 16,
                       },
-                      undefined,
+                      {
+                        "fontSize": 14,
+                      },
                     ],
                   ],
                 ],
               ]
             }
           >
-            LGBT Center
+            LGBT Center, undefined
           </Text>
         </View>
         <View />
@@ -205,7 +209,7 @@ exports[`renders clinicCard component correctly 1`] = `
           }
           variant="titleMedium"
         >
-          3000-01-01
+          Wed Jan 01 3000
         </Text>
         <Text
           style={

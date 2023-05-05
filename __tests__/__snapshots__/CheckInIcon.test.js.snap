@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`check render of checked in icon for checked in user 1`] = `
+exports[`Check In Icon Tests check render of checked in icon for checked in user 1`] = `
 <Text
   allowFontScaling={false}
   selectable={false}
@@ -26,7 +26,7 @@ exports[`check render of checked in icon for checked in user 1`] = `
 </Text>
 `;
 
-exports[`check render of checked in icon for non checked in user 1`] = `
+exports[`Check In Icon Tests check render of checked in icon for non checked in user 1`] = `
 <Text
   allowFontScaling={false}
   selectable={false}

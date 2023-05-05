@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders AppointmentCard component correctly 1`] = `
+exports[`Available Slot Tests renders AppointmentCard component correctly 1`] = `
 <View
   accessible={true}
   collapsable={false}
@@ -19,9 +19,7 @@ exports[`renders AppointmentCard component correctly 1`] = `
       {
         "backgroundColor": "#F9A8E7",
       },
-      {
-        "borderRadius": 10,
-      },
+      undefined,
     ]
   }
 >
@@ -29,8 +27,10 @@ exports[`renders AppointmentCard component correctly 1`] = `
     style={
       {
         "borderColor": "black",
+        "borderRadius": 5,
         "borderWidth": 0.5,
         "flexDirection": "row",
+        "height": 53,
         "justifyContent": "space-evenly",
         "padding": 10,
       }
@@ -49,6 +49,7 @@ exports[`renders AppointmentCard component correctly 1`] = `
           },
           {
             "textAlign": "center",
+            "textAlignVertical": "center",
           },
         ]
       }
@@ -69,6 +70,7 @@ exports[`renders AppointmentCard component correctly 1`] = `
           },
           {
             "textAlign": "center",
+            "textAlignVertical": "center",
           },
         ]
       }

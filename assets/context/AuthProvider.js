@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     async function createUser(data) {
-        auth().createUserWithEmailAndPassword(data.email, data.password)
+        return auth().createUserWithEmailAndPassword(data.email, data.password)
             .then((userCredential) => {
                 //create new firestore document record using newly created user credentials
                 firestore().collection('Users').doc(userCredential.user.uid)
@@ -57,13 +57,14 @@ export const AuthProvider = ({ children }) => {
                         createdAt: firestore.Timestamp.fromDate(new Date()),
                     })
             })
-            .then(()=>{
+            .then(async()=>{
                 updateAuthProfile(data)
             })
-            .then(() => {
+            .then(async() => {
                 verificationEmail()
             })
             .catch((e)=>{
+                console.log("Theres a problem")
                 return Promise.reject(e)
             })
     }

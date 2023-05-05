@@ -7,8 +7,8 @@ jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 jest.mock('@react-native-community/netinfo', () => ({
     useNetInfo: jest.fn()
 }));
-//Mock useDocOnSnapshot custom hook return value
-jest.mock('module_name', () => ({
-    useClientRect: () => [300, 200, jest.fn()]
-}));
+// Mock useDocOnSnapshot custom hook return value
+// jest.mock('module_name', () => ({
+//     useClientRect: () => [300, 200, jest.fn()]
+// }));
 

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`check render of called Icon for checked in and called 1`] = `
+exports[`Called Icon Tests check render of called Icon for checked in and called 1`] = `
 <Text
   allowFontScaling={false}
   selectable={false}
@@ -24,7 +24,7 @@ exports[`check render of called Icon for checked in and called 1`] = `
 </Text>
 `;
 
-exports[`check render of called Icon for checked in and not called 1`] = `
+exports[`Called Icon Tests check render of called Icon for checked in and not called 1`] = `
 <Text
   allowFontScaling={false}
   selectable={false}
@@ -48,4 +48,4 @@ exports[`check render of called Icon for checked in and not called 1`] = `
 </Text>
 `;
 
-exports[`check render of called Icon for not checked in and not called 1`] = `null`;
+exports[`Called Icon Tests check render of called Icon for not checked in and not called 1`] = `null`;

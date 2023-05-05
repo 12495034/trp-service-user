@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders AppointmentCard component correctly 1`] = `
+exports[`Appointment card tests renders AppointmentCard component correctly 1`] = `
 <View
   accessible={true}
   collapsable={false}
@@ -90,14 +90,40 @@ exports[`renders AppointmentCard component correctly 1`] = `
             {
               "textAlign": "left",
             },
-            {
-              "color": "red",
-            },
+            undefined,
           ]
         }
-      >
-        Leo Lardie
-      </Text>
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+      />
     </View>
     <View
       style={
@@ -121,7 +147,7 @@ exports[`renders AppointmentCard component correctly 1`] = `
           ]
         }
       >
-        3000-01-01
+        Wed Jan 01 3000
       </Text>
       <Text
         style={
@@ -138,6 +164,9 @@ exports[`renders AppointmentCard component correctly 1`] = `
           ]
         }
       >
+        Slot 
+        1
+         @ 
         18:00
       </Text>
       <Text
@@ -151,13 +180,29 @@ exports[`renders AppointmentCard component correctly 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "red",
+            },
           ]
         }
       >
-        Slot: 
-        1
+        Leo Lardie
       </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            undefined,
+          ]
+        }
+      />
       <Text
         style={
           [
@@ -251,5 +296,6 @@ exports[`renders AppointmentCard component correctly 1`] = `
       </Text>
     </View>
   </View>
+  <View />
 </View>
 `;

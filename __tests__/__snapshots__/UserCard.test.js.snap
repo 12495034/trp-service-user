@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders userCard component correctly with false values 1`] = `
+exports[`User Card Tests renders userCard component correctly with false values 1`] = `
 <View
   style={
     {
@@ -16,26 +16,35 @@ exports[`renders userCard component correctly with false values 1`] = `
   <View
     style={
       {
-        "alignItems": "center",
-        "flex": 1,
-        "justifyContent": "center",
-        "padding": 10,
+        "padding": 5,
       }
     }
   >
-    <Image
-      source={
-        {
-          "testUri": "../../../assets/images/userProfileDefault.jpeg",
-        }
-      }
+    <Text
       style={
-        {
-          "height": 150,
-          "width": 150,
-        }
+        [
+          {
+            "color": "#000000",
+            "fontFamily": "System",
+            "fontWeight": "400",
+          },
+          {
+            "textAlign": "left",
+          },
+          {
+            "backgroundColor": "#F2D6F3",
+            "borderRadius": 5,
+            "color": "blue",
+            "elevation": 5,
+            "fontSize": 18,
+            "padding": 10,
+            "textAlign": "center",
+          },
+        ]
       }
-    />
+    >
+      testEmail@Email.com
+    </Text>
   </View>
   <View
     style={
@@ -59,10 +68,13 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
         Pronouns:
       </Text>
@@ -77,10 +89,13 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="titleLarge"
       >
         First Name:
       </Text>
@@ -95,10 +110,13 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
         Middle Name:
       </Text>
@@ -113,10 +131,13 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
         Last Name:
       </Text>
@@ -131,46 +152,13 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
-      >
-        Email:
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "color": "#000000",
-              "fontFamily": "System",
-              "fontWeight": "400",
-            },
-            {
-              "textAlign": "left",
-            },
-            undefined,
-          ]
-        }
-        variant="bodyMedium"
-      >
-        Email Verified:
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "color": "#000000",
-              "fontFamily": "System",
-              "fontWeight": "400",
-            },
-            {
-              "textAlign": "left",
-            },
-            undefined,
-          ]
-        }
-        variant="bodyMedium"
       >
         Phone Number:
       </Text>
@@ -185,12 +173,135 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      >
+        Date of Birth:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      >
+        Email Verified:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      >
+        Created On:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      >
+        Notifications:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      >
+        Status:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
             undefined,
           ]
         }
-        variant="bodyMedium"
+      />
+      <Text
+        onPress={[Function]}
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "blue",
+              "textDecorationLine": "underline",
+            },
+          ]
+        }
       >
-        Date of Birth:
+        View Privacy Policy
       </Text>
     </View>
     <View>
@@ -205,10 +316,13 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
         He/Him
       </Text>
@@ -223,10 +337,13 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="titleLarge"
       >
         Gavin
       </Text>
@@ -241,10 +358,13 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
         James
       </Text>
@@ -259,10 +379,13 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
         Davis
       </Text>
@@ -277,12 +400,15 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
-        testEmail@Email.com
+        123456
       </Text>
       <Text
         style={
@@ -295,10 +421,34 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
+      >
+        1983-01-01
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
       >
         No
       </Text>
@@ -313,12 +463,34 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
       >
-        123456
+        No
       </Text>
       <Text
         style={
@@ -331,19 +503,20 @@ exports[`renders userCard component correctly with false values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
-      >
-        1983-01-01
-      </Text>
+      />
     </View>
   </View>
 </View>
 `;
 
-exports[`renders userCard component correctly wuth true values 1`] = `
+exports[`User Card Tests renders userCard component correctly wuth true values 1`] = `
 <View
   style={
     {
@@ -359,26 +532,35 @@ exports[`renders userCard component correctly wuth true values 1`] = `
   <View
     style={
       {
-        "alignItems": "center",
-        "flex": 1,
-        "justifyContent": "center",
-        "padding": 10,
+        "padding": 5,
       }
     }
   >
-    <Image
-      source={
-        {
-          "testUri": "../../../assets/images/userProfileDefault.jpeg",
-        }
-      }
+    <Text
       style={
-        {
-          "height": 150,
-          "width": 150,
-        }
+        [
+          {
+            "color": "#000000",
+            "fontFamily": "System",
+            "fontWeight": "400",
+          },
+          {
+            "textAlign": "left",
+          },
+          {
+            "backgroundColor": "#F2D6F3",
+            "borderRadius": 5,
+            "color": "blue",
+            "elevation": 5,
+            "fontSize": 18,
+            "padding": 10,
+            "textAlign": "center",
+          },
+        ]
       }
-    />
+    >
+      testEmail@Email.com
+    </Text>
   </View>
   <View
     style={
@@ -402,10 +584,13 @@ exports[`renders userCard component correctly wuth true values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
         Pronouns:
       </Text>
@@ -420,10 +605,13 @@ exports[`renders userCard component correctly wuth true values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="titleLarge"
       >
         First Name:
       </Text>
@@ -438,10 +626,13 @@ exports[`renders userCard component correctly wuth true values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
         Middle Name:
       </Text>
@@ -456,10 +647,13 @@ exports[`renders userCard component correctly wuth true values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
         Last Name:
       </Text>
@@ -474,46 +668,13 @@ exports[`renders userCard component correctly wuth true values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
-      >
-        Email:
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "color": "#000000",
-              "fontFamily": "System",
-              "fontWeight": "400",
-            },
-            {
-              "textAlign": "left",
-            },
-            undefined,
-          ]
-        }
-        variant="bodyMedium"
-      >
-        Email Verified:
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "color": "#000000",
-              "fontFamily": "System",
-              "fontWeight": "400",
-            },
-            {
-              "textAlign": "left",
-            },
-            undefined,
-          ]
-        }
-        variant="bodyMedium"
       >
         Phone Number:
       </Text>
@@ -528,12 +689,135 @@ exports[`renders userCard component correctly wuth true values 1`] = `
             {
               "textAlign": "left",
             },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      >
+        Date of Birth:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      >
+        Email Verified:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      >
+        Created On:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      >
+        Notifications:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      >
+        Status:
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
             undefined,
           ]
         }
-        variant="bodyMedium"
+      />
+      <Text
+        onPress={[Function]}
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "blue",
+              "textDecorationLine": "underline",
+            },
+          ]
+        }
       >
-        Date of Birth:
+        View Privacy Policy
       </Text>
     </View>
     <View>
@@ -548,10 +832,13 @@ exports[`renders userCard component correctly wuth true values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
         He/Him
       </Text>
@@ -566,10 +853,13 @@ exports[`renders userCard component correctly wuth true values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="titleLarge"
       >
         Gavin
       </Text>
@@ -584,10 +874,13 @@ exports[`renders userCard component correctly wuth true values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
         James
       </Text>
@@ -602,10 +895,13 @@ exports[`renders userCard component correctly wuth true values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
         Davis
       </Text>
@@ -620,46 +916,13 @@ exports[`renders userCard component correctly wuth true values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
-      >
-        testEmail@Email.com
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "color": "#000000",
-              "fontFamily": "System",
-              "fontWeight": "400",
-            },
-            {
-              "textAlign": "left",
-            },
-            undefined,
-          ]
-        }
-        variant="bodyMedium"
-      >
-        Yes
-      </Text>
-      <Text
-        style={
-          [
-            {
-              "color": "#000000",
-              "fontFamily": "System",
-              "fontWeight": "400",
-            },
-            {
-              "textAlign": "left",
-            },
-            undefined,
-          ]
-        }
-        variant="bodyMedium"
       >
         123456
       </Text>
@@ -674,13 +937,96 @@ exports[`renders userCard component correctly wuth true values 1`] = `
             {
               "textAlign": "left",
             },
-            undefined,
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
           ]
         }
-        variant="bodyMedium"
       >
         1983-01-01
       </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      >
+        Yes
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      />
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      >
+        No
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "color": "#000000",
+              "fontFamily": "System",
+              "fontWeight": "400",
+            },
+            {
+              "textAlign": "left",
+            },
+            {
+              "color": "black",
+              "fontSize": 15,
+              "paddingBottom": 2,
+            },
+          ]
+        }
+      />
     </View>
   </View>
 </View>

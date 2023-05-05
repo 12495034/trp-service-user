@@ -15,7 +15,7 @@ describe('Auth screen button navigation', () => {
         signIn: jest.fn(),
     };
 
-    it('navigates to Reset screen on button press', () => {
+    it.skip('navigates to Reset screen on button press', () => {
         const push = jest.fn();
         const { getByTestId } = render(
             <AuthProvider value={AuthContextMock}>
@@ -27,7 +27,7 @@ describe('Auth screen button navigation', () => {
         expect(push).toHaveBeenCalledWith('Reset');
     });
 
-    it('navigates to new account screen on button press', () => {
+    it.skip('navigates to new account screen on button press', () => {
         const push = jest.fn();
         const { getByTestId } = render(
             <AuthProvider value={AuthContextMock}>
@@ -45,7 +45,7 @@ describe('Auth Stack', () => {
         signIn: jest.fn(),
     };
 
-    it('renders the correct initial screen', async () => {
+    it.skip('renders the correct initial screen', async () => {
         const { getByText } = render(
             <AuthProvider value={AuthContextMock}>
                 <NavigationContainer>

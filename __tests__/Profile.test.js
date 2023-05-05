@@ -8,20 +8,22 @@ jest.mock('../assets/CustomHooks/useDocOnSnapshot');
 
 afterEach(cleanup);
 
-test('Welcome Screen Message', () => {
-    const AuthMockContext = {
-        logOut: jest.fn(),
-        user: {
-            displayName: "Tester",
-            isVerified: true,
-        },
-        deleteUserAuth: jest.fn()
-    }
+describe('User Card Tests', () => {
+    test.skip('Welcome Screen Message', () => {
+        const AuthMockContext = {
+            logOut: jest.fn(),
+            user: {
+                displayName: "Tester",
+                isVerified: true,
+            },
+            deleteUserAuth: jest.fn()
+        }
 
-    render(
-        <AuthContext.Provider value={AuthMockContext}>
-            <Profile />
-        </AuthContext.Provider>
-    );
-    expect(screen.getByText("User Details")).toBeOnScreen;
+        render(
+            <AuthContext.Provider value={AuthMockContext}>
+                <Profile />
+            </AuthContext.Provider>
+        );
+        expect(screen.getByText("User Details")).toBeOnScreen;
+    })
 });

@@ -50,6 +50,7 @@ export default function CreateAccount({ navigation }) {
     });
 
     function handleCreateUser(data) {
+        console.log(data.isAgreedTC)
         if (data.isAgreedTC) {
             setIsLoading(true)
             createUser(data)
@@ -57,10 +58,12 @@ export default function CreateAccount({ navigation }) {
                     setIsLoading(false)
                 })
                 .catch((e) => {
+                    setError(" ")
                     setError(e.message)
                     setIsLoading(false)
                 })
         } else {
+            setError(" ")
             setError("You must agree to T&C's before using the App")
         }
     }
