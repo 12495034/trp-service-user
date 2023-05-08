@@ -5,9 +5,12 @@ import CreateAccount from '../screens/CreateAccount'
 import Login from '../screens/Login'
 import ResetPassword from '../screens/ResetPassword';
 
-//authentication stack consisting of login, create account and reset password screens in a stack
+
 const Stack = createStackNavigator();
 
+/**
+ * authentication stack consisting of login, create account and reset password screens in a stack
+ */
 const AuthStack = () => {
 
   let routeName = 'Login';

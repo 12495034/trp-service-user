@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { Text, Button, List } from 'react-native-paper'
-
 import CenterPicker from '../components/CenterPicker';
 import ClinicCard from '../components/ClinicCard';
 import LocationPicker from '../components/LocationPicker';
@@ -13,15 +12,18 @@ import searchLogic from '../logic/searchLogic';
 import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
 import { buttonStyle } from '../constants/Constants';
 
+/**
+ * Screen for users to search for a clinic
+ */
 export default function Book({ navigation }) {
 
+    //State Management
     const [chosenLocation, setChosenLocation] = useState(undefined)
     const [chosenCenter, setChosenCenter] = useState(undefined)
     const [chosenDate, setChosenDate] = useState(undefined)
     const [loading, setLoading] = useState(false)
     const [clinicList, setClinicList] = useState([])
     const [searchMessage, setSearchMessage] = useState("")
-
     const [expanded, setExpanded] = useState(true);
     const handlePress = () => setExpanded(!expanded);
 
@@ -44,7 +46,10 @@ export default function Book({ navigation }) {
         setExpanded(true)
     }
 
-    //navigates to clinic detail screen, passing the chosen clinic id as a parameter
+    /**
+     * Function to navigate to the clinic details screen for a selected clinic
+     * @param {String} id clinic id
+     */
     function showClinicDetails(id) {
         navigation.navigate('Clinic Information', {
             clinicId: id,
@@ -52,7 +57,15 @@ export default function Book({ navigation }) {
         clearSearchFields()
     }
 
-    //performs a query on the firestore database clinics collection
+    /**
+     * Function to perform a query on the firestore database based on the users search details
+     * @param {String} collection Firestore Collection
+     * @param {String} chosenLocation Chosen test location eg. Belfast
+     * @param {String} chosenCenter Chosen test center
+     * @param {String} chosenDate Chosen test date
+     * @param {String} searchField Firestore document field
+     * @param {String} clinicStatus Value Firestore documents are queried by
+     */
     async function onSearch(collection, chosenLocation, chosenCenter, chosenDate, searchField, clinicStatus) {
         setLoading(true)
         setClinicList([])
@@ -145,6 +158,7 @@ export default function Book({ navigation }) {
                 </List.Accordion>
 
                 <View style={BookStyles.mainContent}>
+                    {/* Conditional rendering of loading icon while search results are loading */}
                     {loading ?
                         <View style={BookStyles.progress}>
                             <ProgressCircle />

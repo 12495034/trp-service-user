@@ -2,7 +2,9 @@ import React from 'react'
 import { StyleSheet, View, TextInput } from 'react-native'
 import ModalSelector from 'react-native-modal-selector'
 
-//Component that allows users to select a location when searching for a clinic on the book screen
+/**
+ * Component that allows users to select a location when searching for a clinic on the book screen
+ */
 export default function LocationPicker(props) {
     return (
         <View style={styles.dropdown}>

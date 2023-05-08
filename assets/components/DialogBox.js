@@ -3,6 +3,11 @@ import { ScrollView} from 'react-native';
 import { Button, Dialog, Portal, Provider} from 'react-native-paper';
 
 // dialog box component used to display information to the user, such as terms and conditions
+
+/**
+ * Re-usable dialog component used to display information to the user, such as terms and conditions
+ * @returns 
+ */
 const DialogBox = (props) => {
   return (
     <Provider>

@@ -3,7 +3,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import WelcomeScreen from '../screens/WelcomeScreen';
 
-//authentication stack consisting of login, create account and reset password screens in a stack
+/**
+ * Welcome Stack shown to user following signup
+ */
 const Stack = createStackNavigator();
 
 const WelcomeStack = () => {

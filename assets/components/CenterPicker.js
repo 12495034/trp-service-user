@@ -2,7 +2,10 @@ import React from 'react'
 import { StyleSheet, TextInput, View } from 'react-native'
 import ModalSelector from 'react-native-modal-selector'
 
-//Component that allows users to select a center when searching for a clinic on the book screen
+/**
+ * Component that allows users to select a center when searching for a clinic on the book screen
+ * State Controlled at the parent level
+ */
 export default function CenterPicker(props) {
     return (
         <View style={styles.dropdown}>

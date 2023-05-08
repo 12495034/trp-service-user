@@ -7,7 +7,10 @@ import { AuthContext } from '../context/AuthProvider';
 const ProfileStack = createStackNavigator();
 
 
-//Profile stack when viewing information and editing profile details
+/**
+ * Profile stack when viewing information and editing profile details
+ */
+
 export default function ProfileStackScreen() {
 
   const { user} = useContext(AuthContext);

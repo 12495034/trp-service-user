@@ -11,11 +11,17 @@ import { convertFirestoreTimeStamp } from '../functions/SpecialFunctions/convert
 import { buttonStyle } from '../constants/Constants';
 import { handleAlertInformation } from '../functions/generalFunctions/Alerts';
 
+/**
+ * Profile screen displays users profile information
+ */
 export default function Profile({ navigation }) {
     const [deleteAuthError, setDeleteAuthError] = useState('')
     const { logOut, user, role, status, deleteUserAuth } = useContext(AuthContext);
     const { docData, isDocLoading, docError } = useDocOnSnapshot('Users', user.uid, user)
 
+    /**
+     * Function to handle the current user logging out of the system
+     */
     async function handleLogOut() {
         await logOut()
             .then(() => {
@@ -31,6 +37,11 @@ export default function Profile({ navigation }) {
             })
     }
 
+    /**
+     * Function to delete the current users authentication profile
+     * This action triggers a cloud function to perform database clean up operations 
+     * See web app cloud function source code.
+     */
     async function handleDeleteUser(userId) {
         //cloud function handles the deletion of user data in firestore when triggered by User deletion
         //prior to user authentication profile being deleted all Active user appointments should be cancelled
@@ -44,6 +55,9 @@ export default function Profile({ navigation }) {
             })
     }
 
+    /**
+     * Function to alert the user that they are about to permanently delete their account
+     */
     function handleUserDeleteAlert() {
         Alert.alert(
             'Delete Account',
@@ -77,14 +91,8 @@ export default function Profile({ navigation }) {
                 </View>
                 :
                 <>
-                    {/* {deleteAuthError ?
-                        <Text style={ProfileStyles.error}>{deleteAuthError}</Text>
-                        :
-                        null
-                    } */}
                     <UserCard
                         status={status}
-                        // role={role}
                         proNouns={docData.ProNouns}
                         firstName={docData.FirstName}
                         middleName={docData.MiddleName}
@@ -93,7 +101,6 @@ export default function Profile({ navigation }) {
                         email={docData.email}
                         emailVerified={user.emailVerified}
                         phoneNumber={docData.PhoneNumber}
-                        // isAgreedTC={docData.isAgreedTC}
                         emailOptIn={docData.emailOptIn}
                         creationDate={convertFirestoreTimeStamp(docData.createdAt)}
                     />

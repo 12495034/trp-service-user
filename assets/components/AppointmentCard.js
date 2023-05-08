@@ -9,7 +9,9 @@ import { AlertCancel } from '../functions/generalFunctions/AlertCancel'
 import { handleAlertInformation } from '../functions/generalFunctions/Alerts'
 import { createDateString } from '../functions/generalFunctions/createDateString'
 
-//creates an appointment card component that is displayed on the users appointments tab for each appointment
+/**
+ * Pressable Appointment Card component rendered within on the Appointments Screen
+ */
 export default function AppointmentCard(props) {
     return (
         <Pressable

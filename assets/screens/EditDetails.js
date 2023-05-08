@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import { TextInput, Checkbox, Button, List, ActivityIndicator } from 'react-native-paper';
 import { useController, useForm } from 'react-hook-form';
 import { FormBuilder } from 'react-native-paper-form-builder';
-
 import { AuthContext } from '../context/AuthProvider';
 import DatePicker from '../CustomHooks/DatePicker';
 import useDoc from '../CustomHooks/useDoc';
@@ -11,14 +10,20 @@ import { fetchDocumentData } from '../FirestoreFunctions/FirestoreRead';
 import { updateDocumentGeneral } from '../FirestoreFunctions/FirestoreUpdate';
 import { buttonStyle } from '../constants/Constants';
 
+/**
+ * Edit details screen allows the user to ammend their profile details
+ */
 export default function EditDetails({ navigation }) {
+    //state management
     const [chosenDate, setChosenDate] = useState("")
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const { user } = useContext(AuthContext);
     const [userDetails, setUserDetails] = useState({})
 
-    //populate pronouns drop down menu with options from firestore database
+    //User Object passed to screen through auth context provider
+    const { user } = useContext(AuthContext);
+
+    //custom hook to populate pronouns drop down menu with options from firestore database
     const { docData, isDocLoading, docError } = useDoc('Supporting', 'pronouns', null)
 
     const { control, setFocus, reset, handleSubmit } = useForm({
@@ -37,6 +42,9 @@ export default function EditDetails({ navigation }) {
         navigation.navigate(screen)
     }
 
+    /**
+     * Function to fetch user details from firestore and initialise local state with retrieved information
+     */
     function fetchUserData() {
         fetchDocumentData('Users', `${user.uid}`)
             .then(documentSnapshot => {
@@ -64,6 +72,9 @@ export default function EditDetails({ navigation }) {
             })
     }
 
+    /**
+     * Custom function required to add checkbox component to react-native-paper-form-builder
+     */
     function emailOptIn(props) {
         const { name, rules, shouldUnregister, defaultValue, control } = props;
         const { field } = useController({
@@ -89,6 +100,9 @@ export default function EditDetails({ navigation }) {
         );
     }
 
+     /**
+     * Custom function required to add date picker component to react-native-paper-form-builder
+     */
     function selectDate(props) {
         const { name, rules, shouldUnregister, defaultValue, control } = props;
         const { field } = useController({

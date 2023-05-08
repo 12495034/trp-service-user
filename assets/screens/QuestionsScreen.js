@@ -9,8 +9,13 @@ import { ProgressCircle } from '../components/ProgressCircle';
 import BookingProgress from '../components/BookingProgress';
 import { buttonStyle } from '../constants/Constants';
 
+/**
+ * The Questions screen helps the user to determine if a test is suitible
+ */
 export default function QuestionsScreen({ navigation }) {
+  //state management
   const [radioValue, setRadioValue] = useState(undefined);
+  //Custom hook for data retrieval from firestore. Returns the advice based on how long it has been since they had unprotected sex
   const { filteredCollectionData, isFilteredCollectionLoading, filteredCollectionError } = useFilteredCollection('Questions', 'question', '==', radioValue)
 
   function navigateTo(screen) {
@@ -56,7 +61,6 @@ export default function QuestionsScreen({ navigation }) {
       </View>
       <View style={QuestionStyles.body}>
         <View style={QuestionStyles.content}>
-          {/* <Text style={QuestionStyles.message}>{Message1Question}</Text> */}
           <Text style={QuestionStyles.message}>{Message3Question}</Text>
           <FilterQuestionRadio radioValue={radioValue} setRadioValue={setRadioValue} />
         </View>

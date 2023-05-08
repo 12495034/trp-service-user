@@ -4,7 +4,9 @@ import { View, StyleSheet } from 'react-native';
 import { Text, Button } from 'react-native-paper'
 import { ProgressCircle } from './ProgressCircle';
 
-//component rendered if a user attempts to book and appointment without first verifying their email address
+/**
+ * component rendered if a user attempts to book and appointment without first verifying their email address
+ */
 export default function UnverifiedEmail(props) {
     return (
         <View style={UnverifiedEmailStyles.body}>

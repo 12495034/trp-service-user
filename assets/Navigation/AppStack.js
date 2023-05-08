@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import Home from '../screens/Home';
 import Appointments from '../screens/Appointments';
 import BookStackScreen from './BookStack';
@@ -12,18 +11,22 @@ import { AuthContext } from '../context/AuthProvider';
 import useCountOnSnapshot from '../CustomHooks/useCountOnSnapshot';
 
 const Tab = createBottomTabNavigator();
+
+/**
+ * App Stack contains mobile app screens available to authenticated users
+ */
 const AppStack = (props) => {
+  //user object passed to screen through AuthContext Provider
   const { user } = useContext(AuthContext);
   const { countData, isCountLoading, countError } = useCountOnSnapshot(`Users/${user.uid}/Appointments`, 'status', "Active")
 
-  //console.log(countData)
-  //console.log(isCountLoading)
-
   //use of netinfo hook to retrieve device connectivity information
   const netInfo = useNetInfo()
+
   //set firestore to disable offline persistence
   const { offlineMode } = useContext(AuthContext)
   offlineMode(false)
+
   //hide bottom tab navigator if the following stack screen is visible
   const hide = props.routeName == "Appointment Confirmation"
 

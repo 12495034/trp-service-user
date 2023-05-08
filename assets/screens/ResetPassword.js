@@ -10,8 +10,10 @@ import { AuthContext } from '../context/AuthProvider';
 
 export default function ResetPassword({ navigation }) {
 
+    //reset function passed to screen through AuthContext Provider
     const { reset } = useContext(AuthContext)
 
+    //state management
     const [loading, setLoading] = useState(false)
     const [sent, setSent] = useState(false)
     const [error, setError] = useState()
@@ -23,6 +25,10 @@ export default function ResetPassword({ navigation }) {
         mode: 'onChange',
     });
 
+    /**
+     * Function to send a password reset email
+     * @param {String} email Users email address
+     */
     async function resetHandle(email) {
         setLoading(true)
         await reset(email)
@@ -67,6 +73,7 @@ export default function ResetPassword({ navigation }) {
                         },
                     ]}
                 />
+                {/* Conditional rendering to show processing icon while request is made to firebase back end */}
                 {loading ?
                     <ProgressCircle />
                     :

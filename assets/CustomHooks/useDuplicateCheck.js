@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react'
 import { fetchCollectionDocuments } from '../FirestoreFunctions/FirestoreRead';
 
-//custom hook to determine if a document with the users id exists in a collection
+/**
+ * Custom hook used to check for presence of appointment in a current clinic
+ * @param {String} collection 
+ * @param {Stirng} docId 
+ * @returns Boolean isDocPresent, Boolean isDocLoading, String docError
+ */
 export default function useDuplicateCheck(collection, docId) {
     const [isDocPresent, setIsDocPresent] = useState(false);
     const [isDocLoading, setIsDocLoading] = useState(true);

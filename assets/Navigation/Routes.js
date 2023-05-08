@@ -1,6 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { NavigationContainer, createNavigationContainerRef } from '@react-navigation/native';
-import auth from '@react-native-firebase/auth';
 import { AuthContext } from '../context/AuthProvider';
 import AuthStack from './AuthStack';
 import AppStack from './AppStack';
@@ -8,7 +7,9 @@ import WelcomeStack from './WelcomeStack';
 import { View } from 'react-native';
 import { ProgressCircle } from '../components/ProgressCircle';
 
-
+/**
+ * Routes functional component used to display the appropriate navigation stack based on user sign in state and account status
+ */
 const Routes = ({ navigation }) => {
   const { user, status } = useContext(AuthContext);
   const { initializing, setInitializing } = useState(false)
@@ -21,6 +22,7 @@ const Routes = ({ navigation }) => {
 
   let display = ""
 
+  //display apropriate stack based on user object status and account status
   if (user != null && status != undefined) {
     display = <AppStack routeName={routeName} />
   } else if (user != null && status === undefined) {

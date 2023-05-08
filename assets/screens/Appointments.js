@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { StyleSheet, View, SafeAreaView, FlatList } from 'react-native'
 import { Text, List } from 'react-native-paper';
-
 import { AuthContext } from '../context/AuthProvider';
 import { addSlotToMap } from '../FirestoreFunctions/FirestoreUpdate';
 import useCollectionOnSnapshot from '../CustomHooks/useCollectionOnSnapshot';
@@ -9,9 +8,11 @@ import FilterAppointmentStatus from '../components/FilterAppointmentStatus';
 import AppointmentCard from '../components/AppointmentCard';
 import { ProgressCircle } from '../components/ProgressCircle';
 import canCancel from '../functions/SpecialFunctions/canCancel'
-
 import firestore from '@react-native-firebase/firestore';
 
+/**
+ * Appointments Screen where the users current appointments and appointment history can be viewed
+ */
 export default function Appointments() {
     const { user } = useContext(AuthContext);
     const [filter, setFilter] = useState("Active");
@@ -21,11 +22,20 @@ export default function Appointments() {
     //custom hook to setup a listener on the users appointments collection
     const { collectionData, isCollectionLoading, collectionError } = useCollectionOnSnapshot(`Users/${user.uid}/Appointments`, `status`, filter)
 
+    /**
+     * Function to expand and collapse the instructions to the user on the Active appointments screen
+     */
     const handlePressAtClinic = () => {
         setExpandedAtClinic(!expandedAtClinic)
     };
 
-    //checks in user in users and clinics appointments sub-collection
+    /**
+     * Function to check in user
+     * @param {String} status Appointment status
+     * @param {String} userId firebase user id
+     * @param {String} clinicId id of the clinic
+     * @param {Boolean} checkInStatus The check in status for the current appointment
+     */
     function handleUserCheckIn(status, userId, clinicId, checkInStatus) {
         //data to update checkin status with
         var data = {}
@@ -49,8 +59,14 @@ export default function Appointments() {
         }
     }
 
-    //deletes appointment from Users and Clinics Appointments subcollection using a transaction
-    //transactions fail if the user is offline or all operations do not complete
+    /**
+     * Function to delete appointment from Appointments subcollection in applicable Users and Clinic documents using a transaction
+     * transactions fail if the user is offline or all operations do not complete
+     * @param {String} slot id of the appointment Slot
+     * @param {String} time time of the appointment slot
+     * @param {String} clinicId id of the clinic
+     * @param {String} userId Firebase user id
+     */
     function cancelAppointment(slot, time, clinicId, userId) {
         const ref1 = firestore().doc(`Users/${userId}/Appointments/${clinicId}`)
         const ref2 = firestore().doc(`Clinics/${clinicId}/Appointments/${userId}`)

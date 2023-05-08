@@ -2,10 +2,8 @@ import React, { useState, useContext } from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { Text, Button } from 'react-native-paper'
 import { useNetInfo } from '@react-native-community/netinfo'
-
 import { AuthContext } from '../context/AuthProvider';
 import { removeSlotFromMap } from '../FirestoreFunctions/FirestoreDelete';
-
 import AvailableSlotCard from '../components/AvailableSlotCard';
 import UnverifiedEmail from '../components/UnverifiedEmail';
 import ClinicInformationCard from '../components/ClinicInformationCard';
@@ -17,11 +15,15 @@ import useFilteredCollection from '../CustomHooks/useFilteredCollection';
 import { formatSlotsData } from '../DataFormatFunctions/formatSlotData';
 import { buttonStyle } from '../constants/Constants';
 
+/**
+ * Clinic detail screen shows the detail of the clinic and appointment slots available to book
+ */
 export default function ClinicDetailsScreen({ route, navigation }) {
     const { user, verificationEmail } = useContext(AuthContext);
     const netInfo = useNetInfo()
-
     const { clinicId } = route.params;
+
+    //state management
     const [selectedSlot, setSelectedSlot] = useState(undefined)
     const [selectedTime, setSelectedTime] = useState(undefined)
     const [loading, setLoading] = useState(false)
@@ -35,7 +37,9 @@ export default function ClinicDetailsScreen({ route, navigation }) {
     const { filteredCollectionData, isFilteredCollectionLoading, filteredCollectionError } = 
     useFilteredCollection(`Location/${docData.location}/Centers`, 'name', '==', docData.center)
 
-    //parameters passed to appointment confirmation screen, passed rather than re-read to minimise number of calls made to database
+    /**
+     * Function to pass parameters to appointment confirmation screen, passed rather than re-read to minimise number of calls made to firestore database
+     */
     function confirmAppointment() {
         if (selectedSlot) {
             navigation.navigate('Appointment Confirmation', {
@@ -57,6 +61,10 @@ export default function ClinicDetailsScreen({ route, navigation }) {
         }
     }
 
+    /**
+     * Function to send verification email, users cannot book appointments if ther email is not verified
+     * @param {String} email 
+     */
     async function handleVerificationEmail(email) {
         setLoading(true)
         await verificationEmail()
@@ -73,8 +81,8 @@ export default function ClinicDetailsScreen({ route, navigation }) {
     }
 
     //data rendering
-    //format data taken from firestore into an array so that it can be rendered using a flatlist
     var timeSlots = <FlatList
+    //format data taken from firestore into an array so that it can be rendered using a flatlist
         data={formatSlotsData(docData.slots, docData.date)}
         keyExtractor={(Item, index) => index.toString()}
         renderItem={({ item }) => (
@@ -90,6 +98,7 @@ export default function ClinicDetailsScreen({ route, navigation }) {
         )}
     />
 
+    //conditional rendering based on users email verification status
     if (user.emailVerified) {
         return (
             <>

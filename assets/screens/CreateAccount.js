@@ -4,7 +4,6 @@ import { TextInput, Checkbox, Button, List } from 'react-native-paper';
 import { useController, useForm } from 'react-hook-form';
 import { FormBuilder } from 'react-native-paper-form-builder';
 import { ActivityIndicator } from 'react-native-paper';
-
 import { AuthContext } from '../context/AuthProvider';
 import DatePicker from '../CustomHooks/DatePicker';
 import DialogBox from '../components/DialogBox';
@@ -13,6 +12,9 @@ import { emailNotificationMessage } from '../content/Message';
 import useDoc from '../CustomHooks/useDoc';
 import { buttonStyle } from '../constants/Constants';
 
+/**
+ * Screen for user to signup to the mobile app
+ */
 export default function CreateAccount({ navigation }) {
     const { createUser } = useContext(AuthContext);
 
@@ -32,6 +34,7 @@ export default function CreateAccount({ navigation }) {
     const showEmailNotDialog = () => setEmailNotVisible(true);
     const hideEmailNotDialog = () => setEmailNotVisible(false);
 
+    //custom hooks for standardised data retrievel
     const { docData, isDocLoading, docError } = useDoc('Supporting', 'pronouns', null)
     const { control, setFocus, handleSubmit } = useForm({
         defaultValues: {
@@ -49,6 +52,9 @@ export default function CreateAccount({ navigation }) {
         mode: 'onChange',
     });
 
+    /**
+     * Function to create new user in firebase
+     */
     function handleCreateUser(data) {
         console.log(data.isAgreedTC)
         if (data.isAgreedTC) {

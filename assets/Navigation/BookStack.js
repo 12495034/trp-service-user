@@ -7,7 +7,9 @@ import AppointmentConfirmation from '../screens/AppointmentConfirmation';
 
 const BookStack = createStackNavigator();
 
-//booking stack when making a new appointment
+/**
+ * booking stack when booking a new appointment 
+ */
 export default function BookStackScreen() {
   return (
     <BookStack.Navigator>

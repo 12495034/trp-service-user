@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import { fetchCollectionDocuments } from '../FirestoreFunctions/FirestoreRead';
 
-//Custom hook to retrieve all document details stored in a collection
-//single read
-
+/**
+ * Custom hook used to perform one time data retrievel from firestore collection
+ * @param {String} collection Firestore collection
+ * @param {state variable} dependency Dependency passed to use effect dependency array
+ * @returns Array of collectionData, Boolean or isCollectionLoading, String collectionError
+ */
 export default function useCollection(collection, dependency) {
     const [collectionData, setCollectionData] = useState([]);
     const [isCollectionLoading, setIsCollectionLoading] = useState(true);

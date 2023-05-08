@@ -3,7 +3,10 @@ import { StyleSheet, View, TextInput } from 'react-native'
 import ModalSelector from 'react-native-modal-selector'
 import useDoc from '../CustomHooks/useDoc'
 
-//Drop down menu on the appointments screen that allows users to filter their appointments by status (eg. attended, un-attended)
+/**
+ * Drop down menu on the appointments screen that allows users to filter their appointments by status (eg. attended, un-attended)
+ * custom hook used for retrievel of standard selection options
+ */
 export default function FilterAppointmentStatus(props) {
     const { docData, isDocLoading, docError } = useDoc('Supporting', 'Data', null)
     return (

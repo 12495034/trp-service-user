@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react'
 import { fetchFilteredCollection } from '../FirestoreFunctions/FirestoreRead';
 
-//custom hook to return data from documents stored in a collection based on a filter criteria
+/**
+ * Custom hook used to perform a one time data retrieval from a firestore collection based on filter criteria
+ * @param {String} collection Firestore Collection
+ * @param {String} searchField Firestore document field
+ * @param {String} operator Firestore query operator eg. ==
+ * @param {String} searchValue Search value passed to useEffect dependency array
+ * @returns Object filteredCollectionData, Int filteredCollectionSize, Boolean isFilteredCollectionLoading, String filteredCollectionError
+ */
 export default function useFilteredCollection(collection, searchField, operator, searchValue) {
     const [filteredCollectionData, setFilteredCollectionData] = useState([]);
     const [filteredCollectionSize, setFilteredCollectionSize] = useState(0)
@@ -10,11 +17,9 @@ export default function useFilteredCollection(collection, searchField, operator,
 
     useEffect(() => {
         if (collection) {
-
             if (searchValue == undefined) {
                 searchValue = " "
             }
-
             fetchFilteredCollection(collection, searchField, operator, searchValue)
                 .then(querySnapshot => {
                     let filteredCollectionDataArray = []

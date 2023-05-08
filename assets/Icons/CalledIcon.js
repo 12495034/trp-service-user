@@ -1,7 +1,9 @@
 import React from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-
+/**
+ * Called Icon Component, renders different icon based on appointments called state 
+ */
 export default function CalledIcon(props) {
     if (props.checkedIn == true && props.called == false) {
         return <MaterialCommunityIcons name="bell-outline" color="black" size={25} />

@@ -1,8 +1,13 @@
 import { useState, useEffect } from 'react'
 import { fetchDocumentData } from '../FirestoreFunctions/FirestoreRead';
 
-//Custom hook to retrieve document data
-//Single read
+/**
+ * Custom hook used to perform one time data retrieval from Firestore document
+ * @param {String} collection Firestore Collection
+ * @param {String} doc Firestore Document
+ * @param {state variable} dependency passed to dependency array of useEffect
+ * @returns Object docData, Boolean, isDocLoading, String docError
+ */
 export default function useDoc(collection, doc, dependency) {
     const [docData, setDocData] = useState({});
     const [isDocLoading, setIsDocLoading] = useState(true);
@@ -10,6 +15,7 @@ export default function useDoc(collection, doc, dependency) {
 
     useEffect(() => {
         if (collection) {
+            //fetchDocumentData function called
             fetchDocumentData(collection, doc)
                 .then(documentSnapshot => {
                     if (documentSnapshot.exists) {

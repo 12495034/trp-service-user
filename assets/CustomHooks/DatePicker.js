@@ -3,6 +3,10 @@ import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+/**
+ * Date picker component used to select a date on the clinic search screen
+ * @returns Selected date
+ */
 export default function DatePicker(props) {
 
     const [date, setDate] = useState(new Date());

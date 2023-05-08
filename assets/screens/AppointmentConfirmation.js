@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from 'react'
 import { View, Text, StyleSheet, SafeAreaView, BackHandler, Alert } from 'react-native'
 import { StackActions } from '@react-navigation/native';
 import { Button } from 'react-native-paper';
-
 import { AuthContext } from '../context/AuthProvider';
 import { timeLimit } from '../constants/Constants';
 import { clinicAppointmentData, userAppointmentData } from '../constants/Constants';
@@ -13,9 +12,11 @@ import { handleAlertDecision, handleAlertInformation } from '../functions/genera
 import { useNetInfo } from '@react-native-community/netinfo'
 import BookingProgress from '../components/BookingProgress';
 import { buttonStyle } from '../constants/Constants';
-
 import firestore from '@react-native-firebase/firestore';
 
+/**
+ *  Screen where user confirms their appointment
+ */
 export default function AppointmentConfirmation({ route, navigation }) {
 
     const { user } = useContext(AuthContext);
@@ -33,11 +34,12 @@ export default function AppointmentConfirmation({ route, navigation }) {
         clinicPostcode,
     } = route.params;
 
+    //state management
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
     useEffect(() => {
-        //handling the user pressing the hardware back button and that they will lose saved data if they proceed
+        //handling the user pressing the hardware back button and informing them that they will lose saved data if they proceed
         const backAction = () => {
             Alert.alert("Cancel Booking process", "Hold on!, Are you sure you want leave the booking process? You will lose all your booking information", [
                 {
@@ -56,7 +58,10 @@ export default function AppointmentConfirmation({ route, navigation }) {
         return () => backHandler.remove();
     }, []);
 
-    //new appointment documents created in two sub-collections using a transaction
+    /**
+     * Function to create a new appointment using firestore transactions
+     * Two documents created in 2 locations to facilitate data denormalisation
+     */
     function createNewAppointment() {
         const ref1 = firestore().doc(`Users/${user.uid}/Appointments/${clinicId}`)
         const ref2 = firestore().doc(`Clinics/${clinicId}/Appointments/${user.uid}`)
@@ -78,7 +83,9 @@ export default function AppointmentConfirmation({ route, navigation }) {
             })
     }
 
-    //function that cancels the current booking request by releasing the selected booking slot
+    /**
+     * function that cancels the current booking request by releasing the selected booking slot
+     */
     function cancelBookingRequest() {
         addSlotToMap(selectedSlot, selectedTime, clinicId)
         navigation.dispatch(StackActions.popToTop())
@@ -156,8 +163,7 @@ export default function AppointmentConfirmation({ route, navigation }) {
                         color='red'
                         mode={'contained'}
                         onPress={() => {
-                            handleAlertDecision(BookingCancelAlertTitle, BookingCancelAlertBody, "Yes", "No", cancelBookingRequest, null
-                            )
+                            handleAlertDecision(BookingCancelAlertTitle, BookingCancelAlertBody, "Yes", "No", cancelBookingRequest)
                         }}>
                         Cancel Booking
                     </Button>

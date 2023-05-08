@@ -3,8 +3,10 @@ import { View, StyleSheet } from 'react-native';
 import { RadioButton, Card } from 'react-native-paper'
 import { radioButtonSelectColor, radioButtonUnselectedColor } from '../constants/Constants';
 
-//Component containing a series of radio buttons that the user selects at the start of the booking process
-//intent is to stream line only those users where a test is applicable
+
+/**
+ * Radio button selection group, used for determining if a test is suitible
+ */
 export default function FilterQuestionRadio(props) {
   return (
     <Card mode='outlined'>

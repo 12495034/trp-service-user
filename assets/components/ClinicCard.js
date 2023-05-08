@@ -3,7 +3,10 @@ import { Card, Text, Badge } from 'react-native-paper';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { createDateString } from '../functions/generalFunctions/createDateString';
 
-//Clinic card component displays the details of a clinic when searched for
+/**
+ * Pressable Clinic Card Component rendered when a clinic is searched for
+ */
+
 function ClinicCard(props) {
     return (
         <Pressable

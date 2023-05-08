@@ -1,6 +1,7 @@
-//message text used on specific screens can be edited here
 import { SafeAreaView } from "react-native"
 import { Text } from "react-native-paper"
+
+//message text used on specific screens can be edited here
 
 export const welcomeMessageHome1 = "The rainbow project Rapid HIV & syphillis testing service allows you to book a rapid HIV test at one of our scheduled clinics."
 export const welcomeMessageHome2 = "Check out the new Booking tab and follow the on screen instructions to book an appointment in your area."
@@ -20,6 +21,9 @@ export const ClinicDetailEmailUnverified2 = "Once you have verified your email y
 
 export const appointmentConfirmation1 = "Please check the details above and confirm your appointment within the time specified. If you do not confirm the appointment your slot will be released for other bookings"
 
+/**
+ * Terms and conditions wording
+ */
 export const termsAndConditions =  
 <SafeAreaView>
 <Text>Please read these terms and conditions carefully before using "The rainbow project rapid HIV & syphillis testing" mobile application operated by 'The Rainbow Project'</Text>
@@ -38,6 +42,9 @@ export const termsAndConditions =
 <Text></Text>
 </SafeAreaView>
 
+/**
+ * Email notification consent wording
+ */
 export const emailNotificationMessage =  
 <>
 <Text>It may be necessary for the rainbow project to contact users by automated email. Reasons include a newly scheduled clinic or clinic cancellation</Text>

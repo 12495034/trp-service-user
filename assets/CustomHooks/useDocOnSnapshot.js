@@ -3,6 +3,13 @@ import { setDocListener } from '../FirestoreFunctions/FirestoreRead';
 
 //Custom hook to retrieve document data
 //Real time updates
+/**
+ * Custom hook used to perform real time data retrieval from Firestore document
+ * @param {String} collection Firestore collection
+ * @param {String} doc Firestore Document
+ * @param {state variable} dependency Passed to dependency array of useEffect
+ * @returns 
+ */
 export default function useDocOnSnapshot(collection, doc, dependency) {
     //Hook state
     const [docData, setDocData] = useState({});

@@ -3,21 +3,19 @@ import { View, Text, StyleSheet } from "react-native"
 import BackgroundTimer from "react-native-background-timer"
 import { handleAlertInformation } from "../functions/generalFunctions/Alerts";
 
-//Background timer runs even if the app screen is minimised. Ensures the user can only hold the appointment for a specified duration
+/**
+ * Background timer runs even if the app screen is minimised. Ensures the user can only hold the appointment for a specified duration
+ * @param {timeLimit, callBack} props 
+ * @returns on screen count down with with callback function triggered at 0
+ */
 export function BgTimer(props) {
   const [secondsLeft, setSecondsLeft] = useState(props.timeLimit);
   const [timerOn, setTimerOn] = useState(false);
 
   function clockify() {
-    //let hours = Math.floor(secondsLeft / 60 / 60)
-    //let mins = Math.floor((secondsLeft / 60) % 60)
     let seconds = Math.floor(secondsLeft % 60)
-    //let displayHours = hours < 10 ? `0${hours}` : hours
-    //let displayMins = mins < 10 ? `0${mins}` : mins
     let displaySecs = seconds < 10 ? `0${seconds}` : seconds
     return {
-      //displayHours,
-      //displayMins,
       displaySecs,
     }
   }
@@ -31,6 +29,7 @@ export function BgTimer(props) {
     }, 1000)
   }
 
+  //Set timer to on immediately following screen render
   useEffect(() => {
     setTimerOn(timerOn => !timerOn)
   }, [])
@@ -44,7 +43,7 @@ export function BgTimer(props) {
     };
   }, [timerOn]);
 
-  // Checks if secondsLeft = 0 and stop timer if so
+  //Checks if secondsLeft = 0 and stops timer if so
   //also runs callback function that is passed into the component
   useEffect(() => {
     if (secondsLeft === 0) {
@@ -57,7 +56,6 @@ export function BgTimer(props) {
   return (
     <View style={styles.container}>
       <Text style={styles.message}>
-        {/* {clockify().displayHours} Hours {clockify().displayMins} Mins{" "} */}
         Appointment slot will be released in
       </Text>
       <Text style={styles.time}>

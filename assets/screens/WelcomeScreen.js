@@ -1,14 +1,17 @@
 import React, { useContext } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Linking } from 'react-native'
 import { Button } from 'react-native-paper'
 import { AuthContext } from '../context/AuthProvider';
 
-
+/**
+ * Welcome Screen shown to the user following sign up. As the users custom claims could not be refreshed while the user was logged in. The 
+ * proceed to the login screen button serves to signout the user. When they log in again their custom claims are refreshed.
+ */
 export default function WelcomeScreen() {
     
-    const { logOut, initializing, setInitializing } = useContext(AuthContext);
+    //logOut function passed to screen through AuthContext Provider
+    const { logOut } = useContext(AuthContext);
     
-
     return (
         <View style={WelcomeScreenStyles.body}>
             <View style={WelcomeScreenStyles.message}>

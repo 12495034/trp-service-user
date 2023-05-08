@@ -1,6 +1,12 @@
 
 import canCancel from "../functions/SpecialFunctions/canCancel";
 
+/**
+ * Function to re-format firestore data for rendering of available appointments list
+ * @param {Object} slotsData Firestore slots map from clinic document
+ * @param {String} clinicDate date of the clinic
+ * @returns Array AppointmentsList
+ */
 export function formatSlotsData(slotsData, clinicDate) {
     //need to clear selected slot on every render so that its not possible to select a slot that has been booked
     const appointmentList = [];

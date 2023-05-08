@@ -9,9 +9,15 @@ import { ProgressCircle } from '../components/ProgressCircle';
 import packageJson from '../../package.json'
 import { buttonStyle } from '../constants/Constants';
 
+/**
+ * Login Screen provides the user the ability to login to the system
+ */
 export default function Login({ navigation }) {
 
+    //signIn function passed to screen through AuthContext provider
     const { signIn } = useContext(AuthContext);
+
+    //State Management
     const [loginProcessing, setLoginProcessing] = useState(undefined)
     const [error, setError] = useState()
     const { control, setFocus, handleSubmit } = useForm({
@@ -22,6 +28,11 @@ export default function Login({ navigation }) {
         mode: 'onChange',
     });
 
+    /**
+     * Function to handle user login to firebase system
+     * @param {String} userName 
+     * @param {String} password 
+     */
     async function loginHandle(userName, password) {
         setError('')
         setLoginProcessing(true)
